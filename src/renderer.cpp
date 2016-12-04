@@ -9,6 +9,7 @@
 #include "program.hpp"
 #include "renderer.hpp"
 #include "shader.hpp"
+#include "shader_source.hpp"
 #include "vertex.hpp"
 
 /* -- Namespaces -- */
@@ -31,11 +32,11 @@ namespace
 renderer::renderer()
 {
   auto vertex_shader = shader::create(GL_VERTEX_SHADER);
-  vertex_shader->load_source("/home/chris/Developer/ogl/shaders/vertex_shader.glsl");
+  vertex_shader->set_source(VERTEX_SHADER_SOURCE);
   vertex_shader->compile();
 
   auto fragment_shader = shader::create(GL_FRAGMENT_SHADER);
-  fragment_shader->load_source("/home/chris/Developer/ogl/shaders/fragment_shader.glsl");
+  fragment_shader->set_source(FRAGMENT_SHADER_SOURCE);
   fragment_shader->compile();
 
   m_program = program::create();
