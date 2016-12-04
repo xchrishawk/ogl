@@ -12,9 +12,6 @@
 #include "glfw.hpp"
 #include "util.hpp"
 
-// TEMP!
-#include "shader.hpp"
-
 /* -- Namespaces -- */
 
 using namespace std;
@@ -67,11 +64,6 @@ void application::main()
 {
   float prev_state_abs_t = time();
   float prev_render_abs_t = time();
-
-  // TEMP!
-  shader vertex_shader(GL_VERTEX_SHADER);
-  std::cout << vertex_shader.is_compiled() << std::endl;
-  std::cout << vertex_shader.info_log() << std::endl;
 
   while (!m_window.should_close())
   {
