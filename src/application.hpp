@@ -12,6 +12,7 @@
 #include "glfw.hpp"
 #include "key_input.hpp"
 #include "opengl.hpp"
+#include "state.hpp"
 #include "window.hpp"
 
 /* -- Types -- */
@@ -39,13 +40,14 @@ namespace ogl
     window m_window;
     glew m_glew;
     key_input m_key_input;
+    state m_state;
 
     application();
     application(const application& other) = delete;
     application& operator =(const application& other) = delete;
 
-    void state_main(float abs_t, float delta_t);
-    void render_main(float abs_t, float delta_t);
+    void state_loop(float abs_t, float delta_t);
+    void render_loop(float abs_t, float delta_t);
 
     static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 

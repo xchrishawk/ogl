@@ -5,18 +5,29 @@
 
 /* -- Includes -- */
 
+#include <string>
+
 #include "application.hpp"
 #include "glfw.hpp"
 #include "util.hpp"
 
 /* -- Namespaces -- */
 
+using namespace std;
 using namespace ogl;
 
 /* -- Constants -- */
 
 namespace
 {
+  const int TARGET_CONTEXT_VERSION_MAJOR = 3;
+  const int TARGET_CONTEXT_VERSION_MINOR = 3;
+  const int INITIAL_WINDOW_WIDTH = 800;
+  const int INITIAL_WINDOW_HEIGHT = 600;
+  const string INITIAL_WINDOW_TITLE = "OGL";
+
+  const bool GLEW_USE_EXPERIMENTAL = true;
+
   const float TARGET_STATE_RATE = 1.0f / 60.0f;
   const float TARGET_RENDER_RATE = 1.0f / 60.0f;
 }
@@ -31,9 +42,15 @@ application& application::instance()
 
 application::application()
   : m_glfw(),
-    m_window(3, 3, 800, 800, "OGL", application::glfw_key_callback),	/* TODO: constants */
-    m_glew(true),
-    m_key_input()
+    m_window(TARGET_CONTEXT_VERSION_MAJOR,
+	     TARGET_CONTEXT_VERSION_MINOR,
+	     INITIAL_WINDOW_WIDTH,
+	     INITIAL_WINDOW_HEIGHT,
+	     INITIAL_WINDOW_TITLE,
+	     application::glfw_key_callback),
+    m_glew(GLEW_USE_EXPERIMENTAL),
+    m_key_input(),
+    m_state()
 {
   ogl_trace_message("Application initialized");
 }
@@ -50,25 +67,25 @@ void application::main()
 
   while (!m_window.should_close())
   {
-    /* poll events every loop */
+    // poll events every loop
     window::poll_events();
 
-    /* check current clock */
+    // check the current clock
     float abs_t = time();
 
-    /* run state if needed */
+    // run state loop if needed
     float state_delta_t = abs_t - prev_state_abs_t;
     if (state_delta_t >= TARGET_STATE_RATE)
     {
-      state_main(abs_t, state_delta_t);
+      state_loop(abs_t, state_delta_t);
       prev_state_abs_t = abs_t;
     }
 
-    /* render if needed */
+    // run render loop if needed
     float render_delta_t = abs_t - prev_render_abs_t;
     if (render_delta_t >= TARGET_RENDER_RATE)
     {
-      render_main(abs_t, render_delta_t);
+      render_loop(abs_t, render_delta_t);
       prev_render_abs_t = abs_t;
     }
   }
@@ -79,14 +96,17 @@ float application::time()
   return (float)glfwGetTime();
 }
 
-void application::state_main(float abs_t, float delta_t)
+void application::state_loop(float abs_t, float delta_t)
 {
-  /* set close flag if the user requests it */
+  // run a single loop of the state object
+  m_state.loop(abs_t, delta_t, m_key_input);
+
+  // set close flag if user requests it
   if (m_key_input.input_active(KEY_INPUT_TYPE_EXIT))
     m_window.set_should_close(true);
 }
 
-void application::render_main(float abs_t, float delta_t)
+void application::render_loop(float abs_t, float delta_t)
 {
   // TEMP
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -97,6 +117,6 @@ void application::render_main(float abs_t, float delta_t)
 
 void application::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-  /* key_input class handles this */
+  // key_input class handles this
   instance().m_key_input.key_pressed(key, scancode, action, mods);
 }
