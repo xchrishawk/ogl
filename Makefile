@@ -1,7 +1,7 @@
 # -- Variables --
 
 PROJECT			:= ogl
-MODULES			:= application glew glfw key_input main opengl renderer shader state util window
+MODULES			:= application glew glfw key_input main opengl program renderer shader state util window
 PKGLIBS			:= glew glfw3
 DEFINES			:= OGL_DEBUG
 
