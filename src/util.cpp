@@ -37,7 +37,7 @@ void ogl::_ogl_fail(const string& func, const string& file, int line, const stri
 	       << "*** ogl_fail - " << func << " (" << file << ":" << line << ")" << endl
 	       << "    " << message << endl
 	       << endl;
-  std::raise(SIGINT);
+  ogl_break();
   exit(EXIT_FAILURE);
 }
 
@@ -47,6 +47,11 @@ void ogl::_ogl_trace(const string& func, const string& file, int line, const str
   if (message.length() != 0)
     LOG_STREAM << " - " << message;
   LOG_STREAM << endl;
+}
+
+void ogl::_ogl_break()
+{
+  std::raise(SIGINT);
 }
 
 #endif

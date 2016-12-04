@@ -59,6 +59,6 @@ void glfw::error_callback(int error, const char* description)
 {
 #ifdef OGL_DEBUG
   std::cerr << "*** GLFW error " << error << " - " << description << endl;
-  std::raise(SIGINT);
+  ogl_break();
 #endif
 }
