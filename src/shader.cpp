@@ -32,7 +32,12 @@ shader::shader(GLenum type)
     m_id(glCreateShader(m_type))
 {
   if (m_id == 0)
-    opengl_throw_last_error("Failed to create shader");
+  {
+    GLenum error = opengl_last_error();
+    ostringstream message;
+    message << "Failed to create program. " << opengl_error_string(error);
+    throw runtime_error(message.str());
+  }
 }
 
 shader::~shader()

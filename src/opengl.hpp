@@ -28,9 +28,6 @@ namespace ogl
   /** Returns a string for the specified OpenGL error. */
   std::string opengl_error_string(GLenum error);
 
-  /** Throws an exception for the previous OpenGL error, if one exists. */
-  void opengl_throw_last_error(const std::string& message);
-
 }
 
 #endif /* OPENGL_HPP */

@@ -45,14 +45,3 @@ string ogl::opengl_error_string(GLenum error)
   string << "OpenGL error " << error << " (" << gluErrorString(error) << ")";
   return string.str();
 }
-
-void ogl::opengl_throw_last_error(const string& message)
-{
-  GLenum error = opengl_last_error();
-  if (error == GL_NO_ERROR)
-    return;
-
-  ostringstream message_stream;
-  message_stream << message << ". " << opengl_error_string(error);
-  throw runtime_error(message_stream.str());
-}

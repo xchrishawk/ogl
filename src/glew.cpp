@@ -31,6 +31,9 @@ glew::glew(bool experimental)
   if (error != GLEW_OK)
     throw runtime_error("Failed to initialize GLEW");
 
+  // glewInit() causes an OpenGL error to get queued, so flush it out
+  __attribute__((unused)) GLenum spurious_error = opengl_last_error();
+
   glew::initialized = true;
 }
 
