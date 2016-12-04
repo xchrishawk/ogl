@@ -32,11 +32,9 @@ glew::glew(bool experimental)
     throw runtime_error("Failed to initialize GLEW");
 
   glew::initialized = true;
-  ogl_trace_message("GLEW initialized");
 }
 
 glew::~glew()
 {
   glew::initialized = false;
-  ogl_trace_message("GLEW terminated");
 }

@@ -41,16 +41,12 @@ window::window(int context_version_major,
   glfwSetKeyCallback(m_window, key_callback);
   glfwMakeContextCurrent(m_window);
   glfwSwapInterval(1);
-
-  ogl_trace_message("Window created");
 }
 
 window::~window()
 {
   glfwSetKeyCallback(m_window, NULL);
   glfwDestroyWindow(m_window);
-
-  ogl_trace_message("Window destroyed");
 }
 
 bool window::should_close() const

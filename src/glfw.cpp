@@ -8,6 +8,7 @@
 #include <csignal>
 #include <iostream>
 #include <stdexcept>
+#include <sstream>
 
 #include "glfw.hpp"
 #include "opengl.hpp"
@@ -33,7 +34,6 @@ glfw::glfw()
     throw runtime_error("Failed to initialize GLFW library.");
 
   glfw::initialized = true;
-  ogl_trace_message("GLFW initialized");
 }
 
 glfw::~glfw()
@@ -42,7 +42,6 @@ glfw::~glfw()
   glfwSetErrorCallback(nullptr);
 
   glfw::initialized = false;
-  ogl_trace_message("GLFW terminated");
 }
 
 void glfw::version(int* major, int* minor, int* revision) const
@@ -58,7 +57,9 @@ string glfw::version_string() const
 void glfw::error_callback(int error, const char* description)
 {
 #ifdef OGL_DEBUG
-  std::cerr << "*** GLFW error " << error << " - " << description << endl;
+  ostringstream message;
+  message << "GLFW error code " << error << " (" << description << ")";
+  ogl_error_message(message.str());
   ogl_break();
 #endif
 }

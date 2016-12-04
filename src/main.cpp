@@ -8,8 +8,15 @@
 #include <cstdlib>
 #include <exception>
 #include <iostream>
+#include <sstream>
 
 #include "application.hpp"
+#include "util.hpp"
+
+/* -- Namespaces -- */
+
+using namespace std;
+using namespace ogl;
 
 /* -- Procedures -- */
 
@@ -17,14 +24,16 @@ int main(int argc, char** argv)
 {
   try
   {
-    ogl::application::instance().main();
+    application::instance().main();
     return EXIT_SUCCESS;
   }
-  catch (std::exception& ex)
+  catch (exception& ex)
   {
 #ifdef OGL_DEBUG
-    std::cerr << "*** Unhandled exception: " << ex.what() << std::endl;
-#endif /*OGL_DEBUG */
+    ostringstream message;
+    message << "Unhandled exception: " << ex.what();
+    ogl_error_message(message.str());
+#endif
     return EXIT_FAILURE;
   }
 }
