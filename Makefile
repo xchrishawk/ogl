@@ -1,7 +1,7 @@
 # -- Variables --
 
 PROJECT			:= ogl
-MODULES			:= main util
+MODULES			:= glfw main util
 PKGLIBS			:= glew glfw3
 DEFINES			:= OGL_DEBUG
 
