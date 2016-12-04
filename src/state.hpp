@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include "key_input.hpp"
+#include "opengl.hpp"
 
 /* -- Types -- */
 

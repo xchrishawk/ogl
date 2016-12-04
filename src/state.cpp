@@ -5,6 +5,7 @@
 
 /* -- Includes -- */
 
+#include <cmath>
 #include <iostream>
 
 #include "key_input.hpp"
