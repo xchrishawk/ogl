@@ -58,6 +58,11 @@ bool window::should_close() const
   return static_cast<bool>(glfwWindowShouldClose(m_window));
 }
 
+void window::set_should_close(bool value)
+{
+  glfwSetWindowShouldClose(m_window, static_cast<int>(value));
+}
+
 void window::swap_buffers() const
 {
   glfwSwapBuffers(m_window);

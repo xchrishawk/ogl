@@ -32,6 +32,7 @@ namespace ogl
     ~window();
 
     bool should_close() const;
+    void set_should_close(bool value);
     void swap_buffers() const;
 
     static void poll_events();

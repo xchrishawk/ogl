@@ -81,6 +81,9 @@ float application::time()
 
 void application::state_main(float abs_t, float delta_t)
 {
+  /* set close flag if the user requests it */
+  if (m_key_input.input_active(KEY_INPUT_TYPE_EXIT))
+    m_window.set_should_close(true);
 }
 
 void application::render_main(float abs_t, float delta_t)
@@ -94,5 +97,6 @@ void application::render_main(float abs_t, float delta_t)
 
 void application::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+  /* key_input class handles this */
   instance().m_key_input.key_pressed(key, scancode, action, mods);
 }

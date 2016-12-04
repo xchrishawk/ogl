@@ -18,13 +18,13 @@ using namespace ogl;
 key_input::key_input()
 {
   for (int type = static_cast<int>(KEY_INPUT_TYPE_FIRST); type < static_cast<int>(KEY_INPUT_TYPE_COUNT); type++)
-    m_key_active[index] = false;
+    m_key_active[type] = false;
 }
 
 bool key_input::input_active(key_input_type type) const
 {
   ogl_assert(static_cast<int>(type) >= static_cast<int>(KEY_INPUT_TYPE_FIRST));
-  ogl_assert(static_cast<int>(type) < static_cast<int>(KEY_INPUT_TYPE_LAST));
+  ogl_assert(static_cast<int>(type) < static_cast<int>(KEY_INPUT_TYPE_COUNT));
   return m_key_active[type];
 }
 
