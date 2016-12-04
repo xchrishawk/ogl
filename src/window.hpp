@@ -27,7 +27,8 @@ namespace ogl
 	   int context_version_minor,
 	   int initial_width,
 	   int initial_height,
-	   const std::string& initial_title);
+	   const std::string& initial_title,
+	   GLFWkeyfun key_callback);
     ~window();
 
     bool should_close() const;

@@ -31,8 +31,9 @@ application& application::instance()
 
 application::application()
   : m_glfw(),
-    m_window(3, 3, 800, 800, "OGL"),	/* TODO: constants */
-    m_glew(true)
+    m_window(3, 3, 800, 800, "OGL", application::glfw_key_callback),	/* TODO: constants */
+    m_glew(true),
+    m_key_input()
 {
   ogl_trace_message("Application initialized");
 }
@@ -89,4 +90,9 @@ void application::render_main(float abs_t, float delta_t)
   glClear(GL_COLOR_BUFFER_BIT);
 
   m_window.swap_buffers();
+}
+
+void application::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+  instance().m_key_input.key_pressed(key, scancode, action, mods);
 }

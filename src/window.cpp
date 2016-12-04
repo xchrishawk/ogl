@@ -24,7 +24,8 @@ window::window(int context_version_major,
 	       int context_version_minor,
 	       int initial_width,
 	       int initial_height,
-	       const string& initial_title)
+	       const string& initial_title,
+	       GLFWkeyfun key_callback)
 {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, context_version_major);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, context_version_minor);
@@ -37,6 +38,7 @@ window::window(int context_version_major,
   if (!m_window)
     throw runtime_error("Failed to create GLFW window.");
 
+  glfwSetKeyCallback(m_window, key_callback);
   glfwMakeContextCurrent(m_window);
   glfwSwapInterval(1);
 
