@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include "glfw.hpp"
+#include "window.hpp"
 
 /* -- Types -- */
 
@@ -27,14 +28,19 @@ namespace ogl
     ~application();
 
     void main();
+    float time();
 
   private:
 
     glfw m_glfw;
+    window m_window;
 
     application();
     application(const application& other) = delete;
     application& operator =(const application& other) = delete;
+
+    void state_main(float abs_t, float delta_t);
+    void render_main(float abs_t, float delta_t);
 
   };
 

@@ -35,7 +35,7 @@ glfw::glfw()
     throw runtime_error("Failed to initialize GLFW library.");
 
   glfw::initialized = true;
-  ogl_trace_message("GLFW initialized.");
+  ogl_trace_message("GLFW initialized");
 }
 
 glfw::~glfw()
@@ -44,7 +44,7 @@ glfw::~glfw()
   glfwSetErrorCallback(nullptr);
 
   glfw::initialized = false;
-  ogl_trace_message("GLFW terminated.");
+  ogl_trace_message("GLFW terminated");
 }
 
 void glfw::version(int* major, int* minor, int* revision) const
