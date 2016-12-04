@@ -20,8 +20,7 @@ using namespace ogl;
 
 namespace
 {
-  const size_t VERTEX_COUNT = 3;
-  const size_t FLOATS_PER_VERTEX = 4;
+  const size_t VERTEX_COUNT = 6;
   const GLuint BINDING_INDEX = 0;
   const GLuint POSITION_ATTRIBUTE_INDEX = 0;
   const GLuint COLOR_ATTRIBUTE_INDEX = 1;
@@ -53,9 +52,15 @@ renderer::renderer()
 
   static const vertex VERTICES[] =
     {
-      { -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f },
-      { 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
-      { 0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+      // CMY triangle
+      { -0.5f, -0.5f, -0.2f, 1.0f, 1.0f, 0.0f, 1.0f },
+      { 0.5f, 0.0f, -0.2f, 0.0f, 1.0f, 1.0f, 1.0f },
+      { 0.0f, 0.5f, -0.2f, 1.0f, 0.0f, 1.0f, 1.0f },
+
+      // RGB triangle
+      { 0.5f, 0.5f, -0.1f, 1.0f, 0.0f, 0.0f, 1.0f },
+      { -0.5f, 0.0f, -0.1f, 0.0f, 1.0f, 0.0f, 1.0f },
+      { 0.0f, -0.5f, -0.1f, 0.0f, 0.0f, 1.0f, 1.0f },
     };
 
   // create and populate vertex buffer
@@ -108,7 +113,11 @@ void renderer::loop(const state& state)
 void renderer::clear()
 {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClearDepthf(0.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_GREATER);
 
   glUseProgram(m_program->id());
   glBindVertexArray(m_vao);
