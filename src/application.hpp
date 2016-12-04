@@ -12,6 +12,7 @@
 #include "glfw.hpp"
 #include "key_input.hpp"
 #include "opengl.hpp"
+#include "renderer.hpp"
 #include "state.hpp"
 #include "window.hpp"
 
@@ -41,6 +42,7 @@ namespace ogl
     glew m_glew;
     key_input m_key_input;
     state m_state;
+    renderer m_renderer;
 
     application();
     application(const application& other) = delete;

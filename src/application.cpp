@@ -50,7 +50,8 @@ application::application()
 	     application::glfw_key_callback),
     m_glew(GLEW_USE_EXPERIMENTAL),
     m_key_input(),
-    m_state()
+    m_state(),
+    m_renderer()
 {
   ogl_trace_message("Application initialized");
 }
@@ -108,10 +109,8 @@ void application::state_loop(float abs_t, float delta_t)
 
 void application::render_loop(float abs_t, float delta_t)
 {
-  // TEMP
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
-
+  // draw scene and swap buffers
+  m_renderer.loop(m_state);
   m_window.swap_buffers();
 }
 
