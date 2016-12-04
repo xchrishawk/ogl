@@ -8,9 +8,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
+#include "opengl.hpp"
 #include "util.hpp"
 #include "window.hpp"
 

@@ -9,9 +9,7 @@
 /* -- Includes -- */
 
 #include <string>
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "opengl.hpp"
 
 /* -- Types -- */
 

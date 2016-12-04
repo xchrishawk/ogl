@@ -7,10 +7,8 @@
 
 #include <stdexcept>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include "glew.hpp"
+#include "opengl.hpp"
 #include "util.hpp"
 
 /* -- Namespaces -- */
