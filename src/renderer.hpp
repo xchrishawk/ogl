@@ -8,6 +8,8 @@
 
 /* -- Includes -- */
 
+#include "opengl.hpp"
+#include "program.hpp"
 #include "state.hpp"
 
 /* -- Types -- */
@@ -23,10 +25,15 @@ namespace ogl
   public:
 
     renderer();
+    ~renderer();
 
     void loop(const state& state);
 
   private:
+
+    GLuint m_vao;
+    GLuint m_buffer;
+    program::ptr m_program;
 
     renderer(const renderer& other) = delete;
     renderer& operator =(const renderer& other) = delete;
