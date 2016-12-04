@@ -13,6 +13,7 @@
 
 #include "opengl.hpp"
 #include "shader.hpp"
+#include "util.hpp"
 
 /* -- Namespaces -- */
 

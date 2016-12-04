@@ -26,6 +26,7 @@ namespace ogl
   public:
 
     typedef std::shared_ptr<shader> ptr;
+    typedef std::shared_ptr<const shader> const_ptr;
 
     static ptr create(GLenum type);
     ~shader();

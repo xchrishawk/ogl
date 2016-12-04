@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "opengl.hpp"
@@ -27,11 +28,21 @@ namespace ogl
   public:
 
     typedef std::shared_ptr<program> ptr;
+    typedef std::shared_ptr<const program> const_ptr;
 
     static ptr create();
     ~program();
 
+    void attach_shader(shader::const_ptr shader);
+    void attach_shaders(const std::vector<shader::const_ptr>& shaders);
+    void detach_shader(shader::const_ptr shader);
+    void detach_shaders(const std::vector<shader::const_ptr>& shaders);
+
+    void link();
+
     GLuint id() const { return m_id; }
+    bool is_linked() const;
+    std::string info_log() const;
 
   private:
 

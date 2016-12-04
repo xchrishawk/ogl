@@ -6,10 +6,12 @@
 /* -- Includes -- */
 
 #include <memory>
+#include <sstream>
 #include <vector>
 
 #include "opengl.hpp"
 #include "program.hpp"
+#include "util.hpp"
 
 /* -- Namespaces -- */
 
@@ -33,4 +35,59 @@ program::program()
 program::~program()
 {
   glDeleteProgram(m_id);
+}
+
+void program::attach_shader(shader::const_ptr shader)
+{
+  glAttachShader(m_id, shader->id());
+}
+
+void program::attach_shaders(const vector<shader::const_ptr>& shaders)
+{
+  for (shader::const_ptr shader : shaders)
+    attach_shader(shader);
+}
+
+void program::detach_shader(shader::const_ptr shader)
+{
+  glDetachShader(m_id, shader->id());
+}
+
+void program::detach_shaders(const vector<shader::const_ptr>& shaders)
+{
+  for (shader::const_ptr shader : shaders)
+    detach_shader(shader);
+}
+
+void program::link()
+{
+  glLinkProgram(m_id);
+  if (!is_linked())
+  {
+    ostringstream message;
+    message << "Failed to link program." << endl << info_log();
+    throw runtime_error(message.str());
+  }
+}
+
+bool program::is_linked() const
+{
+  GLint is_linked = GL_FALSE;
+  glGetProgramiv(m_id, GL_LINK_STATUS, &is_linked);
+  return (is_linked == GL_TRUE);
+}
+
+std::string program::info_log() const
+{
+  GLint info_log_length = 0;
+  glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &info_log_length);
+  if (info_log_length == 0)
+    return string();
+
+  char* info_log_buffer = new char[info_log_length];
+  glGetProgramInfoLog(m_id, info_log_length, NULL, info_log_buffer);
+  string info_log(info_log_buffer);
+  delete[] info_log_buffer;
+
+  return info_log;
 }
