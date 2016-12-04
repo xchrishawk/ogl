@@ -9,6 +9,7 @@
 #include "program.hpp"
 #include "renderer.hpp"
 #include "shader.hpp"
+#include "vertex.hpp"
 
 /* -- Namespaces -- */
 
@@ -21,7 +22,8 @@ namespace
   const size_t VERTEX_COUNT = 3;
   const size_t FLOATS_PER_VERTEX = 4;
   const GLuint BINDING_INDEX = 0;
-  const GLuint VERTEX_ATTRIBUTE_INDEX = 0;
+  const GLuint POSITION_ATTRIBUTE_INDEX = 0;
+  const GLuint COLOR_ATTRIBUTE_INDEX = 1;
 }
 
 /* -- Procedures -- */
@@ -33,11 +35,11 @@ renderer::renderer()
   // create VAO
   glCreateVertexArrays(1, &m_vao);
 
-  static const float VERTICES[] =
+  static const vertex VERTICES[] =
     {
-      0.0f, 0.0f, 0.0f, 1.0f,
-      0.5f, 0.0f, 0.0f, 1.0f,
-      0.0f, 0.5f, 0.0f, 1.0f,
+      { 0.1f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+      { 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+      { 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
     };
 
   // create and populate vertex buffer
@@ -47,23 +49,32 @@ renderer::renderer()
 		       VERTICES,
 		       0);
 
-  // bind buffer
+  // create buffer binding
   glVertexArrayVertexBuffer(m_vao,
 			    BINDING_INDEX,
 			    m_buffer,
 			    0,
-			    FLOATS_PER_VERTEX * sizeof(float));
+			    sizeof(vertex));
+
+  // initialize vertex positions
   glVertexArrayAttribFormat(m_vao,
-			    VERTEX_ATTRIBUTE_INDEX,
-			    4,
+			    POSITION_ATTRIBUTE_INDEX,
+			    vertex::position_count,
 			    GL_FLOAT,
 			    GL_FALSE,
-			    0);
-  glVertexArrayAttribBinding(m_vao,
-			     VERTEX_ATTRIBUTE_INDEX,
-			     BINDING_INDEX);
-  glEnableVertexArrayAttrib(m_vao,
-			    VERTEX_ATTRIBUTE_INDEX);
+			    vertex::position_offset);
+  glVertexArrayAttribBinding(m_vao, POSITION_ATTRIBUTE_INDEX, BINDING_INDEX);
+  glEnableVertexArrayAttrib(m_vao, POSITION_ATTRIBUTE_INDEX);
+
+  // initialize vertex colors
+  glVertexArrayAttribFormat(m_vao,
+  			    COLOR_ATTRIBUTE_INDEX,
+			    vertex::color_count,
+  			    GL_FLOAT,
+  			    GL_FALSE,
+			    vertex::color_offset);
+  glVertexArrayAttribBinding(m_vao, COLOR_ATTRIBUTE_INDEX, BINDING_INDEX);
+  glEnableVertexArrayAttrib(m_vao, COLOR_ATTRIBUTE_INDEX);
 
   auto vertex_shader = shader::create(GL_VERTEX_SHADER);
   vertex_shader->load_source("/home/chris/Developer/ogl/shaders/vertex_shader.glsl");
