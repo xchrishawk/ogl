@@ -26,6 +26,14 @@
 #define ogl_trace_message(message)						\
   ogl::_ogl_trace(__PRETTY_FUNCTION__, __FILE__, __LINE__, message)
 
+/** Prints an error message. */
+#define ogl_error()								\
+  ogl::_ogl_error(__PRETTY_FUNCTION__, __FILE__, __LINE__, "")
+
+/** Prints an error message with a custom string. */
+#define ogl_error_message(message)						\
+  ogl::_ogl_error(__PRETTY_FUNCTION__, __FILE__, __LINE__, message)
+
 /** Triggers a debugger breakpoint. */
 #define ogl_break()								\
   ogl::_ogl_break()
@@ -52,6 +60,9 @@ namespace ogl
 
   /** Implementation for ogl_trace. */
   void _ogl_trace(const std::string& func, const std::string& file, int line, const std::string& message);
+
+  /** Implementation for ogl_error. */
+  void _ogl_error(const std::string& func, const std::string& file, int line, const std::string& message);
 
   /** Implementation for ogl_break. */
   void _ogl_break();

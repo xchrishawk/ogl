@@ -22,7 +22,7 @@ using namespace ogl;
 namespace
 {
 #ifdef OGL_DEBUG
-  ostream& LOG_STREAM = cout;
+  ostream& TRACE_STREAM = cout;
   ostream& ERROR_STREAM = cerr;
 #endif
 }
@@ -43,10 +43,16 @@ void ogl::_ogl_fail(const string& func, const string& file, int line, const stri
 
 void ogl::_ogl_trace(const string& func, const string& file, int line, const string& message)
 {
-  LOG_STREAM << "ogl_trace - " << func << " (" << file << ":" << line << ")";
+  TRACE_STREAM << "* ogl_trace - " << func << " (" << file << ":" << line << ")" << endl;
   if (message.length() != 0)
-    LOG_STREAM << " - " << message;
-  LOG_STREAM << endl;
+    TRACE_STREAM << "  " << message << endl;
+}
+
+void ogl::_ogl_error(const string& func, const string& file, int line, const string& message)
+{
+  ERROR_STREAM << "* ogl_error - " << func << " (" << file << ":" << line << ")" << endl;
+  if (message.length() != 0)
+    ERROR_STREAM << "  " << message << endl;
 }
 
 void ogl::_ogl_break()
