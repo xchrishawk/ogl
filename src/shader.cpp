@@ -5,6 +5,7 @@
 
 /* -- Includes -- */
 
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -19,6 +20,11 @@ using namespace std;
 using namespace ogl;
 
 /* -- Procedures -- */
+
+shader::ptr shader::create(GLenum type)
+{
+  return shader::ptr(new shader(type));
+}
 
 shader::shader(GLenum type)
   : m_type(type),
@@ -37,6 +43,21 @@ void shader::set_source(const string& source)
 {
   const char* source_ptr = source.c_str();
   glShaderSource(m_id, 1, &source_ptr, NULL);
+}
+
+void shader::load_source(const string& filename)
+{
+  ifstream file(filename);
+  if (!file.is_open())
+  {
+    ostringstream message;
+    message << "Could not open " << filename << ".";
+    throw runtime_error(message.str());
+  }
+
+  stringstream buffer;
+  buffer << file.rdbuf();
+  set_source(buffer.str());
 }
 
 void shader::compile()
