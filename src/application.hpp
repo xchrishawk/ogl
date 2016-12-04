@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include "glew.hpp"
 #include "glfw.hpp"
 #include "window.hpp"
 
@@ -34,6 +35,7 @@ namespace ogl
 
     glfw m_glfw;
     window m_window;
+    glew m_glew;
 
     application();
     application(const application& other) = delete;

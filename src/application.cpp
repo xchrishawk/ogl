@@ -31,7 +31,8 @@ application& application::instance()
 
 application::application()
   : m_glfw(),
-    m_window(3, 3, 800, 800, "OGL")	/* TODO: constants */
+    m_window(3, 3, 800, 800, "OGL"),	/* TODO: constants */
+    m_glew(true)
 {
   ogl_trace_message("Application initialized");
 }

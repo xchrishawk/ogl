@@ -60,7 +60,7 @@ string glfw::version_string() const
 void glfw::error_callback(int error, const char* description)
 {
 #ifdef OGL_DEBUG
-  std::cerr << "*** GLFW Error " << error << " - " << description << endl;
+  std::cerr << "*** GLFW error " << error << " - " << description << endl;
   std::raise(SIGINT);
 #endif
 }
