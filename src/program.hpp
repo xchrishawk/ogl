@@ -44,6 +44,9 @@ namespace ogl
     bool is_linked() const;
     std::string info_log() const;
 
+    GLint attribute_location(const std::string& name);
+    GLint uniform_location(const std::string& name);
+
   private:
 
     GLuint m_id;

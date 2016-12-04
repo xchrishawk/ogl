@@ -30,16 +30,31 @@ namespace
 
 renderer::renderer()
 {
+  auto vertex_shader = shader::create(GL_VERTEX_SHADER);
+  vertex_shader->load_source("/home/chris/Developer/ogl/shaders/vertex_shader.glsl");
+  vertex_shader->compile();
+
+  auto fragment_shader = shader::create(GL_FRAGMENT_SHADER);
+  fragment_shader->load_source("/home/chris/Developer/ogl/shaders/fragment_shader.glsl");
+  fragment_shader->compile();
+
+  m_program = program::create();
+  m_program->attach_shaders({ vertex_shader, fragment_shader });
+  m_program->link();
+  m_program->detach_shaders({ vertex_shader, fragment_shader });
+
   static const GLuint BINDING_INDEX = 0;
+  const GLuint POSITION_LOCATION = m_program->attribute_location("vs_position");
+  const GLuint COLOR_LOCATION = m_program->attribute_location("vs_color");
 
   // create VAO
   glCreateVertexArrays(1, &m_vao);
 
   static const vertex VERTICES[] =
     {
-      { 0.1f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-      { 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
-      { 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+      { -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f },
+      { 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
+      { 0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
     };
 
   // create and populate vertex buffer
@@ -58,36 +73,24 @@ renderer::renderer()
 
   // initialize vertex positions
   glVertexArrayAttribFormat(m_vao,
-			    POSITION_ATTRIBUTE_INDEX,
+			    POSITION_LOCATION,
 			    vertex::position_count,
 			    GL_FLOAT,
 			    GL_FALSE,
 			    vertex::position_offset);
-  glVertexArrayAttribBinding(m_vao, POSITION_ATTRIBUTE_INDEX, BINDING_INDEX);
-  glEnableVertexArrayAttrib(m_vao, POSITION_ATTRIBUTE_INDEX);
+  glVertexArrayAttribBinding(m_vao, POSITION_LOCATION, BINDING_INDEX);
+  glEnableVertexArrayAttrib(m_vao, POSITION_LOCATION);
 
   // initialize vertex colors
   glVertexArrayAttribFormat(m_vao,
-  			    COLOR_ATTRIBUTE_INDEX,
+  			    COLOR_LOCATION,
 			    vertex::color_count,
   			    GL_FLOAT,
   			    GL_FALSE,
 			    vertex::color_offset);
-  glVertexArrayAttribBinding(m_vao, COLOR_ATTRIBUTE_INDEX, BINDING_INDEX);
-  glEnableVertexArrayAttrib(m_vao, COLOR_ATTRIBUTE_INDEX);
+  glVertexArrayAttribBinding(m_vao, COLOR_LOCATION, BINDING_INDEX);
+  glEnableVertexArrayAttrib(m_vao, COLOR_LOCATION);
 
-  auto vertex_shader = shader::create(GL_VERTEX_SHADER);
-  vertex_shader->load_source("/home/chris/Developer/ogl/shaders/vertex_shader.glsl");
-  vertex_shader->compile();
-
-  auto fragment_shader = shader::create(GL_FRAGMENT_SHADER);
-  fragment_shader->load_source("/home/chris/Developer/ogl/shaders/fragment_shader.glsl");
-  fragment_shader->compile();
-
-  m_program = program::create();
-  m_program->attach_shaders({ vertex_shader, fragment_shader });
-  m_program->link();
-  m_program->detach_shaders({ vertex_shader, fragment_shader });
 }
 
 renderer::~renderer()
