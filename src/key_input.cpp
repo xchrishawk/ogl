@@ -60,6 +60,39 @@ key_input_type key_input::type_for_key_press(int key, int mods)
     {
     case GLFW_KEY_ESCAPE:
       return KEY_INPUT_TYPE_EXIT;
+    case GLFW_KEY_X:
+      return KEY_INPUT_TYPE_CAMERA_RESET;
+    case GLFW_KEY_R:
+      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_UP;
+    case GLFW_KEY_F:
+      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_DOWN;
+    case GLFW_KEY_D:
+      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_RIGHT;
+    case GLFW_KEY_A:
+      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_LEFT;
+    case GLFW_KEY_W:
+      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_FORWARD;
+    case GLFW_KEY_S:
+      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_BACKWARD;
+    default:
+      return KEY_INPUT_TYPE_INVALID;
+    }
+
+  case GLFW_MOD_SHIFT:
+    switch (key)
+    {
+    case GLFW_KEY_S:
+      return KEY_INPUT_TYPE_CAMERA_PITCH_UP;
+    case GLFW_KEY_W:
+      return KEY_INPUT_TYPE_CAMERA_PITCH_DOWN;
+    case GLFW_KEY_E:
+      return KEY_INPUT_TYPE_CAMERA_ROLL_RIGHT;
+    case GLFW_KEY_Q:
+      return KEY_INPUT_TYPE_CAMERA_ROLL_LEFT;
+    case GLFW_KEY_D:
+      return KEY_INPUT_TYPE_CAMERA_YAW_RIGHT;
+    case GLFW_KEY_A:
+      return KEY_INPUT_TYPE_CAMERA_YAW_LEFT;
     default:
       return KEY_INPUT_TYPE_INVALID;
     }
