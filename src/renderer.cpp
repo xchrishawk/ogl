@@ -16,16 +16,6 @@
 
 using namespace ogl;
 
-/* -- Constants -- */
-
-namespace
-{
-  const size_t VERTEX_COUNT = 6;
-  const GLuint BINDING_INDEX = 0;
-  const GLuint POSITION_ATTRIBUTE_INDEX = 0;
-  const GLuint COLOR_ATTRIBUTE_INDEX = 1;
-}
-
 /* -- Procedures -- */
 
 renderer::renderer()
@@ -60,7 +50,7 @@ void renderer::loop(const state& state)
   for (mesh::const_ptr mesh : state.meshes())
   {
     glBindVertexArray(mesh->vertex_array());
-    glDrawArrays(GL_TRIANGLES, 0, mesh->vertex_count());
+    glDrawElements(GL_TRIANGLES, mesh->index_count(), GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
   }
 

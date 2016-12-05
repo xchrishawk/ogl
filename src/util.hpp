@@ -12,6 +12,14 @@
 
 /* -- Macros -- */
 
+/** Static assert macro. */
+#define ogl_static_assert(cond, message)					\
+  static_assert(cond, message)
+
+/** Macro to get size of an array. */
+#define ogl_array_size(array)							\
+  (sizeof(array) / sizeof(array[0]))
+
 #ifdef OGL_DEBUG
 
 /** Asserts that a condition is true and fails otherwise. */

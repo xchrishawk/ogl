@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include <cstddef>
+#include "util.hpp"
 
 /* -- Types -- */
 
@@ -36,8 +37,8 @@ namespace ogl
     float a;
   };
 
-  static_assert(vertex::position_offset == offsetof(vertex, x), "incorrect position offset");
-  static_assert(vertex::color_offset == offsetof(vertex, r), "incorrect color offset");
+  ogl_static_assert(vertex::position_offset == offsetof(vertex, x), "incorrect position offset");
+  ogl_static_assert(vertex::color_offset == offsetof(vertex, r), "incorrect color offset");
 
 }
 

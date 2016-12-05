@@ -30,27 +30,31 @@ namespace
 
 /* -- Procedures -- */
 
-mesh::ptr mesh::create(const vertex* vertices, size_t count)
-{
-  return mesh::ptr(new mesh(vertices, count));
-}
-
-mesh::mesh(const vertex* vertices, size_t count)
-  : m_vertex_count(count),
-    m_vertex_array(init_vertex_array()),
-    m_buffer(init_buffer())
+mesh::mesh(const vertex* vertices,
+	   size_t vertex_count,
+	   const GLuint* indices,
+	   size_t index_count)
+  : m_vertex_array(init_vertex_array()),
+    m_vertex_count(vertex_count),
+    m_vertex_buffer(init_buffer()),
+    m_index_count(index_count),
+    m_index_buffer(init_buffer())
 {
   // initialize buffer storage
-  glNamedBufferStorage(m_buffer,
+  glNamedBufferStorage(m_vertex_buffer,
 		       m_vertex_count * sizeof(vertex),
 		       vertices,
+		       GL_DYNAMIC_STORAGE_BIT | GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
+  glNamedBufferStorage(m_index_buffer,
+		       m_index_count * sizeof(GLuint),
+		       indices,
 		       GL_DYNAMIC_STORAGE_BIT | GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
 
   // create binding to buffer
   static const GLuint BINDING_INDEX = 0;
   glVertexArrayVertexBuffer(m_vertex_array,			// vaobj
 			    BINDING_INDEX,			// bindingindex
-			    m_buffer,				// buffer
+			    m_vertex_buffer,			// buffer
 			    0,					// offset
 			    sizeof(vertex));			// stride
 
@@ -87,12 +91,17 @@ mesh::mesh(const vertex* vertices, size_t count)
   // enable color attribute array
   glEnableVertexArrayAttrib(m_vertex_array,			// vaobj
 			    COLOR_ATTRIBUTE_LOCATION);		// attribindex
+
+  // set up index buffer
+  glVertexArrayElementBuffer(m_vertex_array,			// vaobj
+			     m_index_buffer);			// buffer
 }
 
 mesh::~mesh()
 {
-  glDeleteBuffers(1, &m_buffer);
   glDeleteVertexArrays(1, &m_vertex_array);
+  glDeleteBuffers(1, &m_vertex_buffer);
+  glDeleteBuffers(1, &m_index_buffer);
 }
 
 namespace
