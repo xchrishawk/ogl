@@ -5,6 +5,9 @@
 
 /* -- Includes -- */
 
+#include <iostream>
+
+#include "constants.hpp"
 #include "opengl.hpp"
 #include "program.hpp"
 #include "renderer.hpp"
@@ -42,18 +45,19 @@ void renderer::loop(const state& state)
 {
   clear();
 
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_GREATER);
-
   glUseProgram(m_program->id());
 
   for (mesh::const_ptr mesh : state.meshes())
   {
     glBindVertexArray(mesh->vertex_array());
 
-    glm::mat4 view = glm::lookAt(glm::vec3(1.0, 2.0, 1.0),
-				 glm::vec3(0.0, 0.0, 0.0),
-				 glm::vec3(0.0, 0.0, 1.0));
+    glm::mat4 view;
+    view = glm::translate(view, state.camera_pos());
+    view = glm::rotate(view, state.camera_rot().x, glm::vec3(1.0f, 0.0f, 0.0f));
+    view = glm::rotate(view, state.camera_rot().y, glm::vec3(0.0f, 1.0f, 0.0f));
+    view = glm::rotate(view, state.camera_rot().z, glm::vec3(0.0f, 0.0f, 1.0f));
+    view = glm::inverse(view);
+
     glm::mat4 proj = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
     glm::mat4 mvp = proj * view;
     glUniformMatrix4fv(TRANSFORM_UNIFORM_LOCATION, 1, GL_FALSE, glm::value_ptr(mvp));
@@ -69,6 +73,5 @@ void renderer::loop(const state& state)
 void renderer::clear()
 {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClearDepthf(0.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT);
 }

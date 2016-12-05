@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 
+#include "constants.hpp"
 #include "key_input.hpp"
 #include "mesh.hpp"
 #include "state.hpp"
@@ -22,6 +23,8 @@ using namespace ogl;
 /* -- Procedures -- */
 
 state::state()
+  : m_camera_pos(0.0f, 0.0f, 0.0f),
+    m_camera_rot(0.0f, 0.0f, 0.0f)
 {
   static const vertex RGB_VERTICES[] =
   {
