@@ -50,7 +50,16 @@ void renderer::loop(const state& state)
   for (mesh::const_ptr mesh : state.meshes())
   {
     glBindVertexArray(mesh->vertex_array());
+
+    glm::mat4 view = glm::lookAt(glm::vec3(1.0, 2.0, 1.0),
+				 glm::vec3(0.0, 0.0, 0.0),
+				 glm::vec3(0.0, 0.0, 1.0));
+    glm::mat4 proj = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
+    glm::mat4 mvp = proj * view;
+    glUniformMatrix4fv(TRANSFORM_UNIFORM_LOCATION, 1, GL_FALSE, glm::value_ptr(mvp));
+
     glDrawElements(GL_TRIANGLES, mesh->index_count(), GL_UNSIGNED_INT, NULL);
+
     glBindVertexArray(0);
   }
 
