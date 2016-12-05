@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include "mesh.hpp"
 #include "opengl.hpp"
 #include "program.hpp"
 #include "state.hpp"
@@ -31,9 +32,8 @@ namespace ogl
 
   private:
 
-    GLuint m_vao;
-    GLuint m_buffer;
     program::ptr m_program;
+    mesh::ptr m_mesh;
 
     renderer(const renderer& other) = delete;
     renderer& operator =(const renderer& other) = delete;

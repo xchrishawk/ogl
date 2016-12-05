@@ -10,8 +10,8 @@
 
 /* -- Constants -- */
 
-const GLuint POSITION_ATTRIBUTE_LOCATION = 0;
-const GLuint COLOR_ATTRIBUTE_LOCATION = 1;
+const GLuint ogl::POSITION_ATTRIBUTE_LOCATION = 0;
+const GLuint ogl::COLOR_ATTRIBUTE_LOCATION = 1;
 
 const std::string ogl::VERTEX_SHADER_SOURCE = R"END(#version 330 core
 
