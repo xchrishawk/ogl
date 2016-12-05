@@ -12,6 +12,7 @@
 
 #include "mesh.hpp"
 #include "opengl.hpp"
+#include "shader_source.hpp"
 #include "util.hpp"
 
 /* -- Namespaces -- */
@@ -47,45 +48,45 @@ mesh::mesh(const vertex* vertices, size_t count)
 
   // create binding to buffer
   static const GLuint BINDING_INDEX = 0;
-  glVertexArrayVertexBuffer(m_vertex_array,		// vaobj
-			    BINDING_INDEX,		// bindingindex
-			    m_buffer,			// buffer
-			    0,				// offset
-			    sizeof(vertex));		// stride
+  glVertexArrayVertexBuffer(m_vertex_array,			// vaobj
+			    BINDING_INDEX,			// bindingindex
+			    m_buffer,				// buffer
+			    0,					// offset
+			    sizeof(vertex));			// stride
 
   // set position format
-  glVertexArrayAttribFormat(m_vertex_array,		// vaobj
-			    0,				// attribindex
-			    vertex::position_count,	// size
-			    GL_FLOAT,			// type
-			    GL_FALSE,			// normalized
-			    vertex::position_offset);	// relativeoffset
+  glVertexArrayAttribFormat(m_vertex_array,			// vaobj
+			    POSITION_ATTRIBUTE_LOCATION,	// attribindex
+			    vertex::position_count,		// size
+			    GL_FLOAT,				// type
+			    GL_FALSE,				// normalized
+			    vertex::position_offset);		// relativeoffset
 
   // bind position attribute
-  glVertexArrayAttribBinding(m_vertex_array,		// vaobj
-			     0,				// attribindex
-			     BINDING_INDEX);		// bindingindex
+  glVertexArrayAttribBinding(m_vertex_array,			// vaobj
+			     POSITION_ATTRIBUTE_LOCATION,	// attribindex
+			     BINDING_INDEX);			// bindingindex
 
   // enable position attribute array
-  glEnableVertexArrayAttrib(m_vertex_array,		// vaobj
-			    0);				// attribindex
+  glEnableVertexArrayAttrib(m_vertex_array,			// vaobj
+			    POSITION_ATTRIBUTE_LOCATION);	// attribindex
 
   // set color format
-  glVertexArrayAttribFormat(m_vertex_array,		// vaobj
-			    1,				// attribindex
-			    vertex::color_count,	// size
-			    GL_FLOAT,			// type
-			    GL_FALSE,			// normalized
-			    vertex::color_offset);	// relativeoffset
+  glVertexArrayAttribFormat(m_vertex_array,			// vaobj
+			    COLOR_ATTRIBUTE_LOCATION,		// attribindex
+			    vertex::color_count,		// size
+			    GL_FLOAT,				// type
+			    GL_FALSE,				// normalized
+			    vertex::color_offset);		// relativeoffset
 
   // bind color attribute
-  glVertexArrayAttribBinding(m_vertex_array,		// vaobj
-			     1,				// attribindex
-			     BINDING_INDEX);		// bindingindex
+  glVertexArrayAttribBinding(m_vertex_array,			// vaobj
+			     COLOR_ATTRIBUTE_LOCATION,		// attribindex
+			     BINDING_INDEX);			// bindingindex
 
   // enable color attribute array
-  glEnableVertexArrayAttrib(m_vertex_array,		// vaobj
-			    1);				// attribindex
+  glEnableVertexArrayAttrib(m_vertex_array,			// vaobj
+			    COLOR_ATTRIBUTE_LOCATION);		// attribindex
 }
 
 mesh::~mesh()
