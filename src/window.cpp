@@ -64,6 +64,11 @@ void window::swap_buffers() const
   glfwSwapBuffers(m_window);
 }
 
+void window::framebuffer_size(int* width, int* height) const
+{
+  glfwGetFramebufferSize(m_window, width, height);
+}
+
 void window::poll_events()
 {
   glfwPollEvents();

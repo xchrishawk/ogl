@@ -28,7 +28,7 @@ namespace ogl
     renderer();
     ~renderer();
 
-    void loop(const state& state);
+    void loop(int width, int height, const state& state);
 
   private:
 

@@ -108,8 +108,12 @@ void application::state_loop(float abs_t, float delta_t)
 
 void application::render_loop(float abs_t, float delta_t)
 {
+  // get current size of context
+  int width, height;
+  m_window.framebuffer_size(&width, &height);
+
   // draw scene and swap buffers
-  m_renderer.loop(m_state);
+  m_renderer.loop(width, height, m_state);
   m_window.swap_buffers();
 }
 

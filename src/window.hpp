@@ -34,6 +34,7 @@ namespace ogl
     bool should_close() const;
     void set_should_close(bool value);
     void swap_buffers() const;
+    void framebuffer_size(int* width, int* height) const;
 
     static void poll_events();
 

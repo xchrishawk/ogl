@@ -37,7 +37,7 @@ state::state()
   static const vertex RGB_VERTICES[] =
   {
     //  X	Y	Z	R	G	B	A
-    {	-0.2f,	-0.2f,	0.5f,	1.0f,	1.0f,	1.0f,	1.0f	},
+    {	-0.2f,	-0.2f,	0.0f,	1.0f,	1.0f,	1.0f,	1.0f	},
     {	0.5f,	0.0f,	0.0f,	1.0f,	0.0f,	0.0f,	1.0f	},
     {	0.5f,	0.5f,	0.0f,	0.0f,	1.0f,	0.0f,	1.0f	},
     {	0.0f,	0.5f,	0.0f,	0.0f,	0.0f,	1.0f,	1.0f	},
@@ -49,7 +49,7 @@ state::state()
   static const vertex CMY_VERTICES[] =
   {
     //  X	Y	Z	R	G	B	A
-    {	0.2f,	0.2f,	-0.5f,	1.0f,	1.0f,	1.0f,	1.0f	},
+    {	0.2f,	0.2f,	0.0f,	1.0f,	1.0f,	1.0f,	1.0f	},
     {	-0.5f,	0.0f,	0.0f,	1.0f,	1.0f,	0.0f,	1.0f	},
     {	-0.5f,	-0.5f,	0.0f,	0.0f,	1.0f,	1.0f,	1.0f	},
     {	0.0f,	-0.5f,	0.0f,	1.0f,	0.0f,	1.0f,	1.0f	},

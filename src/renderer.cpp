@@ -41,8 +41,9 @@ renderer::~renderer()
 {
 }
 
-void renderer::loop(const state& state)
+void renderer::loop(int width, int height, const state& state)
 {
+  glViewport(0, 0, width, height);
   clear();
 
   glUseProgram(m_program->id());
@@ -58,7 +59,7 @@ void renderer::loop(const state& state)
     view = glm::rotate(view, state.camera_rot().z, glm::vec3(0.0f, 0.0f, 1.0f));
     view = glm::inverse(view);
 
-    glm::mat4 proj = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
+    glm::mat4 proj = glm::perspective(45.0f, (float)width / (float)height, 0.1f, 100.0f);
     glm::mat4 mvp = proj * view;
     glUniformMatrix4fv(TRANSFORM_UNIFORM_LOCATION, 1, GL_FALSE, glm::value_ptr(mvp));
 
