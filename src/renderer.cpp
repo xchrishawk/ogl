@@ -52,12 +52,10 @@ void renderer::loop(int width, int height, const state& state)
   {
     glBindVertexArray(mesh->vertex_array());
 
-    glm::mat4 view;
-    view = glm::translate(view, state.camera_pos());
-    view = glm::rotate(view, state.camera_rot().x, glm::vec3(1.0f, 0.0f, 0.0f));
-    view = glm::rotate(view, state.camera_rot().y, glm::vec3(0.0f, 1.0f, 0.0f));
-    view = glm::rotate(view, state.camera_rot().z, glm::vec3(0.0f, 0.0f, 1.0f));
-    view = glm::inverse(view);
+    glm::mat4 view =
+      glm::translate(glm::mat4(), state.camera_pos()) *		// translation (done second)
+      glm::mat4_cast(state.camera_rot());			// rotation (done first)
+    view = glm::inverse(view);					// invert origin->camera into camera->origin
 
     glm::mat4 proj = glm::perspective(45.0f, (float)width / (float)height, 0.1f, 100.0f);
     glm::mat4 mvp = proj * view;

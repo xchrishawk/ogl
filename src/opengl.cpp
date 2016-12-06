@@ -16,6 +16,12 @@
 using namespace std;
 using namespace ogl;
 
+/* -- Constants -- */
+
+const glm::vec3 ogl::UNIT_X(1.0f, 0.0f, 0.0f);
+const glm::vec3 ogl::UNIT_Y(0.0f, 1.0f, 0.0f);
+const glm::vec3 ogl::UNIT_Z(0.0f, 0.0f, 1.0f);
+
 /* -- Procedures -- */
 
 GLenum ogl::opengl_last_error()

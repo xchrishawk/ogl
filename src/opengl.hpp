@@ -17,6 +17,17 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+/* -- Constants -- */
+
+namespace ogl
+{
+
+  extern const glm::vec3 UNIT_X;
+  extern const glm::vec3 UNIT_Y;
+  extern const glm::vec3 UNIT_Z;
+
+}
+
 /* -- Procedure Prototypes -- */
 
 namespace ogl
