@@ -22,11 +22,16 @@
 
 namespace ogl
 {
+  extern const glm::vec3 VEC3_ORIGIN;
+  extern const glm::vec3 VEC3_UNIT_X;
+  extern const glm::vec3 VEC3_UNIT_Y;
+  extern const glm::vec3 VEC3_UNIT_Z;
 
-  extern const glm::vec3 UNIT_X;
-  extern const glm::vec3 UNIT_Y;
-  extern const glm::vec3 UNIT_Z;
-
+  extern const glm::vec4 VEC4_ORIGIN;
+  extern const glm::vec4 VEC4_UNIT_X;
+  extern const glm::vec4 VEC4_UNIT_Y;
+  extern const glm::vec4 VEC4_UNIT_Z;
+  extern const glm::vec4 VEC4_UNIT_W;
 }
 
 /* -- Procedure Prototypes -- */
