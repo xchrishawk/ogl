@@ -27,7 +27,7 @@ namespace
   const glm::vec3 DEFAULT_CAMERA_POS(0.0f, 0.0f, 3.0f);
   const glm::quat DEFAULT_CAMERA_ROT(1.0f, 0.0f, 0.0f, 0.0f);
 
-  const float CAMERA_POS_PER_SEC = 0.5f;
+  const float CAMERA_POS_PER_SEC = 1.0f;
   const float CAMERA_ROT_PER_SEC = 90.0f * DEG_TO_RAD;
 }
 
@@ -40,26 +40,27 @@ state::state()
   static const vertex RGB_VERTICES[] =
   {
     //  X	Y	Z	R	G	B	A
-    {	-0.2f,	-0.2f,	0.0f,	1.0f,	1.0f,	1.0f,	1.0f	},
-    {	0.5f,	0.0f,	0.0f,	1.0f,	0.0f,	0.0f,	1.0f	},
-    {	0.5f,	0.5f,	0.0f,	0.0f,	1.0f,	0.0f,	1.0f	},
-    {	0.0f,	0.5f,	0.0f,	0.0f,	0.0f,	1.0f,	1.0f	},
+    {  	-0.5f,	0.5f, 	0.5f,	1.0f,	0.0f,	0.0f,	1.0f,	},	// 0 - front top left
+    { 	0.5f,	0.5f,	0.5f,	0.0f,	1.0f,	0.0f,	1.0f,	},	// 1 - front top right
+    {	-0.5f,	-0.5f,	0.5f,	0.0f,	0.0f,	1.0f,	1.0f,	},	// 2 - front bottom left
+    {	0.5f,	-0.5f,	0.5f,	1.0f,	1.0f,	1.0f,	1.0f,	},	// 3 - front bottom right
+    {  	-0.5f,	0.5f, 	-0.5f,	1.0f,	1.0f,	1.0f,	1.0f,	},	// 4 - back top left
+    { 	0.5f,	0.5f,	-0.5f,	1.0f,	1.0f,	0.0f,	1.0f,	},	// 5 - back top right
+    {	-0.5f,	-0.5f,	-0.5f,	0.0f,	1.0f,	1.0f,	1.0f,	},	// 6 - back bottom left
+    {	0.5f,	-0.5f,	-0.5f,	1.0f,	0.0f,	1.0f,	1.0f,	},	// 7 - back bottom right
+
   };
-  static const GLuint RGB_INDICES[] = { 0, 1, 2, 0, 2, 3 };
+  static const GLuint RGB_INDICES[] =
+  {
+    0, 1, 2, 1, 2, 3,		// front face
+    4, 5, 6, 5, 6, 7,		// back face
+    0, 1, 4, 4, 5, 1,		// top face
+    2, 3, 6, 6, 7, 3,		// bottom face
+    0, 2, 4, 4, 6, 2,		// left face
+    1, 3, 5, 5, 7, 3,		// right face
+  };
   m_meshes.push_back(mesh::create(RGB_VERTICES, ogl_array_size(RGB_VERTICES),
 				  RGB_INDICES, ogl_array_size(RGB_INDICES)));
-
-  static const vertex CMY_VERTICES[] =
-  {
-    //  X	Y	Z	R	G	B	A
-    {	0.2f,	0.2f,	0.0f,	1.0f,	1.0f,	1.0f,	1.0f	},
-    {	-0.5f,	0.0f,	0.0f,	1.0f,	1.0f,	0.0f,	1.0f	},
-    {	-0.5f,	-0.5f,	0.0f,	0.0f,	1.0f,	1.0f,	1.0f	},
-    {	0.0f,	-0.5f,	0.0f,	1.0f,	0.0f,	1.0f,	1.0f	},
-  };
-  static const GLuint CMY_INDICES[] = { 0, 1, 2, 0, 2, 3 };
-  m_meshes.push_back(mesh::create(CMY_VERTICES, ogl_array_size(CMY_VERTICES),
-				  CMY_INDICES, ogl_array_size(CMY_INDICES)));
 }
 
 void state::loop(float abs_t, float delta_t, const key_input& key_input)
