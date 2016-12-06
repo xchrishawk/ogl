@@ -38,7 +38,7 @@ namespace ogl
     renderer(const renderer& other) = delete;
     renderer& operator =(const renderer& other) = delete;
 
-    void clear();
+    void loop_init(int width, int height);
 
   };
 

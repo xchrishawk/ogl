@@ -43,34 +43,49 @@ renderer::~renderer()
 
 void renderer::loop(int width, int height, const state& state)
 {
-  glViewport(0, 0, width, height);
-  clear();
+  loop_init(width, height);
+
+  // view matrix
+  glm::mat4 view =
+    glm::translate(glm::mat4(), state.camera_pos()) *	       		// translation (done second)
+    glm::mat4_cast(state.camera_rot());					// rotation (done first)
+  view = glm::inverse(view);						// invert origin->camera into camera->origin
+
+  // create projection matrix
+  glm::mat4 proj = glm::perspective(45.0f,				// field of view (Y axis)
+				    (float)width / (float)height,	// aspect ratio
+				    0.1f,				// near clip
+				    100.0f);				// far clip
 
   glUseProgram(m_program->id());
 
   for (mesh::const_ptr mesh : state.meshes())
   {
+    // create MVP matrix for this mesh
+    glm::mat4 model;
+    glm::mat4 mvp = proj * view * model;
+
+    // draw elements in this mesh
     glBindVertexArray(mesh->vertex_array());
-
-    glm::mat4 view =
-      glm::translate(glm::mat4(), state.camera_pos()) *		// translation (done second)
-      glm::mat4_cast(state.camera_rot());			// rotation (done first)
-    view = glm::inverse(view);					// invert origin->camera into camera->origin
-
-    glm::mat4 proj = glm::perspective(45.0f, (float)width / (float)height, 0.1f, 100.0f);
-    glm::mat4 mvp = proj * view;
     glUniformMatrix4fv(TRANSFORM_UNIFORM_LOCATION, 1, GL_FALSE, glm::value_ptr(mvp));
-
     glDrawElements(GL_TRIANGLES, mesh->index_count(), GL_UNSIGNED_INT, NULL);
-
     glBindVertexArray(0);
   }
 
   glUseProgram(0);
 }
 
-void renderer::clear()
+void renderer::loop_init(int width, int height)
 {
+  // set aspect ratio
+  glViewport(0, 0, width, height);
+
+  // enable depth testing
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
+
+  // clear the color and depth buffers
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClearDepthf(1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
