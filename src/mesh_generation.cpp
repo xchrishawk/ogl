@@ -5,6 +5,7 @@
 
 /* -- Includes -- */
 
+#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -19,6 +20,13 @@
 using namespace std;
 using namespace ogl;
 
+/* -- Procedure Prototypes -- */
+
+namespace
+{
+  float rndf();
+}
+
 /* -- Procedures -- */
 
 mesh::ptr ogl::cube_mesh()
@@ -31,14 +39,14 @@ mesh::ptr ogl::cube_mesh()
   const float B = -0.5f;
   vertex vertices[] =
   {
-    {	R,	U,	F,	1.0f,	0.0f,	0.0f,	1.0f	},	// 0 - right upper front
-    {	R,	U,	B,	0.0f,	1.0f,	0.0f,	1.0f	},	// 1 - right upper back
-    {	R,	D,	F,	0.0f,	0.0f,	1.0f,	1.0f	},	// 2 - right lower front
-    {	R,	D,	B,	1.0f,	1.0f,	1.0f,	1.0f	},	// 3 - right lower back
-    {	L,	U,	F,	1.0f,	1.0f,	1.0f,	1.0f	},	// 4 - left upper front
-    {	L,	U,	B,	1.0f,	1.0f,	0.0f,	1.0f	},	// 5 - left upper back
-    {	L,	D,	F,	0.0f,	1.0f,	1.0f,	1.0f	},	// 6 - left lower front
-    {	L,	D,	B,	1.0f,	0.0f,	1.0f,	1.0f	},	// 7 - left lower back
+    {	R,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},	// 0 - right upper front
+    {	R,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},	// 1 - right upper back
+    {	R,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},	// 2 - right lower front
+    {	R,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},	// 3 - right lower back
+    {	L,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},	// 4 - left upper front
+    {	L,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},	// 5 - left upper back
+    {	L,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},	// 6 - left lower front
+    {	L,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},	// 7 - left lower back
   };
 
   static const GLuint RUF = 0;
@@ -60,4 +68,20 @@ mesh::ptr ogl::cube_mesh()
   };
 
   return mesh::create(vertices, ogl_array_size(vertices), indices, ogl_array_size(indices));
+}
+
+namespace
+{
+
+  float rndf()
+  {
+    static bool seeded = false;
+    if (!seeded)
+    {
+      srand(time(NULL));
+      seeded = true;
+    }
+    return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  }
+
 }
