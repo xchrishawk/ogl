@@ -47,7 +47,7 @@ void renderer::loop(int width, int height, const state& state)
 
   // view matrix
   glm::mat4 view =
-    glm::translate(glm::mat4(), state.camera_pos()) *	       		// translation (done second)
+    glm::translate(state.camera_pos()) *				// translation (done second)
     glm::mat4_cast(state.camera_rot());					// rotation (done first)
   view = glm::inverse(view);						// invert origin->camera into camera->origin
 
