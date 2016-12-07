@@ -27,16 +27,22 @@ namespace
 {
   const glm::vec3 DEFAULT_CAMERA_POS(0.0f, 0.0f, 3.0f);
   const glm::quat DEFAULT_CAMERA_ROT(1.0f, 0.0f, 0.0f, 0.0f);
+  const float DEFAULT_CAMERA_FOV = 45.0f * DEG_TO_RAD;
 
   const float CAMERA_POS_PER_SEC = 1.0f;
   const float CAMERA_ROT_PER_SEC = 90.0f * DEG_TO_RAD;
+  const float CAMERA_FOV_PER_SEC = 10.0f * DEG_TO_RAD;
+
+  const float CAMERA_MIN_FOV = 10.0f * DEG_TO_RAD;
+  const float CAMERA_MAX_FOV = 180.0f * DEG_TO_RAD;
 }
 
 /* -- Procedures -- */
 
 state::state()
   : m_camera_rot(DEFAULT_CAMERA_ROT),
-    m_camera_pos(DEFAULT_CAMERA_POS)
+    m_camera_pos(DEFAULT_CAMERA_POS),
+    m_camera_fov(DEFAULT_CAMERA_FOV)
 {
   m_meshes.push_back(cube_mesh());
 }
@@ -45,6 +51,7 @@ void state::loop(float abs_t, float delta_t, const key_input& key_input)
 {
   update_camera_pos(delta_t, key_input);
   update_camera_rot(delta_t, key_input);
+  update_camera_fov(delta_t, key_input);
 }
 
 void state::update_camera_rot(float delta_t, const key_input& key_input)
@@ -110,4 +117,26 @@ void state::update_camera_pos(float delta_t, const key_input& key_input)
 
   // rotate to our local reference frame and add to position
   m_camera_pos += glm::mat3_cast(m_camera_rot) * translation;
+}
+
+
+void state::update_camera_fov(float delta_t, const key_input& key_input)
+{
+  // reset
+  if (key_input.input_active(KEY_INPUT_TYPE_CAMERA_RESET))
+  {
+    m_camera_fov = DEFAULT_CAMERA_FOV;
+    return;
+  }
+
+  const float RATE = CAMERA_FOV_PER_SEC * delta_t;
+  if (key_input.input_active(KEY_INPUT_TYPE_CAMERA_FOV_INCREASE))
+    m_camera_fov += RATE;
+  if (key_input.input_active(KEY_INPUT_TYPE_CAMERA_FOV_DECREASE))
+    m_camera_fov -= RATE;
+
+  if (m_camera_fov < CAMERA_MIN_FOV)
+    m_camera_fov = CAMERA_MIN_FOV;
+  if (m_camera_fov > CAMERA_MAX_FOV)
+    m_camera_fov = CAMERA_MAX_FOV;
 }

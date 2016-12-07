@@ -63,6 +63,8 @@ void key_input::init_key_map()
   m_type_mod_none[GLFW_KEY_A]		= KEY_INPUT_TYPE_CAMERA_TRANSLATE_LEFT;
   m_type_mod_none[GLFW_KEY_W]		= KEY_INPUT_TYPE_CAMERA_TRANSLATE_FORWARD;
   m_type_mod_none[GLFW_KEY_S]		= KEY_INPUT_TYPE_CAMERA_TRANSLATE_BACKWARD;
+  m_type_mod_none[GLFW_KEY_Y]		= KEY_INPUT_TYPE_CAMERA_FOV_DECREASE;
+  m_type_mod_none[GLFW_KEY_U]		= KEY_INPUT_TYPE_CAMERA_FOV_INCREASE;
 
   // shift modifier active
   m_type_mod_shift[GLFW_KEY_S]		= KEY_INPUT_TYPE_CAMERA_PITCH_UP;

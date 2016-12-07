@@ -52,7 +52,7 @@ void renderer::loop(int width, int height, const state& state)
   view = glm::inverse(view);						// invert origin->camera into camera->origin
 
   // create projection matrix
-  glm::mat4 proj = glm::perspective(45.0f,				// field of view (Y axis)
+  glm::mat4 proj = glm::perspective(state.camera_fov(),			// field of view (Y axis)
 				    (float)width / (float)height,	// aspect ratio
 				    0.1f,				// near clip
 				    100.0f);				// far clip

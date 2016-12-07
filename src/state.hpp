@@ -32,12 +32,14 @@ namespace ogl
 
     const glm::quat& camera_rot() const { return m_camera_rot; }
     const glm::vec3& camera_pos() const { return m_camera_pos; }
+    float camera_fov() const { return m_camera_fov; }
     const std::vector<mesh::const_ptr>& meshes() const { return m_meshes; }
 
   private:
 
     glm::quat m_camera_rot;
     glm::vec3 m_camera_pos;
+    float m_camera_fov;
     std::vector<mesh::const_ptr> m_meshes;
 
     state(const state& other) = delete;
@@ -45,6 +47,7 @@ namespace ogl
 
     void update_camera_rot(float delta_t, const key_input& key_input);
     void update_camera_pos(float delta_t, const key_input& key_input);
+    void update_camera_fov(float delta_t, const key_input& key_input);
 
   };
 
