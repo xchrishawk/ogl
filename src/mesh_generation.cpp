@@ -39,32 +39,51 @@ mesh::ptr ogl::cube_mesh()
   const float B = -0.5f;
   vertex vertices[] =
   {
-    {	R,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},	// 0 - right upper front
-    {	R,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},	// 1 - right upper back
-    {	R,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},	// 2 - right lower front
-    {	R,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},	// 3 - right lower back
-    {	L,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},	// 4 - left upper front
-    {	L,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},	// 5 - left upper back
-    {	L,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},	// 6 - left lower front
-    {	L,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},	// 7 - left lower back
+    // front face
+    { 	R,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	R,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+
+    // back face
+    { 	R,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	R,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+
+    // top face
+    { 	R,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	R,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+
+    // bottom face
+    { 	R,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	R,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+
+    // left face
+    { 	L,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	L,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+
+    // right face
+    { 	R,	U,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	R,	D,	F,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	R,	U,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
+    {	R,	D,	B,	rndf(),	rndf(),	rndf(),	1.0f	},
   };
 
-  static const GLuint RUF = 0;
-  static const GLuint RUB = 1;
-  static const GLuint RDF = 2;
-  static const GLuint RDB = 3;
-  static const GLuint LUF = 4;
-  static const GLuint LUB = 5;
-  static const GLuint LDF = 6;
-  static const GLuint LDB = 7;
   GLuint indices[] =
   {
-    RUF, RUB, RDF, RDF, RDB, RUB,	// right face
-    LUF, LUB, LDF, LDF, LDB, LUB,	// left face
-    LUF, RUF, LUB, LUB, RUB, RUF,	// upper face
-    LDF, RDF, LDB, LDB, RDB, RDF,	// lower face
-    RUF, RDF, LDF, LDF, LUF, RUF,	// front face
-    RUB, RDB, LDB, LDB, LUB, RUB,	// back face
+     0,  1,  2,  2,  3,  1,	// front face
+     4,  5,  6,  6,  7,  5,	// back face
+     8,  9, 10, 10, 11,  9,	// top face
+    12, 13, 14, 14, 15, 13,	// bottom face
+    16, 17, 18, 18, 19, 17,	// left face
+    20, 21, 22, 22, 23, 21,	// right face
   };
 
   return mesh::create(vertices, ogl_array_size(vertices), indices, ogl_array_size(indices));
