@@ -15,6 +15,7 @@ MODULES			:= application			\
 			   shader_source		\
 			   state			\
 			   util				\
+			   vertex_array			\
 			   window
 PKGLIBS			:= glew glfw3
 DEFINES			:= OGL_DEBUG

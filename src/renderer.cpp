@@ -14,6 +14,7 @@
 #include "shader.hpp"
 #include "shader_source.hpp"
 #include "vertex.hpp"
+#include "vertex_array.hpp"
 
 /* -- Namespaces -- */
 
@@ -66,10 +67,10 @@ void renderer::loop(int width, int height, const state& state)
     glm::mat4 mvp = proj * view * model;
 
     // draw elements in this mesh
-    glBindVertexArray(mesh->vertex_array());
+    mesh->vertex_array()->bind();
     glUniformMatrix4fv(TRANSFORM_UNIFORM_LOCATION, 1, GL_FALSE, glm::value_ptr(mvp));
     glDrawElements(GL_TRIANGLES, mesh->index_count(), GL_UNSIGNED_INT, NULL);
-    glBindVertexArray(0);
+    vertex_array::unbind();
   }
 
   program::unactivate();

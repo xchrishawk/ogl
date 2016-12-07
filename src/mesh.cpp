@@ -14,6 +14,7 @@
 #include "opengl.hpp"
 #include "shader_source.hpp"
 #include "util.hpp"
+#include "vertex_array.hpp"
 
 /* -- Namespaces -- */
 
@@ -24,7 +25,6 @@ using namespace ogl;
 
 namespace
 {
-  GLuint init_vertex_array();
   GLuint init_buffer();
 }
 
@@ -34,7 +34,7 @@ mesh::mesh(const vertex* vertices,
 	   size_t vertex_count,
 	   const GLuint* indices,
 	   size_t index_count)
-  : m_vertex_array(init_vertex_array()),
+  : m_vertex_array(vertex_array::create()),
     m_vertex_count(vertex_count),
     m_vertex_buffer(init_buffer()),
     m_index_count(index_count),
@@ -52,14 +52,14 @@ mesh::mesh(const vertex* vertices,
 
   // create binding to buffer
   static const GLuint BINDING_INDEX = 0;
-  glVertexArrayVertexBuffer(m_vertex_array,			// vaobj
+  glVertexArrayVertexBuffer(m_vertex_array->id(),		// vaobj
 			    BINDING_INDEX,			// bindingindex
 			    m_vertex_buffer,			// buffer
 			    0,					// offset
 			    sizeof(vertex));			// stride
 
   // set position format
-  glVertexArrayAttribFormat(m_vertex_array,			// vaobj
+  glVertexArrayAttribFormat(m_vertex_array->id(),		// vaobj
 			    POSITION_ATTRIBUTE_LOCATION,	// attribindex
 			    vertex::position_count,		// size
 			    GL_FLOAT,				// type
@@ -67,16 +67,16 @@ mesh::mesh(const vertex* vertices,
 			    vertex::position_offset);		// relativeoffset
 
   // bind position attribute
-  glVertexArrayAttribBinding(m_vertex_array,			// vaobj
+  glVertexArrayAttribBinding(m_vertex_array->id(),		// vaobj
 			     POSITION_ATTRIBUTE_LOCATION,	// attribindex
 			     BINDING_INDEX);			// bindingindex
 
   // enable position attribute array
-  glEnableVertexArrayAttrib(m_vertex_array,			// vaobj
+  glEnableVertexArrayAttrib(m_vertex_array->id(),		// vaobj
 			    POSITION_ATTRIBUTE_LOCATION);	// attribindex
 
   // set color format
-  glVertexArrayAttribFormat(m_vertex_array,			// vaobj
+  glVertexArrayAttribFormat(m_vertex_array->id(),		// vaobj
 			    COLOR_ATTRIBUTE_LOCATION,		// attribindex
 			    vertex::color_count,		// size
 			    GL_FLOAT,				// type
@@ -84,44 +84,27 @@ mesh::mesh(const vertex* vertices,
 			    vertex::color_offset);		// relativeoffset
 
   // bind color attribute
-  glVertexArrayAttribBinding(m_vertex_array,			// vaobj
+  glVertexArrayAttribBinding(m_vertex_array->id(),		// vaobj
 			     COLOR_ATTRIBUTE_LOCATION,		// attribindex
 			     BINDING_INDEX);			// bindingindex
 
   // enable color attribute array
-  glEnableVertexArrayAttrib(m_vertex_array,			// vaobj
+  glEnableVertexArrayAttrib(m_vertex_array->id(),		// vaobj
 			    COLOR_ATTRIBUTE_LOCATION);		// attribindex
 
   // set up index buffer
-  glVertexArrayElementBuffer(m_vertex_array,			// vaobj
+  glVertexArrayElementBuffer(m_vertex_array->id(),		// vaobj
 			     m_index_buffer);			// buffer
 }
 
 mesh::~mesh()
 {
-  glDeleteVertexArrays(1, &m_vertex_array);
   glDeleteBuffers(1, &m_vertex_buffer);
   glDeleteBuffers(1, &m_index_buffer);
 }
 
 namespace
 {
-
-  GLuint init_vertex_array()
-  {
-    GLuint vao = 0;
-
-    glCreateVertexArrays(1, &vao);
-    if (vao == 0)
-    {
-      GLenum error = opengl_last_error();
-      ostringstream message;
-      message << "Failed to create vertex array. " << opengl_error_string(error);
-      throw runtime_error(message.str());
-    }
-
-    return vao;
-  }
 
   GLuint init_buffer()
   {

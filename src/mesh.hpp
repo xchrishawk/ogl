@@ -13,6 +13,7 @@
 
 #include "opengl.hpp"
 #include "vertex.hpp"
+#include "vertex_array.hpp"
 
 /* -- Types -- */
 
@@ -39,13 +40,13 @@ namespace ogl
 
     ~mesh();
 
-    GLuint vertex_array() const { return m_vertex_array; }
+    ogl::vertex_array::ptr vertex_array() const { return m_vertex_array; }
     size_t vertex_count() const { return m_vertex_count; }
     size_t index_count() const { return m_index_count; }
 
   private:
 
-    const GLuint m_vertex_array;
+    vertex_array::ptr m_vertex_array;
     const size_t m_vertex_count;
     const GLuint m_vertex_buffer;
     const size_t m_index_count;
