@@ -25,6 +25,11 @@ program::ptr program::create()
   return program::ptr(new program());
 }
 
+void program::unactivate()
+{
+  glUseProgram(0);
+}
+
 program::program()
   : m_id(glCreateProgram())
 {
@@ -73,6 +78,11 @@ void program::link()
     message << "Failed to link program." << endl << info_log();
     throw runtime_error(message.str());
   }
+}
+
+void program::activate() const
+{
+  glUseProgram(m_id);
 }
 
 bool program::is_linked() const

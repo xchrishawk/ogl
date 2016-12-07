@@ -57,7 +57,7 @@ void renderer::loop(int width, int height, const state& state)
 				    0.1f,				// near clip
 				    100.0f);				// far clip
 
-  glUseProgram(m_program->id());
+  m_program->activate();
 
   for (mesh::const_ptr mesh : state.meshes())
   {
@@ -72,7 +72,7 @@ void renderer::loop(int width, int height, const state& state)
     glBindVertexArray(0);
   }
 
-  glUseProgram(0);
+  program::unactivate();
 }
 
 void renderer::loop_init(int width, int height)

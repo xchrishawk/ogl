@@ -31,6 +31,8 @@ namespace ogl
     typedef std::shared_ptr<const program> const_ptr;
 
     static ptr create();
+    static void unactivate();
+
     ~program();
 
     void attach_shader(shader::const_ptr shader);
@@ -39,6 +41,7 @@ namespace ogl
     void detach_shaders(const std::vector<shader::const_ptr>& shaders);
 
     void link();
+    void activate() const;
 
     GLuint id() const { return m_id; }
     bool is_linked() const;
