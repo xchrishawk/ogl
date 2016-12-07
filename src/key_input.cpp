@@ -5,6 +5,9 @@
 
 /* -- Includes -- */
 
+#include <cstring>
+#include <iostream>
+
 #include "key_input.hpp"
 #include "opengl.hpp"
 #include "util.hpp"
@@ -17,87 +20,96 @@ using namespace ogl;
 
 key_input::key_input()
 {
-  for (int type = static_cast<int>(KEY_INPUT_TYPE_FIRST); type < static_cast<int>(KEY_INPUT_TYPE_COUNT); type++)
-    m_key_active[type] = false;
+  memset(m_type_mod_none, 0, sizeof(m_type_mod_none));
+  memset(m_type_mod_shift, 0, sizeof(m_type_mod_shift));
+  memset(m_type_mod_ctrl, 0, sizeof(m_type_mod_ctrl));
+  memset(m_type_mod_alt, 0, sizeof(m_type_mod_alt));
+  memset(m_key_active, 0, sizeof(m_key_active));
+
+  init_key_map();
 }
 
 bool key_input::input_active(key_input_type type) const
 {
-  ogl_assert(static_cast<int>(type) >= static_cast<int>(KEY_INPUT_TYPE_FIRST));
-  ogl_assert(static_cast<int>(type) < static_cast<int>(KEY_INPUT_TYPE_COUNT));
+  ogl_assert(static_cast<int>(type) >= static_cast<int>(KEY_INPUT_TYPE_FIRST_VALID));
+  ogl_assert(static_cast<int>(type) <= static_cast<int>(KEY_INPUT_TYPE_LAST_VALID));
   return m_key_active[type];
 }
 
 void key_input::key_pressed(int key, int scancode, int action, int mods)
 {
-  bool new_state;
+  ogl_assert(key < GLFW_KEY_COUNT);
   switch (action)
   {
   case GLFW_PRESS:
-    new_state = true;
+    handle_press(key, mods);
     break;
   case GLFW_RELEASE:
-    new_state = false;
+    handle_release(key, mods);
     break;
   default:
-    /* ignore GLFW_REPEAT events */
     return;
   }
-
-  key_input_type type = type_for_key_press(key, mods);
-  if (type != KEY_INPUT_TYPE_INVALID)
-    m_key_active[type] = new_state;
 }
 
-key_input_type key_input::type_for_key_press(int key, int mods)
+void key_input::init_key_map()
 {
-  static const int GLFW_MOD_NONE = 0;
+  // no modifier active
+  m_type_mod_none[GLFW_KEY_ESCAPE]	= KEY_INPUT_TYPE_EXIT;
+  m_type_mod_none[GLFW_KEY_X]		= KEY_INPUT_TYPE_CAMERA_RESET;
+  m_type_mod_none[GLFW_KEY_R]		= KEY_INPUT_TYPE_CAMERA_TRANSLATE_UP;
+  m_type_mod_none[GLFW_KEY_F]		= KEY_INPUT_TYPE_CAMERA_TRANSLATE_DOWN;
+  m_type_mod_none[GLFW_KEY_D]		= KEY_INPUT_TYPE_CAMERA_TRANSLATE_RIGHT;
+  m_type_mod_none[GLFW_KEY_A]		= KEY_INPUT_TYPE_CAMERA_TRANSLATE_LEFT;
+  m_type_mod_none[GLFW_KEY_W]		= KEY_INPUT_TYPE_CAMERA_TRANSLATE_FORWARD;
+  m_type_mod_none[GLFW_KEY_S]		= KEY_INPUT_TYPE_CAMERA_TRANSLATE_BACKWARD;
 
+  // shift modifier active
+  m_type_mod_shift[GLFW_KEY_S]		= KEY_INPUT_TYPE_CAMERA_PITCH_UP;
+  m_type_mod_shift[GLFW_KEY_W]		= KEY_INPUT_TYPE_CAMERA_PITCH_DOWN;
+  m_type_mod_shift[GLFW_KEY_E]		= KEY_INPUT_TYPE_CAMERA_ROLL_RIGHT;
+  m_type_mod_shift[GLFW_KEY_Q]		= KEY_INPUT_TYPE_CAMERA_ROLL_LEFT;
+  m_type_mod_shift[GLFW_KEY_D]		= KEY_INPUT_TYPE_CAMERA_YAW_RIGHT;
+  m_type_mod_shift[GLFW_KEY_A]		= KEY_INPUT_TYPE_CAMERA_YAW_LEFT;
+}
+
+void key_input::handle_press(int key, int mods)
+{
+  key_input_type type = KEY_INPUT_TYPE_INVALID;
   switch (mods)
   {
-  case GLFW_MOD_NONE:
-    switch (key)
-    {
-    case GLFW_KEY_ESCAPE:
-      return KEY_INPUT_TYPE_EXIT;
-    case GLFW_KEY_X:
-      return KEY_INPUT_TYPE_CAMERA_RESET;
-    case GLFW_KEY_R:
-      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_UP;
-    case GLFW_KEY_F:
-      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_DOWN;
-    case GLFW_KEY_D:
-      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_RIGHT;
-    case GLFW_KEY_A:
-      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_LEFT;
-    case GLFW_KEY_W:
-      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_FORWARD;
-    case GLFW_KEY_S:
-      return KEY_INPUT_TYPE_CAMERA_TRANSLATE_BACKWARD;
-    default:
-      return KEY_INPUT_TYPE_INVALID;
-    }
-
+  case 0:
+    type = m_type_mod_none[key];
+    break;
   case GLFW_MOD_SHIFT:
-    switch (key)
-    {
-    case GLFW_KEY_S:
-      return KEY_INPUT_TYPE_CAMERA_PITCH_UP;
-    case GLFW_KEY_W:
-      return KEY_INPUT_TYPE_CAMERA_PITCH_DOWN;
-    case GLFW_KEY_E:
-      return KEY_INPUT_TYPE_CAMERA_ROLL_RIGHT;
-    case GLFW_KEY_Q:
-      return KEY_INPUT_TYPE_CAMERA_ROLL_LEFT;
-    case GLFW_KEY_D:
-      return KEY_INPUT_TYPE_CAMERA_YAW_RIGHT;
-    case GLFW_KEY_A:
-      return KEY_INPUT_TYPE_CAMERA_YAW_LEFT;
-    default:
-      return KEY_INPUT_TYPE_INVALID;
-    }
-
-  default:
-    return KEY_INPUT_TYPE_INVALID;
+    type = m_type_mod_shift[key];
+    break;
+  case GLFW_MOD_CONTROL:
+    type = m_type_mod_ctrl[key];
+    break;
+  case GLFW_MOD_ALT:
+    type = m_type_mod_alt[key];
+    break;
   }
+  set_input_type_active(type, true);
+}
+
+void key_input::handle_release(int key, int mods)
+{
+  // deactivate all inputs associated with the key
+  set_input_type_active(m_type_mod_none[key], false);
+  set_input_type_active(m_type_mod_shift[key], false);
+  set_input_type_active(m_type_mod_ctrl[key], false);
+  set_input_type_active(m_type_mod_alt[key], false);
+}
+
+void key_input::set_input_type_active(key_input_type type, bool active)
+{
+  if (type == KEY_INPUT_TYPE_INVALID)
+    return;
+
+  ogl_assert(static_cast<int>(type) >= static_cast<int>(KEY_INPUT_TYPE_FIRST_VALID));
+  ogl_assert(static_cast<int>(type) <= static_cast<int>(KEY_INPUT_TYPE_LAST_VALID));
+
+  m_key_active[type] = active;
 }
