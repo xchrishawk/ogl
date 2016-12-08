@@ -2,6 +2,7 @@
 
 PROJECT			:= ogl
 MODULES			:= main							\
+			   app/application					\
 			   opengl/error						\
 			   opengl/glew						\
 			   opengl/glfw						\
