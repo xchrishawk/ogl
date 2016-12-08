@@ -2,6 +2,7 @@
 
 PROJECT			:= ogl
 MODULES			:= main							\
+			   opengl/glfw						\
 			   util/debug
 PKGLIBS			:= glew glfw3
 DEFINES			:= OGL_DEBUG
