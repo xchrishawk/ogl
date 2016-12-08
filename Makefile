@@ -7,6 +7,8 @@ MODULES			:= main							\
 			   opengl/error						\
 			   opengl/glew						\
 			   opengl/glfw						\
+			   opengl/program					\
+			   opengl/shader					\
 			   opengl/window					\
 			   util/debug
 PKGLIBS			:= glew glfw3
