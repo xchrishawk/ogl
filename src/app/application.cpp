@@ -61,6 +61,9 @@ application::~application()
 
 void application::main()
 {
+  float last_state_t;
+  float last_render_t;
+
   while (!m_window.should_close())
   {
     // poll GLFW window events
@@ -68,6 +71,24 @@ void application::main()
 
     // handle application-level inputs
     handle_app_input();
+
+    float abs_t = time();
+
+    // perform state updates if needed
+    float state_delta_t = abs_t - last_state_t;
+    if (state_delta_t >= TARGET_STATE_RATE)
+    {
+      handle_state(abs_t, state_delta_t);
+      last_state_t = abs_t;
+    }
+
+    // perform rendering if needed
+    float render_delta_t = abs_t - last_render_t;
+    if (render_delta_t >= TARGET_RENDER_RATE)
+    {
+      handle_render(abs_t, render_delta_t);
+      last_render_t = abs_t;
+    }
   }
 }
 
@@ -80,6 +101,17 @@ void application::handle_app_input()
 {
   if (m_input.input_active(INPUT_KEY_EXIT_APPLICATION))
     m_window.set_should_close(true);
+}
+
+void application::handle_state(float abs_t, float delta_t)
+{
+
+}
+
+void application::handle_render(float abs_t, float delta_t)
+{
+  // paint buffer to window
+  m_window.swap_buffers();
 }
 
 void application::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
