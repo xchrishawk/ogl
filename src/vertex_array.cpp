@@ -50,7 +50,6 @@ vertex_array::vertex_array(GLuint id)
 vertex_array::~vertex_array()
 {
   glDeleteVertexArrays(1, &m_id);
-  ogl_trace();
 }
 
 void vertex_array::bind() const
