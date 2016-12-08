@@ -9,6 +9,7 @@ MODULES			:= main							\
 			   opengl/glfw						\
 			   opengl/program					\
 			   opengl/shader					\
+			   opengl/vertex_array					\
 			   opengl/window					\
 			   util/debug
 PKGLIBS			:= glew glfw3
