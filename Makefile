@@ -1,22 +1,7 @@
 # -- Variables --
 
 PROJECT			:= ogl
-MODULES			:= application			\
-			   glew				\
-			   glfw				\
-			   key_input			\
-			   main				\
-			   mesh				\
-			   mesh_generation		\
-			   opengl			\
-			   program			\
-			   renderer			\
-			   shader			\
-			   shader_source		\
-			   state			\
-			   util				\
-			   vertex_array			\
-			   window
+MODULES			:= main							\
 PKGLIBS			:= glew glfw3
 DEFINES			:= OGL_DEBUG
 
@@ -31,11 +16,12 @@ DEPS			:= $(addprefix $(DEPDIR)/,$(addsuffix .d,$(MODULES)))
 OBJS			:= $(addprefix $(OBJDIR)/,$(addsuffix .o,$(MODULES)))
 BIN			:= $(BINDIR)/$(PROJECT)
 
+MKDIR			:= mkdir -p
 CPP			:= g++ -E
 CXX			:= g++ -c
 LD			:= g++
 
-CPPFLAGS		:= $(addprefix -D,$(DEFINES)) `pkg-config $(PKGLIBS) --cflags-only-I`
+CPPFLAGS		:= $(addprefix -D,$(DEFINES)) `pkg-config $(PKGLIBS) --cflags-only-I` -iquote $(SRCDIR)
 CFLAGS			:= -std=gnu++11 -g -Wall -Wpedantic `pkg-config $(PKGLIBS) --cflags-only-other`
 LDFLAGS			:= -g
 LIBS			:= `pkg-config $(PKGLIBS) --libs`
@@ -47,7 +33,9 @@ LIBS			:= `pkg-config $(PKGLIBS) --libs`
 all : $(BIN)
 
 clean :
-	$(RM) $(BIN) $(OBJS) $(DEPS)
+	$(RM) -r $(BINDIR)/*
+	$(RM) -r $(OBJDIR)/*
+	$(RM) -r $(DEPDIR)/*
 
 rebuild : clean all
 
@@ -61,10 +49,12 @@ $(BIN) : $(OBJS)
 
 # Compile object code
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+	$(MKDIR) $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CFLAGS) -o $@ $<
 
 # Create dependency files
 $(DEPDIR)/%.d : $(SRCDIR)/%.cpp
+	$(MKDIR) $(dir $@)
 	$(CPP) $(CPPFLAGS) -MM -MT $(OBJDIR)/$(notdir $(basename $<)).o -MT $@ -o $@ $<
 
 -include $(DEPS)
