@@ -48,7 +48,8 @@ application::application()
 	     INITIAL_WINDOW_HEIGHT,
 	     INITIAL_WINDOW_TITLE,
 	     application::glfw_key_callback),
-    m_glew(GLEW_USE_EXPERIMENTAL)
+    m_glew(GLEW_USE_EXPERIMENTAL),
+    m_input()
 {
   ogl_trace_message("Application launched successfully.");
 }
@@ -74,5 +75,5 @@ float application::time() const
 
 void application::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-  // TODO
+  instance().m_input.key_pressed(key, scancode, action, mods);
 }

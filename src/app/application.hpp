@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include "app/input.hpp"
 #include "opengl/glew.hpp"
 #include "opengl/glfw.hpp"
 #include "opengl/window.hpp"
@@ -36,6 +37,7 @@ namespace ogl
     ogl::glfw m_glfw;
     ogl::window m_window;
     ogl::glew m_glew;
+    ogl::input m_input;
 
     application();
     application(const application& other) = delete;

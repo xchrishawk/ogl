@@ -3,6 +3,7 @@
 PROJECT			:= ogl
 MODULES			:= main							\
 			   app/application					\
+			   app/input						\
 			   opengl/error						\
 			   opengl/glew						\
 			   opengl/glfw						\
