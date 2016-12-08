@@ -65,12 +65,21 @@ void application::main()
   {
     // poll GLFW window events
     window::poll_events();
+
+    // handle application-level inputs
+    handle_app_input();
   }
 }
 
 float application::time() const
 {
   return static_cast<float>(glfwGetTime());
+}
+
+void application::handle_app_input()
+{
+  if (m_input.input_active(INPUT_KEY_EXIT_APPLICATION))
+    m_window.set_should_close(true);
 }
 
 void application::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)

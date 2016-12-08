@@ -43,6 +43,8 @@ namespace ogl
     application(const application& other) = delete;
     application& operator =(const application& other) = delete;
 
+    void handle_app_input();
+
     static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
   };
