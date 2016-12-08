@@ -6,6 +6,7 @@ MODULES			:= main							\
 			   opengl/error						\
 			   opengl/glew						\
 			   opengl/glfw						\
+			   opengl/window					\
 			   util/debug
 PKGLIBS			:= glew glfw3
 DEFINES			:= OGL_DEBUG
