@@ -6,6 +6,12 @@
 #ifndef OGL_APP_APPLICATION_HPP
 #define OGL_APP_APPLICATION_HPP
 
+/* -- Includes -- */
+
+#include "opengl/glew.hpp"
+#include "opengl/glfw.hpp"
+#include "opengl/window.hpp"
+
 /* -- Types -- */
 
 namespace ogl
@@ -23,12 +29,19 @@ namespace ogl
     ~application();
 
     void main();
+    float time() const;
 
   private:
+
+    ogl::glfw m_glfw;
+    ogl::window m_window;
+    ogl::glew m_glew;
 
     application();
     application(const application& other) = delete;
     application& operator =(const application& other) = delete;
+
+    static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
   };
 
