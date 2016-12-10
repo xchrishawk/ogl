@@ -33,20 +33,20 @@ void program::unactivate()
 }
 
 program::program()
-  : m_id(glCreateProgram())
+  : m_handle(glCreateProgram())
 {
-  if (m_id == 0)
+  if (m_handle == 0)
     opengl_throw_last_error("Failed to create program.");
 }
 
 program::~program()
 {
-  glDeleteProgram(m_id);
+  glDeleteProgram(m_handle);
 }
 
 void program::attach_shader(shader::const_ptr shader)
 {
-  glAttachShader(m_id, shader->id());
+  glAttachShader(m_handle, shader->handle());
 }
 
 void program::attach_shaders(const vector<shader::const_ptr>& shaders)
@@ -57,7 +57,7 @@ void program::attach_shaders(const vector<shader::const_ptr>& shaders)
 
 void program::detach_shader(shader::const_ptr shader)
 {
-  glDetachShader(m_id, shader->id());
+  glDetachShader(m_handle, shader->handle());
 }
 
 void program::detach_shaders(const vector<shader::const_ptr>& shaders)
@@ -68,7 +68,7 @@ void program::detach_shaders(const vector<shader::const_ptr>& shaders)
 
 void program::link()
 {
-  glLinkProgram(m_id);
+  glLinkProgram(m_handle);
   if (!is_linked())
   {
     ostringstream message;
@@ -79,25 +79,25 @@ void program::link()
 
 void program::activate() const
 {
-  glUseProgram(m_id);
+  glUseProgram(m_handle);
 }
 
 bool program::is_linked() const
 {
   GLint is_linked = GL_FALSE;
-  glGetProgramiv(m_id, GL_LINK_STATUS, &is_linked);
+  glGetProgramiv(m_handle, GL_LINK_STATUS, &is_linked);
   return (is_linked == GL_TRUE);
 }
 
 std::string program::info_log() const
 {
   GLint info_log_length = 0;
-  glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &info_log_length);
+  glGetProgramiv(m_handle, GL_INFO_LOG_LENGTH, &info_log_length);
   if (info_log_length == 0)
     return string();
 
   char* info_log_buffer = new char[info_log_length];
-  glGetProgramInfoLog(m_id, info_log_length, NULL, info_log_buffer);
+  glGetProgramInfoLog(m_handle, info_log_length, NULL, info_log_buffer);
   string info_log(info_log_buffer);
   delete[] info_log_buffer;
 
@@ -106,10 +106,10 @@ std::string program::info_log() const
 
 GLint program::attribute_location(const std::string& name)
 {
-  return glGetAttribLocation(m_id, name.c_str());
+  return glGetAttribLocation(m_handle, name.c_str());
 }
 
 GLint program::uniform_location(const std::string& name)
 {
-  return glGetUniformLocation(m_id, name.c_str());
+  return glGetUniformLocation(m_handle, name.c_str());
 }

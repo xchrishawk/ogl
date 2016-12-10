@@ -44,7 +44,7 @@ namespace ogl
     void link();
     void activate() const;
 
-    GLuint id() const { return m_id; }
+    GLuint handle() const { return m_handle; }
     bool is_linked() const;
     std::string info_log() const;
 
@@ -53,7 +53,7 @@ namespace ogl
 
   private:
 
-    GLuint m_id;
+    GLuint m_handle;
 
     program();
     program(const program& other) = delete;

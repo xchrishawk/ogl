@@ -36,14 +36,14 @@ namespace ogl
     void compile();
 
     GLenum type() const { return m_type; }
-    GLuint id() const { return m_id; }
+    GLuint handle() const { return m_handle; }
     bool is_compiled() const;
     std::string info_log() const;
 
   private:
 
     const GLenum m_type;
-    const GLuint m_id;
+    const GLuint m_handle;
 
     shader(GLenum type);
     shader(const shader& other) = delete;

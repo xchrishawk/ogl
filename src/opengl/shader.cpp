@@ -31,21 +31,21 @@ shader::ptr shader::create(GLenum type)
 
 shader::shader(GLenum type)
   : m_type(type),
-    m_id(glCreateShader(m_type))
+    m_handle(glCreateShader(m_type))
 {
-  if (m_id == 0)
+  if (m_handle == 0)
     opengl_throw_last_error("Failed to create shader.");
 }
 
 shader::~shader()
 {
-  glDeleteShader(m_id);
+  glDeleteShader(m_handle);
 }
 
 void shader::set_source(const string& source)
 {
   const char* source_ptr = source.c_str();
-  glShaderSource(m_id, 1, &source_ptr, NULL);
+  glShaderSource(m_handle, 1, &source_ptr, NULL);
 }
 
 void shader::load_source(const string& filename)
@@ -65,7 +65,7 @@ void shader::load_source(const string& filename)
 
 void shader::compile()
 {
-  glCompileShader(m_id);
+  glCompileShader(m_handle);
   if (!is_compiled())
   {
     ostringstream message;
@@ -77,19 +77,19 @@ void shader::compile()
 bool shader::is_compiled() const
 {
   GLint is_compiled = GL_FALSE;
-  glGetShaderiv(m_id, GL_COMPILE_STATUS, &is_compiled);
+  glGetShaderiv(m_handle, GL_COMPILE_STATUS, &is_compiled);
   return (is_compiled == GL_TRUE);
 }
 
 string shader::info_log() const
 {
   GLint info_log_length = 0;
-  glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &info_log_length);
+  glGetShaderiv(m_handle, GL_INFO_LOG_LENGTH, &info_log_length);
   if (info_log_length == 0)
     return string();
 
   char* info_log_buffer = new char[info_log_length];
-  glGetShaderInfoLog(m_id, info_log_length, NULL, info_log_buffer);
+  glGetShaderInfoLog(m_handle, info_log_length, NULL, info_log_buffer);
   string info_log(info_log_buffer);
   delete[] info_log_buffer;
 

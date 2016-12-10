@@ -33,11 +33,11 @@ namespace ogl
 
     void bind() const;
 
-    GLuint id() const { return m_id; }
+    GLuint handle() const { return m_handle; }
 
   private:
 
-    GLuint m_id;
+    GLuint m_handle;
 
     vertex_array();
     vertex_array(GLuint id);

@@ -30,25 +30,25 @@ void vertex_array::unbind()
 }
 
 vertex_array::vertex_array()
-  : m_id(0)
+  : m_handle(0)
 {
-  glCreateVertexArrays(1, &m_id);
-  if (m_id == 0)
+  glCreateVertexArrays(1, &m_handle);
+  if (m_handle == 0)
     opengl_throw_last_error("Failed to create vertex array.");
 }
 
 vertex_array::vertex_array(GLuint id)
-  : m_id(id)
+  : m_handle(id)
 {
 }
 
 vertex_array::~vertex_array()
 {
-  glDeleteVertexArrays(1, &m_id);
+  glDeleteVertexArrays(1, &m_handle);
   ogl_trace();
 }
 
 void vertex_array::bind() const
 {
-  glBindVertexArray(m_id);
+  glBindVertexArray(m_handle);
 }
