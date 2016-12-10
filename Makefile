@@ -17,13 +17,12 @@ DEFINES			:= OGL_DEBUG
 
 ROOTDIR			:= .
 SRCDIR			:= $(ROOTDIR)/src
-DEPDIR			:= $(ROOTDIR)/dep
-OBJDIR			:= $(ROOTDIR)/obj
+BUILDDIR		:= $(ROOTDIR)/build
 BINDIR			:= $(ROOTDIR)/bin
 
 SRCS			:= $(addprefix $(SRCDIR)/,$(addsuffix .cpp,$(MODULES)))
-DEPS			:= $(addprefix $(DEPDIR)/,$(addsuffix .d,$(MODULES)))
-OBJS			:= $(addprefix $(OBJDIR)/,$(addsuffix .o,$(MODULES)))
+DEPS			:= $(addprefix $(BUILDDIR)/,$(addsuffix .d,$(MODULES)))
+OBJS			:= $(addprefix $(BUILDDIR)/,$(addsuffix .o,$(MODULES)))
 BIN			:= $(BINDIR)/$(PROJECT)
 
 MKDIR			:= mkdir -p
@@ -44,27 +43,26 @@ all : $(BIN)
 
 clean :
 	$(RM) -r $(BINDIR)/*
-	$(RM) -r $(OBJDIR)/*
-	$(RM) -r $(DEPDIR)/*
+	$(RM) -r $(BUILDDIR)/*
 
 rebuild : clean all
 
 # Run executable
 run : $(BIN)
-	$ (cd $(BINDIR) && ./$(PROJECT))
+	@$ (cd $(BINDIR) && ./$(PROJECT))
 
 # Link executable
 $(BIN) : $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
 # Compile object code
-$(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(MKDIR) $(dir $@)
+$(BUILDDIR)/%.o : $(SRCDIR)/%.cpp
+	@$(MKDIR) $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CFLAGS) -o $@ $<
 
 # Create dependency files
-$(DEPDIR)/%.d : $(SRCDIR)/%.cpp
-	$(MKDIR) $(dir $@)
-	$(CPP) $(CPPFLAGS) -MM -MT $(OBJDIR)/$(notdir $(basename $<)).o -MT $@ -o $@ $<
+$(BUILDDIR)/%.d : $(SRCDIR)/%.cpp
+	@$(MKDIR) $(dir $@)
+	@$(CPP) $(CPPFLAGS) -MM -MT $(OBJDIR)/$(notdir $(basename $<)).o -MT $@ -o $@ $<
 
 -include $(DEPS)
