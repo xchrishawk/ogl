@@ -9,6 +9,11 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/transform.hpp>
 
 #include "app/renderer.hpp"
 #include "app/vertex.hpp"
@@ -20,6 +25,7 @@
 
 /* -- Namespaces -- */
 
+using namespace glm;
 using namespace std;
 using namespace ogl;
 
@@ -54,15 +60,41 @@ renderer::~renderer()
 {
 }
 
-void renderer::render(float abs_t, float delta_t)
+void renderer::render(float abs_t, float delta_t, const state& state)
 {
   clear_buffer();
+
+  // TEMP
+  static const int width = 800;
+  static const int height = 600;
+
+  // view matrix
+  mat4 view =
+    translate(state.camera_pos()) *			// translation (done second)
+    mat4_cast(state.camera_rot());			// rotation (done first)
+  view = inverse(view);					// invert origin->camera into camera->origin
+
+  // create projection matrix
+  mat4 proj = perspective(state.camera_fov(),		// field of view (Y axis)
+			  (float)width / (float)height,	// aspect ratio
+			  0.1f,				// near clip
+			  100.0f);			// far clip
 
   m_program->activate();
   m_vao->activate();
 
   for (mesh m : m_meshes)
   {
+    // create MVP matrix for this mesh
+    glm::mat4 model;
+    glm::mat4 mvp = proj * view * model;
+
+    // set MVP matrix
+    GLint mvp_location = m_program->uniform_location("vs_mvp");
+    ogl_assert(mvp_location != -1);
+    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
+
+    // render the thing
     m_vao->activate_vertex_buffer(BINDING_INDEX, m.buffer(), sizeof(vertex));
     glDrawArrays(GL_TRIANGLES, 0, m.count());
     m_vao->unactivate_vertex_buffer(BINDING_INDEX);

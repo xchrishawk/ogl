@@ -67,21 +67,21 @@ void state::update_camera_pos(float delta_t, const input& input)
 
   // pitch
   if (input.input_active(INPUT_KEY_CAMERA_PITCH_UP))
-    m_camera_rot = glm::rotate(m_camera_rot, POSITIVE_RATE, VEC3_UNIT_X);
+    m_camera_rot = rotate(m_camera_rot, POSITIVE_RATE, VEC3_UNIT_X);
   if (input.input_active(INPUT_KEY_CAMERA_PITCH_DOWN))
-    m_camera_rot = glm::rotate(m_camera_rot, NEGATIVE_RATE, VEC3_UNIT_X);
+    m_camera_rot = rotate(m_camera_rot, NEGATIVE_RATE, VEC3_UNIT_X);
 
   // roll
   if (input.input_active(INPUT_KEY_CAMERA_YAW_RIGHT))
-    m_camera_rot = glm::rotate(m_camera_rot, NEGATIVE_RATE, VEC3_UNIT_Y);
+    m_camera_rot = rotate(m_camera_rot, NEGATIVE_RATE, VEC3_UNIT_Y);
   if (input.input_active(INPUT_KEY_CAMERA_YAW_LEFT))
-    m_camera_rot = glm::rotate(m_camera_rot, POSITIVE_RATE, VEC3_UNIT_Y);
+    m_camera_rot = rotate(m_camera_rot, POSITIVE_RATE, VEC3_UNIT_Y);
 
   // yaw
   if (input.input_active(INPUT_KEY_CAMERA_ROLL_RIGHT))
-    m_camera_rot = glm::rotate(m_camera_rot, POSITIVE_RATE, VEC3_UNIT_Z);
+    m_camera_rot = rotate(m_camera_rot, POSITIVE_RATE, VEC3_UNIT_Z);
   if (input.input_active(INPUT_KEY_CAMERA_ROLL_LEFT))
-    m_camera_rot = glm::rotate(m_camera_rot, NEGATIVE_RATE, VEC3_UNIT_Z);
+    m_camera_rot = rotate(m_camera_rot, NEGATIVE_RATE, VEC3_UNIT_Z);
 }
 
 void state::update_camera_rot(float delta_t, const input& input)
@@ -94,7 +94,7 @@ void state::update_camera_rot(float delta_t, const input& input)
   }
 
   const float RATE = CAMERA_POS_PER_SEC * delta_t;
-  glm::vec3 translation;
+  vec3 translation;
 
   // right/left
   if (input.input_active(INPUT_KEY_CAMERA_TRANSLATE_RIGHT))
@@ -115,7 +115,7 @@ void state::update_camera_rot(float delta_t, const input& input)
     translation.z += RATE;
 
   // rotate to our local reference frame and add to position
-  m_camera_pos += glm::mat3_cast(m_camera_rot) * translation;
+  m_camera_pos += mat3_cast(m_camera_rot) * translation;
 }
 
 void state::update_camera_fov(float delta_t, const input& input)

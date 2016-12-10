@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "app/mesh.hpp"
+#include "app/state.hpp"
 #include "opengl/buffer.hpp"
 #include "opengl/program.hpp"
 #include "opengl/vertex_array.hpp"
@@ -30,7 +31,7 @@ namespace ogl
     renderer();
     ~renderer();
 
-    void render(float abs_t, float delta_t);
+    void render(float abs_t, float delta_t, const ogl::state& state);
 
   private:
 
