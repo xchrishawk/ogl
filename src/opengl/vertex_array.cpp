@@ -34,12 +34,7 @@ vertex_array::vertex_array()
 {
   glCreateVertexArrays(1, &m_id);
   if (m_id == 0)
-  {
-    GLenum error = opengl_last_error();
-    ostringstream message;
-    message << "Failed to create vertex array. " << opengl_error_string(error);
-    throw runtime_error(message.str());
-  }
+    opengl_throw_last_error("Failed to create vertex array.");
 }
 
 vertex_array::vertex_array(GLuint id)

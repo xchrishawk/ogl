@@ -20,6 +20,18 @@ using namespace ogl;
 
 /* -- Procedures -- */
 
+void ogl::opengl_throw_last_error(const std::string& message)
+{
+  GLenum error = opengl_last_error();
+  ostringstream exception_message;
+  exception_message << message << " " << opengl_error_string(error);
+
+  // trigger breakpoint so we have a chance to debug if we want
+  ogl_break();
+
+  throw runtime_error(exception_message.str());
+}
+
 GLenum ogl::opengl_last_error()
 {
   GLenum last_error = GL_NO_ERROR;

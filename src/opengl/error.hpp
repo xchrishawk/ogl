@@ -16,6 +16,10 @@
 namespace ogl
 {
 
+  /** Throws an exception for the previous OpenGL error. */
+  void opengl_throw_last_error(const std::string& message)
+    __attribute__((noreturn));
+
   /** Returns the most recent OpenGL error in the queue. */
   GLenum opengl_last_error();
 
