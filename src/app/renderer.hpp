@@ -42,6 +42,7 @@ namespace ogl
     renderer& operator =(const renderer&) = delete;
 
     ogl::program::ptr init_program();
+    ogl::vertex_array::ptr init_vertex_array(ogl::program::ptr program);
     void clear_buffer(int width, int height);
 
   };

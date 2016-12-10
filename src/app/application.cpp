@@ -66,8 +66,8 @@ application::~application()
 
 void application::main()
 {
-  float last_state_t;
-  float last_render_t;
+  float last_state_t = time();
+  float last_render_t = time();
 
   while (!m_window.should_close())
   {

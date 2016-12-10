@@ -41,16 +41,8 @@ namespace
 renderer::renderer()
   : m_vao()
 {
-  m_vao = vertex_array::create();
   m_program = init_program();
-
-  GLint position_attribute = m_program->attribute_location("vs_position");
-  ogl_assert(position_attribute != -1);
-  m_vao->vertex_buffer_format(BINDING_INDEX, position_attribute, vertex_position::COUNT, offsetof(vertex, position));
-
-  GLint color_attribute = m_program->attribute_location("vs_color");
-  ogl_assert(color_attribute != -1);
-  m_vao->vertex_buffer_format(BINDING_INDEX, color_attribute, vertex_color::COUNT, offsetof(vertex, color));
+  m_vao = init_vertex_array(m_program);
 }
 
 renderer::~renderer()
@@ -117,6 +109,21 @@ program::ptr renderer::init_program()
   program->detach_shader(fragment_shader);
 
   return program;
+}
+
+vertex_array::ptr renderer::init_vertex_array(program::ptr program)
+{
+  vertex_array::ptr vao = vertex_array::create();
+
+  GLint position_attribute = m_program->attribute_location("vs_position");
+  ogl_assert(position_attribute != -1);
+  vao->vertex_buffer_format(BINDING_INDEX, position_attribute, vertex_position::COUNT, offsetof(vertex, position));
+
+  GLint color_attribute = m_program->attribute_location("vs_color");
+  ogl_assert(color_attribute != -1);
+  vao->vertex_buffer_format(BINDING_INDEX, color_attribute, vertex_color::COUNT, offsetof(vertex, color));
+
+  return vao;
 }
 
 void renderer::clear_buffer(int width, int height)
