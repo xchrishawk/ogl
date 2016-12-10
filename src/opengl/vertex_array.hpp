@@ -11,6 +11,8 @@
 #include <memory>
 #include <GL/glew.h>
 
+#include "opengl/buffer.hpp"
+
 /* -- Types -- */
 
 namespace ogl
@@ -27,11 +29,21 @@ namespace ogl
     typedef std::shared_ptr<const vertex_array> const_ptr;
 
     static ptr create();
-    static void unbind();
+    static void unactivate();
 
     ~vertex_array();
 
-    void bind() const;
+    void activate() const;
+
+    void vertex_buffer_format(GLuint binding_index,
+			      GLuint attribute_index,
+			      GLint size,
+			      GLint relative_offset);
+    void activate_vertex_buffer(GLuint binding_index,
+				immutable_buffer::ptr buffer,
+				GLsizei stride,
+				GLintptr offset = 0);
+    void unactivate_vertex_buffer(GLuint binding_index);
 
     GLuint handle() const { return m_handle; }
 

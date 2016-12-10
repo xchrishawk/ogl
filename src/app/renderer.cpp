@@ -50,12 +50,20 @@ renderer::renderer()
   : m_vao()
 {
   m_vao = vertex_array::create();
-  m_buffer_1 = immutable_buffer::create(sizeof(VERTICES_1), VERTICES_1, 0);
-  m_buffer_2 = immutable_buffer::create(sizeof(VERTICES_2), VERTICES_2, 0);
   m_program = init_program();
 
-  init_attribute_binding("vs_position", BINDING_INDEX, vertex_position::COUNT, offsetof(vertex, position));
-  init_attribute_binding("vs_color", BINDING_INDEX, vertex_color::COUNT, offsetof(vertex, color));
+  // <TEMP>
+  m_buffer_1 = immutable_buffer::create(sizeof(VERTICES_1), VERTICES_1, 0);
+  m_buffer_2 = immutable_buffer::create(sizeof(VERTICES_2), VERTICES_2, 0);
+
+  GLint position_attribute = m_program->attribute_location("vs_position");
+  ogl_assert(position_attribute != -1);
+  m_vao->vertex_buffer_format(BINDING_INDEX, position_attribute, vertex_position::COUNT, offsetof(vertex, position));
+
+  GLint color_attribute = m_program->attribute_location("vs_color");
+  ogl_assert(color_attribute != -1);
+  m_vao->vertex_buffer_format(BINDING_INDEX, color_attribute, vertex_color::COUNT, offsetof(vertex, color));
+  // </TEMP>
 }
 
 renderer::~renderer()
@@ -67,17 +75,17 @@ void renderer::render(float abs_t, float delta_t)
   clear_buffer();
 
   m_program->activate();
-  m_vao->bind();
+  m_vao->activate();
 
-  glBindVertexBuffer(0, m_buffer_1->handle(), 0, sizeof(vertex));
+  m_vao->activate_vertex_buffer(BINDING_INDEX, m_buffer_1, sizeof(vertex));
   glDrawArrays(GL_TRIANGLES, 0, VERTEX_COUNT_1);
-  glBindVertexBuffer(0, 0, 0, 0);
+  m_vao->unactivate_vertex_buffer(BINDING_INDEX);
 
-  glBindVertexBuffer(0, m_buffer_2->handle(), 0, sizeof(vertex));
+  m_vao->activate_vertex_buffer(BINDING_INDEX, m_buffer_2, sizeof(vertex));
   glDrawArrays(GL_TRIANGLES, 0, VERTEX_COUNT_2);
-  glBindVertexBuffer(0, 0, 0, 0);
+  m_vao->unactivate_vertex_buffer(BINDING_INDEX);
 
-  vertex_array::unbind();
+  vertex_array::unactivate();
   program::unactivate();
 }
 
@@ -100,33 +108,6 @@ program::ptr renderer::init_program()
   program->detach_shader(fragment_shader);
 
   return program;
-}
-
-void renderer::init_attribute_binding(const std::string& attribute_name,
-				      GLuint binding_index,
-				      GLint size,
-				      GLint relative_offset)
-{
-  // get attribute location from program
-  GLint attribute_location = m_program->attribute_location(attribute_name);
-  ogl_assert(attribute_location != -1);
-
-  // set format of the attribute
-  glVertexArrayAttribFormat(m_vao->handle(),			// vaobj
-			    attribute_location,			// attribindex
-			    size,				// size
-			    GL_FLOAT,				// type
-			    GL_FALSE,				// normalized
-			    relative_offset);			// relativeoffset
-
-  // associate the attribute with buffer binding
-  glVertexArrayAttribBinding(m_vao->handle(),			// vaobj
-			     attribute_location,		// attribindex
-			     binding_index);			// bindingindex
-
-  // enable array access for the attribute
-  glEnableVertexArrayAttrib(m_vao->handle(),			// vaobj
-			    attribute_location);		// attribindex
 }
 
 void renderer::clear_buffer()
