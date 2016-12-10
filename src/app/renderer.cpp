@@ -27,20 +27,6 @@ using namespace ogl;
 
 namespace
 {
-  const vertex VERTICES_1[] = {
-    { {	0.0f,	0.0f,	0.0f 	}, {	1.0f, 	0.0f, 	0.0f,	1.0f,	}, {	0.0f,	0.0f	} },
-    { {	0.5f,	0.0f,	0.0f	}, {	0.0f,	1.0f,	0.0f,	1.0f,	}, {	0.0f,	0.0f	} },
-    { {	0.0f,	0.5f,	0.0f	}, {	0.0f,	0.0f,	1.0f,	1.0f,	}, {	0.0f,	0.0f	} },
-  };
-  const size_t VERTEX_COUNT_1 = ogl_array_size(VERTICES_1);
-
-  const vertex VERTICES_2[] = {
-    { {	0.0f,	0.0f,	0.0f 	}, {	0.0f, 	1.0f, 	1.0f,	1.0f,	}, {	0.0f,	0.0f	} },
-    { {	-0.5f,	0.0f,	0.0f	}, {	1.0f,	0.0f,	1.0f,	1.0f,	}, {	0.0f,	0.0f	} },
-    { {	0.0f,	-0.5f,	0.0f	}, {	1.0f,	1.0f,	0.0f,	1.0f,	}, {	0.0f,	0.0f	} },
-  };
-  const size_t VERTEX_COUNT_2 = ogl_array_size(VERTICES_2);
-
   const GLuint BINDING_INDEX = 0;
 }
 
@@ -52,10 +38,6 @@ renderer::renderer()
   m_vao = vertex_array::create();
   m_program = init_program();
 
-  // <TEMP>
-  m_buffer_1 = immutable_buffer::create(sizeof(VERTICES_1), VERTICES_1, 0);
-  m_buffer_2 = immutable_buffer::create(sizeof(VERTICES_2), VERTICES_2, 0);
-
   GLint position_attribute = m_program->attribute_location("vs_position");
   ogl_assert(position_attribute != -1);
   m_vao->vertex_buffer_format(BINDING_INDEX, position_attribute, vertex_position::COUNT, offsetof(vertex, position));
@@ -63,7 +45,6 @@ renderer::renderer()
   GLint color_attribute = m_program->attribute_location("vs_color");
   ogl_assert(color_attribute != -1);
   m_vao->vertex_buffer_format(BINDING_INDEX, color_attribute, vertex_color::COUNT, offsetof(vertex, color));
-  // </TEMP>
 }
 
 renderer::~renderer()
@@ -76,14 +57,6 @@ void renderer::render(float abs_t, float delta_t)
 
   m_program->activate();
   m_vao->activate();
-
-  m_vao->activate_vertex_buffer(BINDING_INDEX, m_buffer_1, sizeof(vertex));
-  glDrawArrays(GL_TRIANGLES, 0, VERTEX_COUNT_1);
-  m_vao->unactivate_vertex_buffer(BINDING_INDEX);
-
-  m_vao->activate_vertex_buffer(BINDING_INDEX, m_buffer_2, sizeof(vertex));
-  glDrawArrays(GL_TRIANGLES, 0, VERTEX_COUNT_2);
-  m_vao->unactivate_vertex_buffer(BINDING_INDEX);
 
   vertex_array::unactivate();
   program::unactivate();

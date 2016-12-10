@@ -42,4 +42,12 @@ namespace ogl
 
 }
 
+/* -- Procedure Prototypes -- */
+
+namespace ogl
+{
+  mesh rgb_triangle();
+  mesh cmy_triangle();
+}
+
 #endif /* OGL_APP_MESH_HPP */
