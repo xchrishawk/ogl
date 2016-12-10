@@ -49,7 +49,8 @@ application::application()
 	     INITIAL_WINDOW_TITLE,
 	     application::glfw_key_callback),
     m_glew(GLEW_USE_EXPERIMENTAL),
-    m_input()
+    m_input(),
+    m_renderer()
 {
   ogl_trace_message("Application launched successfully.");
 }
@@ -110,7 +111,7 @@ void application::handle_state(float abs_t, float delta_t)
 
 void application::handle_render(float abs_t, float delta_t)
 {
-  // paint buffer to window
+  m_renderer.render(abs_t, delta_t);
   m_window.swap_buffers();
 }
 
