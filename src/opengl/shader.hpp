@@ -49,6 +49,8 @@ namespace ogl
     shader(const shader& other) = delete;
     shader& operator =(const shader& other) = delete;
 
+    static GLuint new_handle(GLenum type);
+
   };
 
 }

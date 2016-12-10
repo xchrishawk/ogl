@@ -30,15 +30,7 @@ void vertex_array::unbind()
 }
 
 vertex_array::vertex_array()
-  : m_handle(0)
-{
-  glCreateVertexArrays(1, &m_handle);
-  if (m_handle == 0)
-    opengl_throw_last_error("Failed to create vertex array.");
-}
-
-vertex_array::vertex_array(GLuint id)
-  : m_handle(id)
+  : m_handle(vertex_array::new_handle())
 {
 }
 
@@ -51,4 +43,13 @@ vertex_array::~vertex_array()
 void vertex_array::bind() const
 {
   glBindVertexArray(m_handle);
+}
+
+GLuint vertex_array::new_handle()
+{
+  GLuint handle = 0;
+  glCreateVertexArrays(1, &handle);
+  if (handle == 0)
+    opengl_throw_last_error("Failed to create vertex array.");
+  return handle;
 }

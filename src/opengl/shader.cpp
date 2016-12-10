@@ -31,10 +31,8 @@ shader::ptr shader::create(GLenum type)
 
 shader::shader(GLenum type)
   : m_type(type),
-    m_handle(glCreateShader(m_type))
+    m_handle(shader::new_handle(type))
 {
-  if (m_handle == 0)
-    opengl_throw_last_error("Failed to create shader.");
 }
 
 shader::~shader()
@@ -94,4 +92,12 @@ string shader::info_log() const
   delete[] info_log_buffer;
 
   return info_log;
+}
+
+GLuint shader::new_handle(GLenum type)
+{
+  GLuint handle = glCreateShader(type);
+  if (handle == 0)
+    opengl_throw_last_error("Failed to create shader.");
+  return handle;
 }

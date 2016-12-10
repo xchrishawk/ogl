@@ -33,10 +33,8 @@ void program::unactivate()
 }
 
 program::program()
-  : m_handle(glCreateProgram())
+  : m_handle(program::new_handle())
 {
-  if (m_handle == 0)
-    opengl_throw_last_error("Failed to create program.");
 }
 
 program::~program()
@@ -112,4 +110,12 @@ GLint program::attribute_location(const std::string& name)
 GLint program::uniform_location(const std::string& name)
 {
   return glGetUniformLocation(m_handle, name.c_str());
+}
+
+GLuint program::new_handle()
+{
+  GLuint handle = glCreateProgram();
+  if (handle == 0)
+    opengl_throw_last_error("Failed to create program.");
+  return handle;
 }

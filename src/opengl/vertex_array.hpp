@@ -40,9 +40,10 @@ namespace ogl
     GLuint m_handle;
 
     vertex_array();
-    vertex_array(GLuint id);
     vertex_array(const vertex_array& other) = delete;
     vertex_array& operator =(const vertex_array& other) = delete;
+
+    static GLuint new_handle();
 
   };
 

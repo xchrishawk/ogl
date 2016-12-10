@@ -53,11 +53,13 @@ namespace ogl
 
   private:
 
-    GLuint m_handle;
+    const GLuint m_handle;
 
     program();
     program(const program& other) = delete;
     program& operator =(const program& other) = delete;
+
+    static GLuint new_handle();
 
   };
 
