@@ -40,7 +40,7 @@ namespace ogl
 			      GLint size,
 			      GLint relative_offset);
     void activate_vertex_buffer(GLuint binding_index,
-				immutable_buffer::ptr buffer,
+				immutable_buffer::const_ptr buffer,
 				GLsizei stride,
 				GLintptr offset = 0);
     void unactivate_vertex_buffer(GLuint binding_index);

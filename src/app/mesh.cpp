@@ -25,11 +25,20 @@ mesh::mesh(const vector<vertex>& vertices)
   m_buffer = immutable_buffer::create(m_count * sizeof(vertex), vertices.data(), 0);
 }
 
-mesh ogl::rgb_triangle()
+mesh example_meshes::rgb_triangle()
 {
   vector<vertex> vertices;
   vertices.push_back({ { 0.0f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f }});
   vertices.push_back({ { 0.5f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f }, { 0.0f, 0.0f }});
   vertices.push_back({ { 0.0f, 0.5f, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f }, { 0.0f, 0.0f }});
+  return mesh(vertices);
+}
+
+mesh example_meshes::cmy_triangle()
+{
+  vector<vertex> vertices;
+  vertices.push_back({ { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 1.0f, 1.0f }, { 0.0f, 0.0f }});
+  vertices.push_back({ { -0.5f, 0.0f, 0.0f }, { 1.0f, 0.0f, 1.0f, 1.0f }, { 0.0f, 0.0f }});
+  vertices.push_back({ { 0.0f, -0.5f, 0.0f }, { 1.0f, 1.0f, 0.0f, 1.0f }, { 0.0f, 0.0f }});
   return mesh(vertices);
 }

@@ -40,14 +40,25 @@ namespace ogl
 
   };
 
-}
+  /**
+   * Class generating example meshes for prototyping.
+   */
+  class example_meshes
+  {
+  public:
 
-/* -- Procedure Prototypes -- */
+    static mesh rgb_triangle();
+    static mesh cmy_triangle();
 
-namespace ogl
-{
-  mesh rgb_triangle();
-  mesh cmy_triangle();
+  private:
+
+    // non-instantiable class
+    example_meshes() = delete;
+    example_meshes(const example_meshes&) = delete;
+    example_meshes& operator =(const example_meshes&) = delete;
+
+  };
+
 }
 
 #endif /* OGL_APP_MESH_HPP */

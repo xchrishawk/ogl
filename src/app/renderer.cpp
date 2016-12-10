@@ -45,6 +45,9 @@ renderer::renderer()
   GLint color_attribute = m_program->attribute_location("vs_color");
   ogl_assert(color_attribute != -1);
   m_vao->vertex_buffer_format(BINDING_INDEX, color_attribute, vertex_color::COUNT, offsetof(vertex, color));
+
+  m_meshes.push_back(example_meshes::rgb_triangle());
+  m_meshes.push_back(example_meshes::cmy_triangle());
 }
 
 renderer::~renderer()
@@ -57,6 +60,13 @@ void renderer::render(float abs_t, float delta_t)
 
   m_program->activate();
   m_vao->activate();
+
+  for (mesh m : m_meshes)
+  {
+    m_vao->activate_vertex_buffer(BINDING_INDEX, m.buffer(), sizeof(vertex));
+    glDrawArrays(GL_TRIANGLES, 0, m.count());
+    m_vao->unactivate_vertex_buffer(BINDING_INDEX);
+  }
 
   vertex_array::unactivate();
   program::unactivate();

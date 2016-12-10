@@ -68,7 +68,7 @@ void vertex_array::vertex_buffer_format(GLuint binding_index,
 }
 
 void vertex_array::activate_vertex_buffer(GLuint binding_index,
-					  immutable_buffer::ptr buffer,
+					  immutable_buffer::const_ptr buffer,
 					  GLsizei stride,
 					  GLintptr offset)
 {
