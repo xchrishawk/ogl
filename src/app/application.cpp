@@ -5,7 +5,10 @@
 
 /* -- Includes -- */
 
-#include "application.hpp"
+#include "app/application.hpp"
+#include "app/input.hpp"
+#include "app/renderer.hpp"
+#include "app/state.hpp"
 #include "opengl/glew.hpp"
 #include "opengl/glfw.hpp"
 #include "opengl/window.hpp"
@@ -50,6 +53,7 @@ application::application()
 	     application::glfw_key_callback),
     m_glew(GLEW_USE_EXPERIMENTAL),
     m_input(),
+    m_state(),
     m_renderer()
 {
   ogl_trace_message("Application launched successfully.");
@@ -106,7 +110,7 @@ void application::handle_app_input()
 
 void application::handle_state(float abs_t, float delta_t)
 {
-
+  m_state.update(abs_t, delta_t, m_input);
 }
 
 void application::handle_render(float abs_t, float delta_t)

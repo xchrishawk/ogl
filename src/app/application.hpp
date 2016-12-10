@@ -10,6 +10,7 @@
 
 #include "app/input.hpp"
 #include "app/renderer.hpp"
+#include "app/state.hpp"
 #include "opengl/glew.hpp"
 #include "opengl/glfw.hpp"
 #include "opengl/window.hpp"
@@ -39,6 +40,7 @@ namespace ogl
     ogl::window m_window;
     ogl::glew m_glew;
     ogl::input m_input;
+    ogl::state m_state;
     ogl::renderer m_renderer;
 
     application();

@@ -7,6 +7,7 @@ MODULES			:= main							\
 			   app/input						\
 			   app/mesh						\
 			   app/renderer						\
+			   app/state						\
 			   opengl/buffer					\
 			   opengl/error						\
 			   opengl/glew						\
