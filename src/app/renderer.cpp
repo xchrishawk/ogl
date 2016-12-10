@@ -51,9 +51,6 @@ renderer::renderer()
   GLint color_attribute = m_program->attribute_location("vs_color");
   ogl_assert(color_attribute != -1);
   m_vao->vertex_buffer_format(BINDING_INDEX, color_attribute, vertex_color::COUNT, offsetof(vertex, color));
-
-  m_meshes.push_back(example_meshes::rgb_triangle());
-  m_meshes.push_back(example_meshes::cmy_triangle());
 }
 
 renderer::~renderer()
@@ -62,6 +59,7 @@ renderer::~renderer()
 
 void renderer::render(int width, int height, const state& state)
 {
+  // prepare the framebuffer for drawing
   clear_buffer(width, height);
 
   // view matrix
@@ -79,7 +77,7 @@ void renderer::render(int width, int height, const state& state)
   m_program->activate();
   m_vao->activate();
 
-  for (mesh m : m_meshes)
+  for (mesh m : state.meshes())
   {
     // create MVP matrix for this mesh
     glm::mat4 model;

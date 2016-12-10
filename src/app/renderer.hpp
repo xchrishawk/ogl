@@ -37,7 +37,6 @@ namespace ogl
 
     ogl::vertex_array::ptr m_vao;
     ogl::program::ptr m_program;
-    std::vector<mesh> m_meshes;
 
     renderer(const renderer&) = delete;
     renderer& operator =(const renderer&) = delete;

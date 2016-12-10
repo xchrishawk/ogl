@@ -8,10 +8,13 @@
 
 /* -- Includes -- */
 
+#include <vector>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 #include "app/input.hpp"
+#include "app/mesh.hpp"
 
 /* -- Types -- */
 
@@ -33,12 +36,14 @@ namespace ogl
     glm::vec3 camera_pos() const { return m_camera_pos; }
     glm::quat camera_rot() const { return m_camera_rot; }
     float camera_fov() const { return m_camera_fov; }
+    std::vector<mesh> meshes() const { return m_meshes; }
 
   private:
 
     glm::vec3 m_camera_pos;
     glm::quat m_camera_rot;
     float m_camera_fov;
+    std::vector<mesh> m_meshes;
 
     state(const state&) = delete;
     state& operator =(const state&) = delete;

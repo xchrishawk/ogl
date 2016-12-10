@@ -5,10 +5,13 @@
 
 /* -- Includes -- */
 
+#include <vector>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 #include "app/input.hpp"
+#include "app/mesh.hpp"
 #include "app/state.hpp"
 #include "util/constants.hpp"
 
@@ -38,8 +41,11 @@ namespace
 state::state()
   : m_camera_pos(CAMERA_POS_DEFAULT),
     m_camera_rot(CAMERA_ROT_DEFAULT),
-    m_camera_fov(CAMERA_FOV_DEFAULT)
+    m_camera_fov(CAMERA_FOV_DEFAULT),
+    m_meshes()
 {
+  m_meshes.push_back(example_meshes::rgb_triangle());
+  m_meshes.push_back(example_meshes::cmy_triangle());
 }
 
 state::~state()
