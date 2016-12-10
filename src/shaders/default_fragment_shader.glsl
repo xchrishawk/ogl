@@ -1,5 +1,8 @@
 #version 330 core
-blah
+
+in vec4 fs_color;
+
 void main(void)
 {
+  gl_FragColor = fs_color;
 }

@@ -45,7 +45,7 @@ namespace ogl
     float r;	/* texture x coordinate */
     float s;	/* texture y coordinate */
     float t;	/* texture z coordinate */
-  }
+  };
 
   /**
    * Struct representing a vertex in a mesh.
