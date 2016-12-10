@@ -9,6 +9,8 @@
 /* -- Includes -- */
 
 #include <cstddef>
+#include <GL/glew.h>
+
 #include "util/debug.hpp"
 
 /* -- Types -- */

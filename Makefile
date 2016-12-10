@@ -5,6 +5,7 @@ PROJECT			:= ogl
 MODULES			:= main							\
 			   app/application					\
 			   app/input						\
+			   app/mesh						\
 			   app/renderer						\
 			   opengl/buffer					\
 			   opengl/error						\
