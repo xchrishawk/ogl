@@ -6,6 +6,7 @@ MODULES			:= main							\
 			   app/application					\
 			   app/input						\
 			   app/renderer						\
+			   opengl/buffer					\
 			   opengl/error						\
 			   opengl/glew						\
 			   opengl/glfw						\
