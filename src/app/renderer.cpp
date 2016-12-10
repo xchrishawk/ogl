@@ -54,33 +54,8 @@ renderer::renderer()
   m_buffer_2 = immutable_buffer::create(sizeof(VERTICES_2), VERTICES_2, 0);
   m_program = init_program();
 
-  // enable position attribute
-  GLuint position_attribute_location = m_program->attribute_location("vs_position");
-  glVertexArrayAttribFormat(m_vao->handle(),			// vaobj
-			    position_attribute_location,	// attribindex
-			    3,					// size
-			    GL_FLOAT,				// type
-			    GL_FALSE,				// normalized
-			    offsetof(vertex, position));	// relativeoffset
-  glVertexArrayAttribBinding(m_vao->handle(),			// vaobj
-			     position_attribute_location,	// attribindex
-			     BINDING_INDEX);			// bindingindex
-  glEnableVertexArrayAttrib(m_vao->handle(),			// vaobj
-			    position_attribute_location);	// index
-
-  // enable color attribute
-  GLuint color_attribute_location = m_program->attribute_location("vs_color");
-  glVertexArrayAttribFormat(m_vao->handle(),			// vaobj
-			    color_attribute_location,		// attribindex
-			    3,					// size
-			    GL_FLOAT,				// type
-			    GL_FALSE,				// normalized
-			    offsetof(vertex, color));		// relativeoffset
-  glVertexArrayAttribBinding(m_vao->handle(),			// vaobj
-			     color_attribute_location,		// attribindex
-			     BINDING_INDEX);			// bindingindex
-  glEnableVertexArrayAttrib(m_vao->handle(),			// vaobj
-			    color_attribute_location);		// index
+  init_attribute_binding("vs_position", BINDING_INDEX, vertex_position::COUNT, offsetof(vertex, position));
+  init_attribute_binding("vs_color", BINDING_INDEX, vertex_color::COUNT, offsetof(vertex, color));
 }
 
 renderer::~renderer()
@@ -106,12 +81,6 @@ void renderer::render(float abs_t, float delta_t)
   program::unactivate();
 }
 
-void renderer::clear_buffer()
-{
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
-}
-
 program::ptr renderer::init_program()
 {
   shader::ptr vertex_shader = shader::create(GL_VERTEX_SHADER);
@@ -131,4 +100,37 @@ program::ptr renderer::init_program()
   program->detach_shader(fragment_shader);
 
   return program;
+}
+
+void renderer::init_attribute_binding(const std::string& attribute_name,
+				      GLuint binding_index,
+				      GLint size,
+				      GLint relative_offset)
+{
+  // get attribute location from program
+  GLint attribute_location = m_program->attribute_location(attribute_name);
+  ogl_assert(attribute_location != -1);
+
+  // set format of the attribute
+  glVertexArrayAttribFormat(m_vao->handle(),			// vaobj
+			    attribute_location,			// attribindex
+			    size,				// size
+			    GL_FLOAT,				// type
+			    GL_FALSE,				// normalized
+			    relative_offset);			// relativeoffset
+
+  // associate the attribute with buffer binding
+  glVertexArrayAttribBinding(m_vao->handle(),			// vaobj
+			     attribute_location,		// attribindex
+			     binding_index);			// bindingindex
+
+  // enable array access for the attribute
+  glEnableVertexArrayAttrib(m_vao->handle(),			// vaobj
+			    attribute_location);		// attribindex
+}
+
+void renderer::clear_buffer()
+{
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
 }

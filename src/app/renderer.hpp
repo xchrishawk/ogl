@@ -41,6 +41,10 @@ namespace ogl
     renderer& operator =(const renderer&) = delete;
 
     ogl::program::ptr init_program();
+    void init_attribute_binding(const std::string& attribute_name,
+				GLuint binding_index,
+				GLint size,
+				GLint relative_offset);
     void clear_buffer();
 
   };
