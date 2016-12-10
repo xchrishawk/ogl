@@ -31,7 +31,7 @@ namespace ogl
     renderer();
     ~renderer();
 
-    void render(float abs_t, float delta_t, const ogl::state& state);
+    void render(int width, int height, const ogl::state& state);
 
   private:
 
@@ -43,7 +43,7 @@ namespace ogl
     renderer& operator =(const renderer&) = delete;
 
     ogl::program::ptr init_program();
-    void clear_buffer();
+    void clear_buffer(int width, int height);
 
   };
 

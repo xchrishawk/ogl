@@ -60,13 +60,9 @@ renderer::~renderer()
 {
 }
 
-void renderer::render(float abs_t, float delta_t, const state& state)
+void renderer::render(int width, int height, const state& state)
 {
-  clear_buffer();
-
-  // TEMP
-  static const int width = 800;
-  static const int height = 600;
+  clear_buffer(width, height);
 
   // view matrix
   mat4 view =
@@ -125,8 +121,12 @@ program::ptr renderer::init_program()
   return program;
 }
 
-void renderer::clear_buffer()
+void renderer::clear_buffer(int width, int height)
 {
+  // update viewport dimensions
+  glViewport(0, 0, width, height);
+
+  // clear buffer
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 }

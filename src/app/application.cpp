@@ -115,7 +115,11 @@ void application::handle_state(float abs_t, float delta_t)
 
 void application::handle_render(float abs_t, float delta_t)
 {
-  m_renderer.render(abs_t, delta_t, m_state);
+  int width = 0;
+  int height = 0;
+  m_window.framebuffer_size(&width, &height);
+
+  m_renderer.render(width, height, m_state);
   m_window.swap_buffers();
 }
 
