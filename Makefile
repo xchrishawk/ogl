@@ -5,11 +5,8 @@ PROJECT			:= ogl
 MODULES			:= main							\
 			   app/application					\
 			   app/input						\
-			   app/mesh						\
-			   app/object						\
 			   app/renderer						\
 			   app/state						\
-			   app/prototype/example_meshes				\
 			   opengl/buffer					\
 			   opengl/error						\
 			   opengl/glew						\

@@ -11,9 +11,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "app/input.hpp"
-#include "app/mesh.hpp"
 #include "app/state.hpp"
-#include "app/prototype/example_meshes.hpp"
 #include "util/constants.hpp"
 
 /* -- Namespaces -- */
@@ -42,41 +40,8 @@ namespace
 state::state()
   : m_camera_pos(CAMERA_POS_DEFAULT),
     m_camera_rot(CAMERA_ROT_DEFAULT),
-    m_camera_fov(CAMERA_FOV_DEFAULT),
-    m_objects()
+    m_camera_fov(CAMERA_FOV_DEFAULT)
 {
-  // init objects
-  m_objects =
-  {
-    object(example_meshes::random_cube(),
-	   vec3(0.0f, 0.0f, 0.0f),
-	   quat(),
-	   vec3(1.0f, 1.0f, 1.0f)),
-    object(example_meshes::random_cube(),
-	   vec3(3.0f, 0.0f, 0.0f),
-	   quat(),
-	   vec3(0.5f, 0.5f, 0.5f)),
-    object(example_meshes::random_cube(),
-	   vec3(-3.0f, 0.0f, 0.0f),
-	   quat(),
-	   vec3(0.5f, 0.5f, 0.5f)),
-    object(example_meshes::random_cube(),
-	   vec3(0.0f, 3.0f, 0.0f),
-	   quat(),
-	   vec3(0.5f, 0.5f, 0.5f)),
-    object(example_meshes::random_cube(),
-	   vec3(0.0f, -3.0f, 0.0f),
-	   quat(),
-	   vec3(0.5f, 0.5f, 0.5f)),
-    object(example_meshes::random_cube(),
-	   vec3(0.0f, 0.0f, 3.0f),
-	   quat(),
-	   vec3(0.5f, 0.5f, 0.5f)),
-    object(example_meshes::random_cube(),
-	   vec3(0.0f, 0.0f, -3.0f),
-	   quat(),
-	   vec3(0.5f, 0.5f, 0.5f)),
-  };
 }
 
 state::~state()
