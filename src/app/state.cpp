@@ -25,7 +25,7 @@ using namespace ogl;
 namespace
 {
   const vec3 CAMERA_POS_DEFAULT(0.0f, 0.0f, 5.0f);
-  const float CAMERA_POS_PER_SEC = 1.0f;
+  const float CAMERA_POS_PER_SEC = 2.5f;
 
   const quat CAMERA_ROT_DEFAULT(1.0f, 0.0f, 0.0f, 0.0f);
   const float CAMERA_ROT_PER_SEC = 90.0f * DEG_TO_RAD;
@@ -42,9 +42,40 @@ state::state()
   : m_camera_pos(CAMERA_POS_DEFAULT),
     m_camera_rot(CAMERA_ROT_DEFAULT),
     m_camera_fov(CAMERA_FOV_DEFAULT),
-    m_meshes()
+    m_objects()
 {
-  m_meshes.push_back(example_meshes::random_cube());
+  // init objects
+  m_objects =
+  {
+    object(example_meshes::random_cube(),
+	   vec3(0.0f, 0.0f, 0.0f),
+	   quat(),
+	   vec3(1.0f, 1.0f, 1.0f)),
+    object(example_meshes::random_cube(),
+	   vec3(3.0f, 0.0f, 0.0f),
+	   quat(),
+	   vec3(0.5f, 0.5f, 0.5f)),
+    object(example_meshes::random_cube(),
+	   vec3(-3.0f, 0.0f, 0.0f),
+	   quat(),
+	   vec3(0.5f, 0.5f, 0.5f)),
+    object(example_meshes::random_cube(),
+	   vec3(0.0f, 3.0f, 0.0f),
+	   quat(),
+	   vec3(0.5f, 0.5f, 0.5f)),
+    object(example_meshes::random_cube(),
+	   vec3(0.0f, -3.0f, 0.0f),
+	   quat(),
+	   vec3(0.5f, 0.5f, 0.5f)),
+    object(example_meshes::random_cube(),
+	   vec3(0.0f, 0.0f, 3.0f),
+	   quat(),
+	   vec3(0.5f, 0.5f, 0.5f)),
+    object(example_meshes::random_cube(),
+	   vec3(0.0f, 0.0f, -3.0f),
+	   quat(),
+	   vec3(0.5f, 0.5f, 0.5f)),
+  };
 }
 
 state::~state()

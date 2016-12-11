@@ -69,10 +69,13 @@ void renderer::render(int width, int height, const state& state)
   m_program->activate();
   m_vao->activate();
 
-  for (mesh m : state.meshes())
+  for (object obj : state.objects())
   {
     // create MVP matrix for this mesh
-    glm::mat4 model;
+    glm::mat4 model =
+      translate(obj.pos()) *				// translation (done third)
+      mat4_cast(obj.rot()) *				// rotation (done second)
+      scale(obj.scale());				// scale (done first)
     glm::mat4 mvp = proj * view * model;
 
     // set MVP matrix
@@ -81,6 +84,7 @@ void renderer::render(int width, int height, const state& state)
     glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
     // render the thing
+    mesh m = obj.object_mesh();
     m_vao->activate_vertex_buffer(BINDING_INDEX, m.vertex_buffer(), sizeof(vertex));
     m_vao->activate_element_buffer(m.element_buffer());
     glDrawElements(GL_TRIANGLES, m.element_count(), GL_UNSIGNED_INT, nullptr);

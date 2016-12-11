@@ -6,6 +6,7 @@ MODULES			:= main							\
 			   app/application					\
 			   app/input						\
 			   app/mesh						\
+			   app/object						\
 			   app/renderer						\
 			   app/state						\
 			   opengl/buffer					\
