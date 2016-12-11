@@ -9,6 +9,7 @@ MODULES			:= main							\
 			   app/object						\
 			   app/renderer						\
 			   app/state						\
+			   app/prototype/example_meshes				\
 			   opengl/buffer					\
 			   opengl/error						\
 			   opengl/glew						\

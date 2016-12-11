@@ -13,6 +13,7 @@
 #include "app/input.hpp"
 #include "app/mesh.hpp"
 #include "app/state.hpp"
+#include "app/prototype/example_meshes.hpp"
 #include "util/constants.hpp"
 
 /* -- Namespaces -- */
