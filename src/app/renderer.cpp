@@ -15,6 +15,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include "app/mesh.hpp"
+#include "app/object.hpp"
 #include "app/renderer.hpp"
 #include "app/vertex.hpp"
 #include "opengl/buffer.hpp"
@@ -58,6 +60,30 @@ void renderer::render(int width, int height, const state& state)
   m_program->activate();
   m_vao->activate();
 
+  // create VP matrix
+  mat4 vp_matrix = view_proj_matrix(width, height, state);
+
+  // loop through each object to render
+  for (const object& obj : state.objects())
+  {
+    // create MVP matrix and set uniform
+    mat4 mvp_matrix = vp_matrix * model_matrix(obj);
+    glUniformMatrix4fv(m_program->uniform_location("vs_mvp"),
+		       1,
+		       GL_FALSE,
+		       value_ptr(mvp_matrix));
+
+    // activate buffer for this object
+    mesh obj_mesh = obj.mesh();
+    m_vao->activate_vertex_buffer(BINDING_INDEX, obj_mesh.buffer(), sizeof(vertex), 0);
+
+    // loop through each element list we need to draw in the mesh
+    for (const mesh_elements& elements : obj_mesh.elements())
+      glDrawElements(elements.mode(), elements.count(), elements.type(), elements.indices());
+
+    // clean up
+    m_vao->unactivate_vertex_buffer(BINDING_INDEX);
+  }
 
   // deactivate program and VAO
   vertex_array::unactivate();
@@ -119,4 +145,31 @@ void renderer::clear_buffer(int width, int height)
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClearDepthf(1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+mat4 renderer::view_proj_matrix(int width, int height, const state& state)
+{
+  // view matrix
+  mat4 view =
+    translate(state.camera_pos()) *			// translation (done second)
+    mat4_cast(state.camera_rot());			// rotation (done first)
+  view = inverse(view);					// invert origin->camera into camera->origin
+
+  // create projection matrix
+  mat4 proj = perspective(state.camera_fov(),		// field of view (Y axis)
+			  (float)width / (float)height,	// aspect ratio
+			  0.1f,				// near clip
+			  100.0f);			// far clip
+
+  return proj * view;
+}
+
+mat4 renderer::model_matrix(const object& obj)
+{
+  glm::mat4 model =
+    translate(obj.pos()) *				// translation (done third)
+    mat4_cast(obj.rot()) *				// rotation (done second)
+    scale(obj.scale());					// scale (done first)
+
+  return model;
 }

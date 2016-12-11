@@ -4,7 +4,10 @@
 PROJECT			:= ogl
 MODULES			:= main							\
 			   app/application					\
+			   app/example_meshes					\
 			   app/input						\
+			   app/mesh						\
+			   app/object						\
 			   app/renderer						\
 			   app/state						\
 			   opengl/buffer					\

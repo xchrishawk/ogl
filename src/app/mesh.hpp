@@ -12,11 +12,14 @@
 #include <GL/glew.h>
 
 #include "app/vertex.hpp"
+#include "opengl/buffer.hpp"
 
 /* -- Types -- */
 
 namespace ogl
 {
+
+  class mesh_elements;
 
   /**
    * Class representing a drawable vertex mesh.
@@ -25,12 +28,18 @@ namespace ogl
   {
   public:
 
+    mesh(const std::vector<ogl::vertex>& vertices,
+	 const std::vector<ogl::mesh_elements>& elements);
 
+    std::vector<ogl::vertex> vertices() const { return m_vertices; }
+    std::vector<ogl::mesh_elements> elements() const { return m_elements; }
+    ogl::immutable_buffer::const_ptr buffer() const { return m_buffer; }
 
   private:
 
     std::vector<ogl::vertex> m_vertices;
     std::vector<ogl::mesh_elements> m_elements;
+    ogl::immutable_buffer::const_ptr m_buffer;
 
   };
 

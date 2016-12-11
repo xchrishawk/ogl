@@ -1,0 +1,189 @@
+/**
+ * example_meshes.cpp
+ * Chris Vig (chris@invictus.so)
+ */
+
+/* -- Includes -- */
+
+#include <vector>
+
+#include "app/example_meshes.hpp"
+#include "app/mesh.hpp"
+#include "app/vertex.hpp"
+#include "util/misc.hpp"
+
+/* -- Namespaces -- */
+
+using namespace std;
+using namespace ogl;
+
+/* -- Constants -- */
+
+namespace
+{
+  const float POS = 1.0f;
+  const float NEG = -POS;
+
+  const float Z = 0.0f;
+  const float U = POS;
+  const float D = NEG;
+  const float R = POS;
+  const float L = NEG;
+  const float F = POS;
+  const float B = NEG;
+
+  const vertex_color WHITE	= { 1.0f, 1.0f, 1.0f, 1.0f };
+  const vertex_color BLACK	= { 0.0f, 0.0f, 0.0f, 1.0f };
+  const vertex_color RED 	= { 1.0f, 0.0f, 0.0f, 1.0f };
+  const vertex_color GREEN	= { 0.0f, 1.0f, 0.0f, 1.0f };
+  const vertex_color BLUE	= { 0.0f, 0.0f, 1.0f, 1.0f };
+  const vertex_color CYAN	= { 0.0f, 1.0f, 1.0f, 1.0f };
+  const vertex_color MAGENTA	= { 1.0f, 0.0f, 1.0f, 1.0f };
+  const vertex_color YELLOW	= { 1.0f, 1.0f, 0.0f, 1.0f };
+}
+
+/* -- Procedures -- */
+
+mesh example_meshes::rgb_triangle()
+{
+  static const vector<vertex> vertices =
+  {
+    { { Z, Z, Z }, RED },
+    { { R, Z, Z }, GREEN },
+    { { Z, U, Z }, BLUE },
+  };
+  static const vector<mesh_elements> elements =
+  {
+    mesh_elements(GL_TRIANGLES, { 0, 1, 2 })
+  };
+  return mesh(vertices, elements);
+}
+
+mesh example_meshes::rgb_square()
+{
+  static const vector<vertex> vertices =
+  {
+    { { Z, Z, Z }, RED },
+    { { L, Z, Z }, GREEN },
+    { { L, U, Z }, WHITE },
+    { { Z, U, Z }, BLUE },
+  };
+  static const vector<mesh_elements> elements =
+  {
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 })
+  };
+  return mesh(vertices, elements);
+}
+
+mesh example_meshes::cmy_triangle()
+{
+  static const vector<vertex> vertices =
+  {
+    { { Z, Z, Z }, CYAN },
+    { { L, Z, Z }, MAGENTA },
+    { { Z, D, Z }, YELLOW },
+  };
+  static const vector<mesh_elements> elements =
+  {
+    mesh_elements(GL_TRIANGLES, { 0, 1, 2 })
+  };
+  return mesh(vertices, elements);
+}
+
+mesh example_meshes::cmy_square()
+{
+  static const vector<vertex> vertices =
+  {
+    { { Z, Z, Z }, CYAN },
+    { { R, Z, Z }, MAGENTA },
+    { { R, D, Z }, WHITE },
+    { { Z, D, Z }, YELLOW },
+  };
+  static const vector<mesh_elements> elements =
+  {
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 })
+  };
+  return mesh(vertices, elements);
+}
+
+mesh example_meshes::rgb_cmy_cube()
+{
+  static const vector<vertex> vertices =
+  {
+    { { L, D, B }, WHITE },
+    { { R, D, B }, RED },
+    { { L, U, B }, GREEN },
+    { { R, U, B }, BLUE },
+    { { L, D, F }, CYAN },
+    { { R, D, F }, MAGENTA },
+    { { L, U, F }, YELLOW },
+    { { R, U, F }, WHITE },
+  };
+  static const vector<mesh_elements> elements =
+  {
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 3, 2 }),	// back
+    mesh_elements(GL_TRIANGLE_FAN, { 4, 5, 7, 6 }),	// front
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 2, 6, 4 }),	// left
+    mesh_elements(GL_TRIANGLE_FAN, { 1, 3, 7, 5 }),	// right
+    mesh_elements(GL_TRIANGLE_FAN, { 2, 3, 7, 6 }),	// top
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 5, 4 }),	// bottom
+  };
+  return mesh(vertices, elements);
+}
+
+mesh example_meshes::random_cube()
+{
+  vector<vertex> vertices =
+  {
+    // front face
+    { { L, D, F }, random_color() },	// 0
+    { { R, D, F }, random_color() },	// 1
+    { { R, U, F }, random_color() },	// 2
+    { { L, U, F }, random_color() },	// 3
+
+    // back face
+    { { L, D, B }, random_color() },	// 4
+    { { R, D, B }, random_color() },	// 5
+    { { R, U, B }, random_color() },	// 6
+    { { L, U, B }, random_color() },	// 7
+
+    // left face
+    { { L, D, B }, random_color() },	// 8
+    { { L, D, F }, random_color() },	// 9
+    { { L, U, F }, random_color() },	// 10
+    { { L, U, B }, random_color() },	// 11
+
+    // right face
+    { { R, D, B }, random_color() },	// 12
+    { { R, D, F }, random_color() },	// 13
+    { { R, U, F }, random_color() },	// 14
+    { { R, U, B }, random_color() },	// 15
+
+    // top face
+    { { L, U, B }, random_color() },	// 16
+    { { R, U, B }, random_color() },	// 17
+    { { R, U, F }, random_color() },	// 18
+    { { L, U, F }, random_color() },	// 19
+
+    // bottom face
+    { { L, D, B }, random_color() },	// 20
+    { { R, D, B }, random_color() },	// 21
+    { { R, D, F }, random_color() },	// 22
+    { { L, D, F }, random_color() },    // 23
+  };
+  static const vector<mesh_elements> elements =
+  {
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }),	// front face
+    mesh_elements(GL_TRIANGLE_FAN, { 4, 5, 6, 7 }),	// back face
+    mesh_elements(GL_TRIANGLE_FAN, { 8, 9, 10, 11 }),	// left face
+    mesh_elements(GL_TRIANGLE_FAN, { 12, 13, 14, 15 }),	// right face
+    mesh_elements(GL_TRIANGLE_FAN, { 16, 17, 18, 19 }),	// top face
+    mesh_elements(GL_TRIANGLE_FAN, { 20, 21, 22, 23 }), // bottom face
+  };
+  return mesh(vertices, elements);
+}
+
+vertex_color example_meshes::random_color()
+{
+  return { ogl_randf(), ogl_randf(), ogl_randf(), 1.0f };
+}

@@ -43,6 +43,8 @@ namespace ogl
     ogl::vertex_array::ptr init_vertex_array(ogl::program::ptr program);
 
     void clear_buffer(int width, int height);
+    glm::mat4 view_proj_matrix(int width, int height, const ogl::state& state);
+    glm::mat4 model_matrix(const ogl::object& obj);
 
   };
 
