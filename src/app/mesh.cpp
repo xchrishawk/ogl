@@ -79,28 +79,44 @@ mesh example_meshes::rgb_cmy_cube()
 {
   vector<vertex> vertices =
   {
-    { { L, D, B }, RED },	// 0
-    { { L, U, B }, GREEN },	// 1
-    { { R, D, B }, BLUE },	// 2
-    { { R, U, B }, WHITE },	// 3
-    { { L, D, F }, WHITE },	// 4
-    { { L, U, F }, CYAN },	// 5
-    { { R, D, F }, MAGENTA },	// 6
-    { { R, U, F }, YELLOW },	// 7
+    { { L, D, B }, RED },		// 0
+    { { L, U, B }, GREEN },		// 1
+    { { R, D, B }, BLUE },		// 2
+    { { R, U, B }, WHITE },		// 3
+    { { L, D, F }, WHITE },		// 4
+    { { L, U, F }, CYAN },		// 5
+    { { R, D, F }, MAGENTA },		// 6
+    { { R, U, F }, YELLOW },		// 7
   };
   vector<GLuint> elements =
   {
-    0, 1, 2, 2, 3, 1,		// back face
-    4, 5, 6, 6, 7, 5,		// front face
-    1, 3, 5, 5, 7, 3,		// top face
-    0, 2, 4, 4, 6, 2,		// bottom face
-    0, 1, 4, 4, 5, 1,		// left face
-    2, 3, 6, 6, 7, 3,		// right face
+    0, 1, 2, 2, 3, 1,			// back face
+    4, 5, 6, 6, 7, 5,			// front face
+    1, 3, 5, 5, 7, 3,			// top face
+    0, 2, 4, 4, 6, 2,			// bottom face
+    0, 1, 4, 4, 5, 1,			// left face
+    2, 3, 6, 6, 7, 3,			// right face
   };
   return mesh(vertices, elements);
 }
 
-vertex_color example_meshes::color_rand()
+mesh example_meshes::random_cube()
+{
+  vector<vertex> vertices =
+  {
+    // back face
+    { { L, D, B }, random_color() },	// 0
+    { { R, D, B }, random_color() },	// 1
+    { { L, U, B }, random_color() },	// 2
+    { { R, U, B }, random_color() },	// 3
+  };
+  vector<GLuint> elements =
+  {
+    0, 1, 2, 2, 3, 1,			// back face
+  };
+}
+
+  vertex_color example_meshes::random_color()
 {
   return { ogl_randf(), ogl_randf(), ogl_randf() };
 }

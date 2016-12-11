@@ -54,6 +54,7 @@ namespace ogl
     static mesh rgb_triangle();
     static mesh cmy_triangle();
     static mesh rgb_cmy_cube();
+    static mesh random_cube();
 
   private:
 
@@ -62,7 +63,7 @@ namespace ogl
     example_meshes(const example_meshes&) = delete;
     example_meshes& operator =(const example_meshes&) = delete;
 
-    static vertex_color color_rand();
+    static vertex_color random_color();
 
   };
 
