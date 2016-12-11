@@ -44,9 +44,7 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_meshes()
 {
-  m_meshes.push_back(example_meshes::rgb_cmy_cube());
-  m_meshes.push_back(example_meshes::rgb_triangle());
-  m_meshes.push_back(example_meshes::cmy_triangle());
+  m_meshes.push_back(example_meshes::random_cube());
 }
 
 state::~state()
