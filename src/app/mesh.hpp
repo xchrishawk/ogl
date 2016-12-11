@@ -28,15 +28,19 @@ namespace ogl
   {
   public:
 
-    mesh(const std::vector<vertex>& vertices);
+    mesh(const std::vector<vertex>& vertices, const std::vector<GLuint>& elements);
 
-    ogl::immutable_buffer::const_ptr buffer() const { return m_buffer; }
-    GLsizei count() const { return m_count; }
+    ogl::immutable_buffer::const_ptr vertex_buffer() const { return m_vertex_buffer; }
+    GLsizei vertex_count() const { return m_vertex_count; }
+    ogl::immutable_buffer::const_ptr element_buffer() const { return m_element_buffer; }
+    GLsizei element_count() const { return m_element_count; }
 
   private:
 
-    ogl::immutable_buffer::const_ptr m_buffer;
-    GLsizei m_count;
+    ogl::immutable_buffer::const_ptr m_vertex_buffer;
+    GLsizei m_vertex_count;
+    ogl::immutable_buffer::const_ptr m_element_buffer;
+    GLsizei m_element_count;
 
   };
 
@@ -49,6 +53,7 @@ namespace ogl
 
     static mesh rgb_triangle();
     static mesh cmy_triangle();
+    static mesh rgb_cmy_cube();
 
   private:
 
@@ -56,6 +61,8 @@ namespace ogl
     example_meshes() = delete;
     example_meshes(const example_meshes&) = delete;
     example_meshes& operator =(const example_meshes&) = delete;
+
+    static vertex_color color_rand();
 
   };
 

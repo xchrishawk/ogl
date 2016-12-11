@@ -81,9 +81,11 @@ void renderer::render(int width, int height, const state& state)
     glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
     // render the thing
-    m_vao->activate_vertex_buffer(BINDING_INDEX, m.buffer(), sizeof(vertex));
-    glDrawArrays(GL_TRIANGLES, 0, m.count());
+    m_vao->activate_vertex_buffer(BINDING_INDEX, m.vertex_buffer(), sizeof(vertex));
+    m_vao->activate_element_buffer(m.element_buffer());
+    glDrawElements(GL_TRIANGLES, m.element_count(), GL_UNSIGNED_INT, nullptr);
     m_vao->unactivate_vertex_buffer(BINDING_INDEX);
+    m_vao->unactivate_element_buffer();
   }
 
   vertex_array::unactivate();
@@ -131,7 +133,12 @@ void renderer::clear_buffer(int width, int height)
   // update viewport dimensions
   glViewport(0, 0, width, height);
 
+  // enable depth testing
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
+
   // clear buffer
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClearDepthf(1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

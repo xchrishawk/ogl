@@ -88,6 +88,16 @@ void vertex_array::unactivate_vertex_buffer(GLuint binding_index)
 			    0);				// stride
 }
 
+void vertex_array::activate_element_buffer(immutable_buffer::const_ptr buffer)
+{
+  glVertexArrayElementBuffer(m_handle, buffer->handle());
+}
+
+void vertex_array::unactivate_element_buffer()
+{
+  glVertexArrayElementBuffer(m_handle, 0);
+}
+
 GLuint vertex_array::new_handle()
 {
   GLuint handle = 0;

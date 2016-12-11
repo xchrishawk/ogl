@@ -17,7 +17,8 @@ MODULES			:= main							\
 			   opengl/vertex_array					\
 			   opengl/window					\
 			   shaders/shader_sources				\
-			   util/debug
+			   util/debug						\
+			   util/misc
 SHADERS			:= shaders/default_fragment_shader			\
 			   shaders/default_vertex_shader
 PKGLIBS			:= glew glfw3

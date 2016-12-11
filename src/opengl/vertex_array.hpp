@@ -45,6 +45,9 @@ namespace ogl
 				GLintptr offset = 0);
     void unactivate_vertex_buffer(GLuint binding_index);
 
+    void activate_element_buffer(immutable_buffer::const_ptr buffer);
+    void unactivate_element_buffer();
+
     GLuint handle() const { return m_handle; }
 
   private:
