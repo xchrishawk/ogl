@@ -115,9 +115,9 @@ void state::update_camera_pos(float delta_t, const input& input)
 
   // yaw
   if (input.input_active(INPUT_KEY_CAMERA_ROLL_RIGHT))
-    m_camera_rot = rotate(m_camera_rot, POSITIVE_RATE, VEC3_UNIT_Z);
-  if (input.input_active(INPUT_KEY_CAMERA_ROLL_LEFT))
     m_camera_rot = rotate(m_camera_rot, NEGATIVE_RATE, VEC3_UNIT_Z);
+  if (input.input_active(INPUT_KEY_CAMERA_ROLL_LEFT))
+    m_camera_rot = rotate(m_camera_rot, POSITIVE_RATE, VEC3_UNIT_Z);
 }
 
 void state::update_camera_rot(float delta_t, const input& input)
