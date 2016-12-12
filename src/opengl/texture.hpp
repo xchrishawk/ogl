@@ -28,6 +28,13 @@ namespace ogl
     GLenum target() const { return m_target; }
     GLuint handle() const { return m_handle; }
 
+    void set_wrap_x(GLint wrap);
+    void set_wrap_y(GLint wrap);
+    void set_wrap_z(GLint wrap);
+    void set_border_color(float r, float g, float b, float a);
+    void set_min_filter(GLint filter);
+    void set_mag_filter(GLint filter);
+
   protected:
 
     texture(GLenum target);

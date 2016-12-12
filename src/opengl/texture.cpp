@@ -30,6 +30,37 @@ texture::~texture()
   glDeleteTextures(1, &m_handle);
 }
 
+void texture::set_wrap_x(GLint wrap)
+{
+  glTextureParameteri(m_handle, GL_TEXTURE_WRAP_S, wrap);
+}
+
+void texture::set_wrap_y(GLint wrap)
+{
+  glTextureParameteri(m_handle, GL_TEXTURE_WRAP_T, wrap);
+}
+
+void texture::set_wrap_z(GLint wrap)
+{
+  glTextureParameteri(m_handle, GL_TEXTURE_WRAP_R, wrap);
+}
+
+void texture::set_border_color(float r, float g, float b, float a)
+{
+  float color[] = { r, g, b, a };
+  glTextureParameterfv(m_handle, GL_TEXTURE_BORDER_COLOR, color);
+}
+
+void texture::set_min_filter(GLint filter)
+{
+  glTextureParameteri(m_handle, GL_TEXTURE_MIN_FILTER, filter);
+}
+
+void texture::set_mag_filter(GLint filter)
+{
+  glTextureParameteri(m_handle, GL_TEXTURE_MAG_FILTER, filter);
+}
+
 GLuint texture::new_handle(GLenum target)
 {
   GLuint handle = 0;
