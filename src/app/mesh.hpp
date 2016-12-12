@@ -13,6 +13,7 @@
 
 #include "app/vertex.hpp"
 #include "opengl/buffer.hpp"
+#include "opengl/texture.hpp"
 
 /* -- Types -- */
 
@@ -50,20 +51,25 @@ namespace ogl
   {
   public:
 
-    mesh_elements(GLenum mode, const std::vector<GLuint>& indices)
+    mesh_elements(GLenum mode,
+		  const std::vector<GLuint>& indices,
+		  const ogl::texture2d::const_ptr& texture = ogl::texture2d::const_ptr(nullptr))
       : m_mode(mode),
-	m_indices(indices)
+	m_indices(indices),
+	m_texture(texture)
     { }
 
     GLenum mode() const { return m_mode; }
     GLsizei count() const { return static_cast<GLsizei>(m_indices.size()); }
     GLenum type() const { return GL_UNSIGNED_INT; }
     const void* indices() const { return m_indices.data(); }
+    ogl::texture2d::const_ptr texture() const { return m_texture; }
 
   private:
 
     GLenum m_mode;
     std::vector<GLuint> m_indices;
+    ogl::texture2d::const_ptr m_texture;
 
   };
 
