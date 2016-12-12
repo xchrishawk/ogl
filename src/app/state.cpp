@@ -10,7 +10,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-#include "app/example_meshes.hpp"
+#include "app/examples.hpp"
 #include "app/input.hpp"
 #include "app/state.hpp"
 #include "util/constants.hpp"
@@ -44,7 +44,7 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_objects()
 {
-  m_objects.push_back(object(example_meshes::textured_square()));
+  m_objects.push_back(object(example_meshes::textured_cube()));
   m_objects.push_back(object(example_meshes::random_cube(),
 			     vec3(3.0f, 0.0f, 0.0f),
 			     quat(),

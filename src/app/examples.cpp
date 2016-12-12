@@ -1,5 +1,5 @@
 /**
- * example_meshes.cpp
+ * examples.cpp
  * Chris Vig (chris@invictus.so)
  */
 
@@ -9,10 +9,11 @@
 
 #include <GL/glew.h>
 
-#include "app/example_meshes.hpp"
+#include "app/examples.hpp"
 #include "app/mesh.hpp"
 #include "app/vertex.hpp"
 #include "opengl/texture.hpp"
+#include "util/debug.hpp"
 #include "util/misc.hpp"
 
 /* -- Namespaces -- */
@@ -188,15 +189,6 @@ mesh example_meshes::random_cube()
 
 mesh example_meshes::textured_square()
 {
-  static const float PIXELS[] =
-  {
-    1.0f, 0.0f, 0.0f,	0.0f, 1.0f, 0.0f,
-    0.0f, 0.0f, 1.0f,	1.0f, 1.0f, 0.0f,
-  };
-
-  auto tex = texture2d::create(1, GL_RGB32F, 2, 2);
-  tex->set_image(0, 0, 0, 2, 2, GL_RGB, GL_FLOAT, PIXELS);
-
   static const vector<vertex> vertices =
   {
     { { L, D, Z }, BLACK, { 0.0f, 0.0f } },
@@ -206,7 +198,59 @@ mesh example_meshes::textured_square()
   };
   vector<mesh_elements> elements =
   {
-    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }, tex),
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }, example_textures::red_white_checker()),
+  };
+  return mesh(vertices, elements);
+}
+
+mesh example_meshes::textured_cube()
+{
+  vector<vertex> vertices =
+  {
+    // front face
+    { { L, D, F }, MAGENTA, { 0.0f, 0.0f } },
+    { { R, D, F }, MAGENTA, { 1.0f, 0.0f } },
+    { { R, U, F }, MAGENTA, { 1.0f, 1.0f } },
+    { { L, U, F }, MAGENTA, { 0.0f, 1.0f } },
+
+    // back face
+    { { L, D, B }, MAGENTA, { 0.0f, 0.0f } },
+    { { R, D, B }, MAGENTA, { 1.0f, 0.0f } },
+    { { R, U, B }, MAGENTA, { 1.0f, 1.0f } },
+    { { L, U, B }, MAGENTA, { 0.0f, 1.0f } },
+
+    // left face
+    { { L, D, B }, MAGENTA, { 0.0f, 0.0f } },
+    { { L, D, F }, MAGENTA, { 1.0f, 0.0f } },
+    { { L, U, F }, MAGENTA, { 1.0f, 1.0f } },
+    { { L, U, B }, MAGENTA, { 0.0f, 1.0f } },
+
+    // right face
+    { { R, D, B }, MAGENTA, { 0.0f, 0.0f } },
+    { { R, D, F }, MAGENTA, { 1.0f, 0.0f } },
+    { { R, U, F }, MAGENTA, { 1.0f, 1.0f } },
+    { { R, U, B }, MAGENTA, { 0.0f, 1.0f } },
+
+    // top face
+    { { L, U, B }, MAGENTA, { 0.0f, 0.0f } },
+    { { R, U, B }, MAGENTA, { 1.0f, 0.0f } },
+    { { R, U, F }, MAGENTA, { 1.0f, 1.0f } },
+    { { L, U, F }, MAGENTA, { 0.0f, 1.0f } },
+
+    // bottom face
+    { { L, D, B }, MAGENTA, { 0.0f, 0.0f } },
+    { { R, D, B }, MAGENTA, { 1.0f, 0.0f } },
+    { { R, D, F }, MAGENTA, { 1.0f, 1.0f } },
+    { { L, D, F }, MAGENTA, { 0.0f, 1.0f } },
+  };
+  static const vector<mesh_elements> elements =
+  {
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }, example_textures::red_white_checker()),
+    mesh_elements(GL_TRIANGLE_FAN, { 4, 5, 6, 7 }, example_textures::red_white_checker()),
+    mesh_elements(GL_TRIANGLE_FAN, { 8, 9, 10, 11 }, example_textures::red_white_checker()),
+    mesh_elements(GL_TRIANGLE_FAN, { 12, 13, 14, 15 }, example_textures::red_white_checker()),
+    mesh_elements(GL_TRIANGLE_FAN, { 16, 17, 18, 19 }, example_textures::red_white_checker()),
+    mesh_elements(GL_TRIANGLE_FAN, { 20, 21, 22, 23 }, example_textures::red_white_checker()),
   };
   return mesh(vertices, elements);
 }
@@ -214,4 +258,27 @@ mesh example_meshes::textured_square()
 vertex_color example_meshes::random_color()
 {
   return { ogl_randf(), ogl_randf(), ogl_randf(), 1.0f };
+}
+
+texture2d::const_ptr example_textures::red_white_checker()
+{
+  static const GLsizei WIDTH = 2;
+  static const GLsizei HEIGHT = 2;
+  static const float PIXELS[] =
+  {
+    1.0f, 0.0f, 0.0f,	1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,	1.0f, 0.0f, 0.0f,
+  };
+  ogl_static_assert(ogl_array_size(PIXELS) == WIDTH * HEIGHT * 3, "Array wrong size!");
+
+  static texture2d::ptr tex;
+  if (!tex)
+  {
+    tex = texture2d::create(1, GL_RGB32F, WIDTH, HEIGHT);
+    tex->set_image(0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_FLOAT, PIXELS);
+    tex->set_min_filter(GL_NEAREST);
+    tex->set_mag_filter(GL_NEAREST);
+  }
+
+  return tex;
 }
