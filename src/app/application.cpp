@@ -9,6 +9,7 @@
 #include "app/input.hpp"
 #include "app/renderer.hpp"
 #include "app/state.hpp"
+#include "opengl/error.hpp"
 #include "opengl/glew.hpp"
 #include "opengl/glfw.hpp"
 #include "opengl/window.hpp"
@@ -115,12 +116,21 @@ void application::handle_state(float abs_t, float delta_t)
 
 void application::handle_render(float abs_t, float delta_t)
 {
+  // get framebuffer size
   int width = 0;
   int height = 0;
   m_window.framebuffer_size(&width, &height);
 
+  // render the display
   m_renderer.render(width, height, m_state);
   m_window.swap_buffers();
+
+  // check for OpenGL errors
+#ifdef OGL_DEBUG
+  GLenum last_error = opengl_last_error();
+  if (last_error != GL_NO_ERROR)
+    ogl_error_message(opengl_error_string(last_error));
+#endif /* OGL_DEBUG */
 }
 
 void application::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
