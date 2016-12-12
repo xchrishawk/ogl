@@ -44,29 +44,9 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_objects()
 {
-  m_objects.push_back(object(example_meshes::random_cube()));
+  m_objects.push_back(object(example_meshes::textured_square()));
   m_objects.push_back(object(example_meshes::random_cube(),
 			     vec3(3.0f, 0.0f, 0.0f),
-			     quat(),
-			     vec3(0.5f, 0.5f, 0.5f)));
-  m_objects.push_back(object(example_meshes::random_cube(),
-			     vec3(-3.0f, 0.0f, 0.0f),
-			     quat(),
-			     vec3(0.5f, 0.5f, 0.5f)));
-  m_objects.push_back(object(example_meshes::random_cube(),
-			     vec3(0.0f, 3.0f, 0.0f),
-			     quat(),
-			     vec3(0.5f, 0.5f, 0.5f)));
-  m_objects.push_back(object(example_meshes::random_cube(),
-			     vec3(0.0f, -3.0f, 0.0f),
-			     quat(),
-			     vec3(0.5f, 0.5f, 0.5f)));
-  m_objects.push_back(object(example_meshes::random_cube(),
-			     vec3(0.0f, 0.0f, 3.0f),
-			     quat(),
-			     vec3(0.5f, 0.5f, 0.5f)));
-  m_objects.push_back(object(example_meshes::random_cube(),
-			     vec3(0.0f, 0.0f, -3.0f),
 			     quat(),
 			     vec3(0.5f, 0.5f, 0.5f)));
 }

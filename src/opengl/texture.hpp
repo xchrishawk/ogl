@@ -25,12 +25,12 @@ namespace ogl
 
     virtual ~texture();
 
+    GLenum target() const { return m_target; }
+    GLuint handle() const { return m_handle; }
+
   protected:
 
     texture(GLenum target);
-
-    GLenum target() const { return m_target; }
-    GLuint handle() const { return m_handle; }
 
   private:
 

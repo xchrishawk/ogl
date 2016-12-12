@@ -7,9 +7,12 @@
 
 #include <vector>
 
+#include <GL/glew.h>
+
 #include "app/example_meshes.hpp"
 #include "app/mesh.hpp"
 #include "app/vertex.hpp"
+#include "opengl/texture.hpp"
 #include "util/misc.hpp"
 
 /* -- Namespaces -- */
@@ -179,6 +182,31 @@ mesh example_meshes::random_cube()
     mesh_elements(GL_TRIANGLE_FAN, { 12, 13, 14, 15 }),	// right face
     mesh_elements(GL_TRIANGLE_FAN, { 16, 17, 18, 19 }),	// top face
     mesh_elements(GL_TRIANGLE_FAN, { 20, 21, 22, 23 }), // bottom face
+  };
+  return mesh(vertices, elements);
+}
+
+mesh example_meshes::textured_square()
+{
+  static const float PIXELS[] =
+  {
+    1.0f, 0.0f, 0.0f,	0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 1.0f,	1.0f, 1.0f, 0.0f,
+  };
+
+  auto tex = texture2d::create(1, GL_RGB32F, 2, 2);
+  tex->set_image(0, 0, 0, 2, 2, GL_RGB, GL_FLOAT, PIXELS);
+
+  static const vector<vertex> vertices =
+  {
+    { { L, D, Z }, BLACK, { 0.0f, 0.0f } },
+    { { R, D, Z }, BLACK, { 1.0f, 0.0f } },
+    { { R, U, Z }, BLACK, { 1.0f, 1.0f } },
+    { { L, U, Z }, BLACK, { 0.0f, 1.0f } },
+  };
+  vector<mesh_elements> elements =
+  {
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }, tex),
   };
   return mesh(vertices, elements);
 }

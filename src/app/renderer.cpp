@@ -61,33 +61,71 @@ void renderer::render(int width, int height, const state& state)
   m_vao->activate();
 
   // create VP matrix
-  mat4 vp_matrix = view_proj_matrix(width, height, state);
+  mat4 vp = view_proj_matrix(width, height, state);
 
   // loop through each object to render
   for (const object& obj : state.objects())
-  {
-    // create MVP matrix and set uniform
-    mat4 mvp_matrix = vp_matrix * model_matrix(obj);
-    glUniformMatrix4fv(m_program->uniform_location("vs_mvp"),
-		       1,
-		       GL_FALSE,
-		       value_ptr(mvp_matrix));
-
-    // activate buffer for this object
-    mesh obj_mesh = obj.mesh();
-    m_vao->activate_vertex_buffer(BINDING_INDEX, obj_mesh.buffer(), sizeof(vertex), 0);
-
-    // loop through each element list we need to draw in the mesh
-    for (const mesh_elements& elements : obj_mesh.elements())
-      glDrawElements(elements.mode(), elements.count(), elements.type(), elements.indices());
-
-    // clean up
-    m_vao->unactivate_vertex_buffer(BINDING_INDEX);
-  }
+    render_object(obj, vp);
 
   // deactivate program and VAO
   vertex_array::unactivate();
   program::unactivate();
+}
+
+
+void renderer::clear_buffer(int width, int height)
+{
+  // update viewport dimensions
+  glViewport(0, 0, width, height);
+
+  // enable depth testing
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
+
+  // clear buffer
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClearDepthf(1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void renderer::render_object(const object& obj, const mat4& vp)
+{
+  // create MVP matrix and set uniform
+  mat4 mvp = vp * model_matrix(obj);
+  glUniformMatrix4fv(m_program->uniform_location("vs_mvp"),
+		     1,
+		     GL_FALSE,
+		     value_ptr(mvp));
+
+  // activate buffer for this object
+  mesh obj_mesh = obj.mesh();
+  m_vao->activate_vertex_buffer(BINDING_INDEX, obj_mesh.buffer(), sizeof(vertex), 0);
+
+  // render each mesh elements set
+  for (const mesh_elements& elements : obj_mesh.elements())
+    render_mesh_elements(elements);
+
+  // clean up
+  m_vao->unactivate_vertex_buffer(BINDING_INDEX);
+}
+
+void renderer::render_mesh_elements(const mesh_elements& elements)
+{
+  glActiveTexture(GL_TEXTURE0);
+
+  if (elements.texture())
+  {
+    glBindTexture(GL_TEXTURE_2D, elements.texture()->handle());
+    glUniform1i(m_program->uniform_location("fs_tex"), 0);
+    glUniform1i(m_program->uniform_location("fs_tex_avail"), true);
+  }
+  else
+  {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glUniform1i(m_program->uniform_location("fs_tex_avail"), false);
+  }
+
+  glDrawElements(elements.mode(), elements.count(), elements.type(), elements.indices());
 }
 
 program::ptr renderer::init_program()
@@ -137,21 +175,6 @@ vertex_array::ptr renderer::init_vertex_array(program::ptr program)
 			    offsetof(vertex, texture));
 
   return vao;
-}
-
-void renderer::clear_buffer(int width, int height)
-{
-  // update viewport dimensions
-  glViewport(0, 0, width, height);
-
-  // enable depth testing
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LESS);
-
-  // clear buffer
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClearDepthf(1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 mat4 renderer::view_proj_matrix(int width, int height, const state& state)

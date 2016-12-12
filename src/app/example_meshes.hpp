@@ -26,6 +26,8 @@ namespace ogl
     static ogl::mesh rgb_cmy_cube();
     static ogl::mesh random_cube();
 
+    static ogl::mesh textured_square();
+
   private:
 
     // not instantiable
