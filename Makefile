@@ -16,6 +16,7 @@ MODULES			:= main							\
 			   opengl/glfw						\
 			   opengl/program					\
 			   opengl/shader					\
+			   opengl/texture					\
 			   opengl/vertex_array					\
 			   opengl/window					\
 			   shaders/shader_sources				\
