@@ -69,11 +69,39 @@ mesh example_meshes::gray_cube()
     { { L, D, B }, NORM_NEG_Z, GRAY },
     { { L, U, B }, NORM_NEG_Z, GRAY },
     { { R, U, B }, NORM_NEG_Z, GRAY },
+
+    // left face
+    { { L, D, B }, NORM_NEG_X, GRAY },
+    { { L, D, F }, NORM_NEG_X, GRAY },
+    { { L, U, F }, NORM_NEG_X, GRAY },
+    { { L, U, B }, NORM_NEG_X, GRAY },
+
+    // right face
+    { { R, D, F }, NORM_POS_X, GRAY },
+    { { R, D, B }, NORM_POS_X, GRAY },
+    { { R, U, B }, NORM_POS_X, GRAY },
+    { { R, U, F }, NORM_POS_X, GRAY },
+
+    // top face
+    { { L, U, B }, NORM_POS_Y, GRAY },
+    { { L, U, F }, NORM_POS_Y, GRAY },
+    { { R, U, F }, NORM_POS_Y, GRAY },
+    { { R, U, B }, NORM_POS_Y, GRAY },
+
+    // bottom face
+    { { L, D, B }, NORM_NEG_Y, GRAY },
+    { { R, D, B }, NORM_NEG_Y, GRAY },
+    { { R, D, U }, NORM_NEG_Y, GRAY },
+    { { L, D, U }, NORM_NEG_Y, GRAY },
   };
   static const vector<mesh_elements> ELEMENTS =
   {
     mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }),
     mesh_elements(GL_TRIANGLE_FAN, { 4, 5, 6, 7 }),
+    mesh_elements(GL_TRIANGLE_FAN, { 8, 9, 10, 11 }),
+    mesh_elements(GL_TRIANGLE_FAN, { 12, 13, 14, 15 }),
+    mesh_elements(GL_TRIANGLE_FAN, { 16, 17, 18, 19 }),
+    mesh_elements(GL_TRIANGLE_FAN, { 20, 21, 22, 23 }),
   };
   static const mesh MESH = mesh(VERTICES, ELEMENTS);
 

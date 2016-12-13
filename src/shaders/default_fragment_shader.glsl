@@ -12,28 +12,45 @@ uniform sampler2D texture_sampler;
 
 // -- Inputs --
 
-in VertexFragmentBlock
+in VertexBlock
 {
   vec3 position;
   vec3 normal;
   vec4 color;
   vec2 texture_coord;
-} inblock;
+} invertex;
 
-// -- Constants --
+in PointLightBlock
+{
+  vec3 position;
+  vec4 color;
+  float intensity;
+} inpointlight;
 
-const vec3 LIGHT_POSITION = vec3(1.0, 1.0, 2.0);
-const vec4 LIGHT_COLOR = vec4(1.0, 0.4, 1.0, 1.0);
+in AmbientLightBlock
+{
+  vec4 color;
+  float intensity;
+} inambientlight;
 
 // -- Procedures --
 
 void main(void)
 {
-//  vec3 light_vector = LIGHT_POSITION - inblock.position;
-//  float cosTheta = dot(inblock.normal, normalize(light_vector));
+  vec3 pointlight_delta = inpointlight.position - invertex.position;
+  float pointlight_dist = length(pointlight_delta);
+  float pointlight_costheta = dot(normalize(invertex.normal), normalize(pointlight_delta));
+  pointlight_costheta = clamp(pointlight_costheta, 0, 1);
 
-  if (texture_available)
-    gl_FragColor = texture(texture_sampler, inblock.texture_coord);
-  else
-    gl_FragColor = inblock.color;
+  vec4 diffuse =
+    inpointlight.intensity *
+    inpointlight.color *
+    pointlight_costheta *
+    (1.0 / (pointlight_dist * pointlight_dist));
+
+  vec4 ambient =
+    inambientlight.intensity *
+    inambientlight.color;
+
+  gl_FragColor = (invertex.color * diffuse) + (invertex.color * ambient);
 }
