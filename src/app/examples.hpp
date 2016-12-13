@@ -20,15 +20,7 @@ namespace ogl
   {
   public:
 
-    static ogl::mesh rgb_triangle();
-    static ogl::mesh rgb_square();
-    static ogl::mesh cmy_triangle();
-    static ogl::mesh cmy_square();
-    static ogl::mesh rgb_cmy_cube();
-    static ogl::mesh random_cube();
-
-    static ogl::mesh textured_square();
-    static ogl::mesh textured_cube();
+    static mesh gray_cube();
 
   private:
 

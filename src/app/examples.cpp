@@ -25,234 +25,59 @@ using namespace ogl;
 
 namespace
 {
-  const float POS = 1.0f;
-  const float NEG = -POS;
-
+  // constants
+  const float P = 1.0f;
+  const float N = -1.0f;
   const float Z = 0.0f;
-  const float U = POS;
-  const float D = NEG;
-  const float R = POS;
-  const float L = NEG;
-  const float F = POS;
-  const float B = NEG;
 
-  const vertex_color WHITE	= { 1.0f, 1.0f, 1.0f, 1.0f };
-  const vertex_color BLACK	= { 0.0f, 0.0f, 0.0f, 1.0f };
-  const vertex_color RED 	= { 1.0f, 0.0f, 0.0f, 1.0f };
-  const vertex_color GREEN	= { 0.0f, 1.0f, 0.0f, 1.0f };
-  const vertex_color BLUE	= { 0.0f, 0.0f, 1.0f, 1.0f };
-  const vertex_color CYAN	= { 0.0f, 1.0f, 1.0f, 1.0f };
-  const vertex_color MAGENTA	= { 1.0f, 0.0f, 1.0f, 1.0f };
-  const vertex_color YELLOW	= { 1.0f, 1.0f, 0.0f, 1.0f };
+  // vertex positions
+  const float R = P;
+  const float L = N;
+  const float U = P;
+  const float D = N;
+  const float F = P;
+  const float B = N;
+
+  // vertex normals
+  const vertex_normal NORM_POS_X = { P, Z, Z };
+  const vertex_normal NORM_NEG_X = { N, Z, Z };
+  const vertex_normal NORM_POS_Y = { Z, P, Z };
+  const vertex_normal NORM_NEG_Y = { Z, N, Z };
+  const vertex_normal NORM_POS_Z = { Z, Z, P };
+  const vertex_normal NORM_NEG_Z = { Z, Z, N };
+
+  // vertex colors
+  const vertex_color WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
+  const vertex_color GRAY = { 0.5f, 0.5f, 0.5f, 1.0f };
+  const vertex_color BLACK = { 0.0f, 0.0f, 0.0f, 1.0f };
 }
 
 /* -- Procedures -- */
 
-mesh example_meshes::rgb_triangle()
+mesh example_meshes::gray_cube()
 {
-  static const vector<vertex> vertices =
-  {
-    { { Z, Z, Z }, RED },
-    { { R, Z, Z }, GREEN },
-    { { Z, U, Z }, BLUE },
-  };
-  static const vector<mesh_elements> elements =
-  {
-    mesh_elements(GL_TRIANGLES, { 0, 1, 2 })
-  };
-  return mesh(vertices, elements);
-}
-
-mesh example_meshes::rgb_square()
-{
-  static const vector<vertex> vertices =
-  {
-    { { Z, Z, Z }, RED },
-    { { L, Z, Z }, GREEN },
-    { { L, U, Z }, WHITE },
-    { { Z, U, Z }, BLUE },
-  };
-  static const vector<mesh_elements> elements =
-  {
-    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 })
-  };
-  return mesh(vertices, elements);
-}
-
-mesh example_meshes::cmy_triangle()
-{
-  static const vector<vertex> vertices =
-  {
-    { { Z, Z, Z }, CYAN },
-    { { L, Z, Z }, MAGENTA },
-    { { Z, D, Z }, YELLOW },
-  };
-  static const vector<mesh_elements> elements =
-  {
-    mesh_elements(GL_TRIANGLES, { 0, 1, 2 })
-  };
-  return mesh(vertices, elements);
-}
-
-mesh example_meshes::cmy_square()
-{
-  static const vector<vertex> vertices =
-  {
-    { { Z, Z, Z }, CYAN },
-    { { R, Z, Z }, MAGENTA },
-    { { R, D, Z }, WHITE },
-    { { Z, D, Z }, YELLOW },
-  };
-  static const vector<mesh_elements> elements =
-  {
-    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 })
-  };
-  return mesh(vertices, elements);
-}
-
-mesh example_meshes::rgb_cmy_cube()
-{
-  static const vector<vertex> vertices =
-  {
-    { { L, D, B }, WHITE },
-    { { R, D, B }, RED },
-    { { L, U, B }, GREEN },
-    { { R, U, B }, BLUE },
-    { { L, D, F }, CYAN },
-    { { R, D, F }, MAGENTA },
-    { { L, U, F }, YELLOW },
-    { { R, U, F }, WHITE },
-  };
-  static const vector<mesh_elements> elements =
-  {
-    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 3, 2 }),	// back
-    mesh_elements(GL_TRIANGLE_FAN, { 4, 5, 7, 6 }),	// front
-    mesh_elements(GL_TRIANGLE_FAN, { 0, 2, 6, 4 }),	// left
-    mesh_elements(GL_TRIANGLE_FAN, { 1, 3, 7, 5 }),	// right
-    mesh_elements(GL_TRIANGLE_FAN, { 2, 3, 7, 6 }),	// top
-    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 5, 4 }),	// bottom
-  };
-  return mesh(vertices, elements);
-}
-
-mesh example_meshes::random_cube()
-{
-  vector<vertex> vertices =
+  static const vector<vertex> VERTICES =
   {
     // front face
-    { { L, D, F }, random_color() },	// 0
-    { { R, D, F }, random_color() },	// 1
-    { { R, U, F }, random_color() },	// 2
-    { { L, U, F }, random_color() },	// 3
+    { { L, D, F }, NORM_POS_Z, GRAY },
+    { { R, D, F }, NORM_POS_Z, GRAY },
+    { { R, U, F }, NORM_POS_Z, GRAY },
+    { { L, U, F }, NORM_POS_Z, GRAY },
 
     // back face
-    { { L, D, B }, random_color() },	// 4
-    { { R, D, B }, random_color() },	// 5
-    { { R, U, B }, random_color() },	// 6
-    { { L, U, B }, random_color() },	// 7
-
-    // left face
-    { { L, D, B }, random_color() },	// 8
-    { { L, D, F }, random_color() },	// 9
-    { { L, U, F }, random_color() },	// 10
-    { { L, U, B }, random_color() },	// 11
-
-    // right face
-    { { R, D, B }, random_color() },	// 12
-    { { R, D, F }, random_color() },	// 13
-    { { R, U, F }, random_color() },	// 14
-    { { R, U, B }, random_color() },	// 15
-
-    // top face
-    { { L, U, B }, random_color() },	// 16
-    { { R, U, B }, random_color() },	// 17
-    { { R, U, F }, random_color() },	// 18
-    { { L, U, F }, random_color() },	// 19
-
-    // bottom face
-    { { L, D, B }, random_color() },	// 20
-    { { R, D, B }, random_color() },	// 21
-    { { R, D, F }, random_color() },	// 22
-    { { L, D, F }, random_color() },    // 23
+    { { R, D, B }, NORM_NEG_Z, GRAY },
+    { { L, D, B }, NORM_NEG_Z, GRAY },
+    { { L, U, B }, NORM_NEG_Z, GRAY },
+    { { R, U, B }, NORM_NEG_Z, GRAY },
   };
-  static const vector<mesh_elements> elements =
+  static const vector<mesh_elements> ELEMENTS =
   {
-    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }),	// front face
-    mesh_elements(GL_TRIANGLE_FAN, { 4, 5, 6, 7 }),	// back face
-    mesh_elements(GL_TRIANGLE_FAN, { 8, 9, 10, 11 }),	// left face
-    mesh_elements(GL_TRIANGLE_FAN, { 12, 13, 14, 15 }),	// right face
-    mesh_elements(GL_TRIANGLE_FAN, { 16, 17, 18, 19 }),	// top face
-    mesh_elements(GL_TRIANGLE_FAN, { 20, 21, 22, 23 }), // bottom face
+    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }),
+    mesh_elements(GL_TRIANGLE_FAN, { 4, 5, 6, 7 }),
   };
-  return mesh(vertices, elements);
-}
+  static const mesh MESH = mesh(VERTICES, ELEMENTS);
 
-mesh example_meshes::textured_square()
-{
-  static const vector<vertex> vertices =
-  {
-    { { L, D, Z }, BLACK, { 0.0f, 0.0f } },
-    { { R, D, Z }, BLACK, { 1.0f, 0.0f } },
-    { { R, U, Z }, BLACK, { 1.0f, 1.0f } },
-    { { L, U, Z }, BLACK, { 0.0f, 1.0f } },
-  };
-  vector<mesh_elements> elements =
-  {
-    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }, example_textures::red_white_checker()),
-  };
-  return mesh(vertices, elements);
-}
-
-mesh example_meshes::textured_cube()
-{
-  vector<vertex> vertices =
-  {
-    // front face
-    { { L, D, F }, MAGENTA, { 0.0f, 0.0f } },
-    { { R, D, F }, MAGENTA, { 1.0f, 0.0f } },
-    { { R, U, F }, MAGENTA, { 1.0f, 1.0f } },
-    { { L, U, F }, MAGENTA, { 0.0f, 1.0f } },
-
-    // back face
-    { { L, D, B }, MAGENTA, { 0.0f, 0.0f } },
-    { { R, D, B }, MAGENTA, { 1.0f, 0.0f } },
-    { { R, U, B }, MAGENTA, { 1.0f, 1.0f } },
-    { { L, U, B }, MAGENTA, { 0.0f, 1.0f } },
-
-    // left face
-    { { L, D, B }, MAGENTA, { 0.0f, 0.0f } },
-    { { L, D, F }, MAGENTA, { 1.0f, 0.0f } },
-    { { L, U, F }, MAGENTA, { 1.0f, 1.0f } },
-    { { L, U, B }, MAGENTA, { 0.0f, 1.0f } },
-
-    // right face
-    { { R, D, B }, MAGENTA, { 0.0f, 0.0f } },
-    { { R, D, F }, MAGENTA, { 1.0f, 0.0f } },
-    { { R, U, F }, MAGENTA, { 1.0f, 1.0f } },
-    { { R, U, B }, MAGENTA, { 0.0f, 1.0f } },
-
-    // top face
-    { { L, U, B }, MAGENTA, { 0.0f, 0.0f } },
-    { { R, U, B }, MAGENTA, { 1.0f, 0.0f } },
-    { { R, U, F }, MAGENTA, { 1.0f, 1.0f } },
-    { { L, U, F }, MAGENTA, { 0.0f, 1.0f } },
-
-    // bottom face
-    { { L, D, B }, MAGENTA, { 0.0f, 0.0f } },
-    { { R, D, B }, MAGENTA, { 1.0f, 0.0f } },
-    { { R, D, F }, MAGENTA, { 1.0f, 1.0f } },
-    { { L, D, F }, MAGENTA, { 0.0f, 1.0f } },
-  };
-  static const vector<mesh_elements> elements =
-  {
-    mesh_elements(GL_TRIANGLE_FAN, { 0, 1, 2, 3 }, example_textures::red_white_checker()),
-    mesh_elements(GL_TRIANGLE_FAN, { 4, 5, 6, 7 }, example_textures::red_white_checker()),
-    mesh_elements(GL_TRIANGLE_FAN, { 8, 9, 10, 11 }, example_textures::red_white_checker()),
-    mesh_elements(GL_TRIANGLE_FAN, { 12, 13, 14, 15 }, example_textures::red_white_checker()),
-    mesh_elements(GL_TRIANGLE_FAN, { 16, 17, 18, 19 }, example_textures::red_white_checker()),
-    mesh_elements(GL_TRIANGLE_FAN, { 20, 21, 22, 23 }, example_textures::red_white_checker()),
-  };
-  return mesh(vertices, elements);
+  return MESH;
 }
 
 vertex_color example_meshes::random_color()

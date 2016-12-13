@@ -154,21 +154,28 @@ vertex_array::ptr renderer::init_vertex_array(program::ptr program)
   vertex_array::ptr vao = vertex_array::create();
 
   GLint position_attribute = program->attribute_location("position");
-  ogl_assert(position_attribute != -1);
+//  ogl_assert(position_attribute != -1);
   vao->vertex_buffer_format(BINDING_INDEX,
   			    position_attribute,
   			    vertex_position::COUNT,
    			    offsetof(vertex, position));
 
+  GLint normal_attribute = program->attribute_location("normal");
+//  ogl_assert(normal_attribute != -1);
+  vao->vertex_buffer_format(BINDING_INDEX,
+			    normal_attribute,
+			    vertex_normal::COUNT,
+			    offsetof(vertex, normal));
+
   GLint color_attribute = program->attribute_location("color");
-  ogl_assert(color_attribute != -1);
+//  ogl_assert(color_attribute != -1);
   vao->vertex_buffer_format(BINDING_INDEX,
    			    color_attribute,
    			    vertex_color::COUNT,
    			    offsetof(vertex, color));
 
   GLint texture_attribute = program->attribute_location("texture_coord");
-  ogl_assert(texture_attribute != -1);
+//  ogl_assert(texture_attribute != -1);
   vao->vertex_buffer_format(BINDING_INDEX,
 			    texture_attribute,
 			    vertex_texture::COUNT,
