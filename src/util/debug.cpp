@@ -15,7 +15,6 @@
 /* -- Namespaces -- */
 
 using namespace std;
-using namespace ogl;
 
 /* -- Constants -- */
 

@@ -47,7 +47,9 @@
 /* No-op macros */
 #define ogl_assert(cond)
 #define ogl_trace()
-#define ogl_trace_message()
+#define ogl_trace_message(message)
+#define ogl_error()
+#define ogl_error_message(message)
 #define ogl_break()
 
 #endif /* OGL_DEBUG */

@@ -17,12 +17,12 @@ namespace
 
   const char DEFAULT_VERTEX_SHADER_SOURCE_ARRAY[] =
   {
-    #include "shaders/default_vertex_shader.glslc"
+    #include "gen/default_vertex_shader.glsl.inc"
   };
 
   const char DEFAULT_FRAGMENT_SHADER_SOURCE_ARRAY[] =
   {
-    #include "shaders/default_fragment_shader.glslc"
+    #include "gen/default_fragment_shader.glsl.inc"
   };
 
 }
