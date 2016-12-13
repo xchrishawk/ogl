@@ -82,6 +82,11 @@ void renderer::clear_buffer(int width, int height)
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
 
+  // enable face culling
+  glEnable(GL_CULL_FACE);
+  glFrontFace(GL_CCW);
+  glCullFace(GL_BACK);
+
   // clear buffer
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClearDepthf(1.0f);
