@@ -43,17 +43,17 @@ out AmbientLightBlock
 
 void main(void)
 {
+  gl_Position = mvp * vec4(position.x, position.y, position.z, 1.0);
+
   outvertex.position = position;
   outvertex.normal = normal;
   outvertex.color = color;
   outvertex.texture_coord = texture_coord;
 
-  outpointlight.position = vec3(3.0, 3.0, 3.0);
-  outpointlight.color = vec4(1.0, 0.0, 0.0, 1.0);
-  outpointlight.intensity = 50.0;
+  outpointlight.position = vec3(0.0, 3.0, 3.0);
+  outpointlight.color = vec4(1.0, 1.0, 1.0, 1.0);
+  outpointlight.intensity = 25.0;
 
-  outambientlight.color = vec4(0.0, 1.0, 0.0, 1.0);
+  outambientlight.color = vec4(0.0, 0.0, 1.0, 1.0);
   outambientlight.intensity = 0.15;
-
-  gl_Position = mvp * vec4(position.x, position.y, position.z, 1.0);
 }

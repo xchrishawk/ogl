@@ -45,6 +45,14 @@ state::state()
     m_objects()
 {
   m_objects.push_back(object(example_meshes::gray_cube()));
+  m_objects.push_back(object(example_meshes::gray_cube(),
+			     vec3(3.0, 0.0, 0.0),
+			     quat(),
+			     vec3(0.5, 0.5, 0.5)));
+  m_objects.push_back(object(example_meshes::gray_cube(),
+			     vec3(-3.0, 0.0, 0.0),
+			     quat(),
+			     vec3(0.5, 0.5, 0.5)));
 }
 
 state::~state()
