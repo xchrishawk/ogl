@@ -20,6 +20,7 @@ foreach(GLSL ${GLSL_SOURCES})
   list(APPEND PROCESSED_GLSL_SOURCES ${GLSL_OUTPUT_PATH})
   add_custom_command(
     OUTPUT ${GLSL_OUTPUT_PATH}
+    DEPENDS ${GLSL_INPUT_PATH}
     COMMAND cat ${GLSL_INPUT_PATH} | xxd -i > ${GLSL_OUTPUT_PATH}
     COMMENT "Processing ${GLSL}")
 endforeach()
@@ -54,6 +55,10 @@ add_executable(
   ${EXECUTABLE_TARGET}
   ${EXECUTABLE_SOURCES}
   ${PROCESSED_GLSL_SOURCES})
+
+target_compile_definitions(
+  ${EXECUTABLE_TARGET}
+  PUBLIC OGL_DEBUG)
 
 target_include_directories(
   ${EXECUTABLE_TARGET}

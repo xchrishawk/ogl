@@ -92,7 +92,7 @@ void renderer::render_object(const object& obj, const mat4& vp)
 {
   // create MVP matrix and set uniform
   mat4 mvp = vp * model_matrix(obj);
-  glUniformMatrix4fv(m_program->uniform_location("vs_mvp"),
+  glUniformMatrix4fv(m_program->uniform_location("mvp"),
 		     1,
 		     GL_FALSE,
 		     value_ptr(mvp));
@@ -116,13 +116,13 @@ void renderer::render_mesh_elements(const mesh_elements& elements)
   if (elements.texture())
   {
     glBindTexture(GL_TEXTURE_2D, elements.texture()->handle());
-    glUniform1i(m_program->uniform_location("fs_tex"), 0);
-    glUniform1i(m_program->uniform_location("fs_tex_avail"), true);
+    glUniform1i(m_program->uniform_location("texture_sampler"), 0);
+    glUniform1i(m_program->uniform_location("texture_available"), true);
   }
   else
   {
     glBindTexture(GL_TEXTURE_2D, 0);
-    glUniform1i(m_program->uniform_location("fs_tex_avail"), false);
+    glUniform1i(m_program->uniform_location("texture_available"), false);
   }
 
   glDrawElements(elements.mode(), elements.count(), elements.type(), elements.indices());
@@ -153,21 +153,21 @@ vertex_array::ptr renderer::init_vertex_array(program::ptr program)
 {
   vertex_array::ptr vao = vertex_array::create();
 
-  GLint position_attribute = program->attribute_location("vs_position");
+  GLint position_attribute = program->attribute_location("position");
   ogl_assert(position_attribute != -1);
   vao->vertex_buffer_format(BINDING_INDEX,
   			    position_attribute,
   			    vertex_position::COUNT,
    			    offsetof(vertex, position));
 
-  GLint color_attribute = program->attribute_location("vs_color");
+  GLint color_attribute = program->attribute_location("color");
   ogl_assert(color_attribute != -1);
   vao->vertex_buffer_format(BINDING_INDEX,
    			    color_attribute,
    			    vertex_color::COUNT,
    			    offsetof(vertex, color));
 
-  GLint texture_attribute = program->attribute_location("vs_tex_coord");
+  GLint texture_attribute = program->attribute_location("texture_coord");
   ogl_assert(texture_attribute != -1);
   vao->vertex_buffer_format(BINDING_INDEX,
 			    texture_attribute,

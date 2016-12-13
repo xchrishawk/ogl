@@ -1,18 +1,34 @@
+//
+// default_vertex_shader.glsl
+// Chris Vig (chris@invictus.so)
+//
+
 #version 330 core
 
-in vec3 vs_position;
-in vec4 vs_color;
-in vec2 vs_tex_coord;
+// -- Uniforms --
 
-uniform mat4 vs_mvp;
+uniform mat4 mvp;
 
-out vec4 fs_color;
-out vec2 fs_tex_coord;
+// -- Inputs --
+
+in vec3 position;
+in vec4 color;
+in vec2 texture_coord;
+
+// -- Outblocks --
+
+out VertexFragmentBlock
+{
+  vec4 color;
+  vec2 texture_coord;
+} outblock;
+
+// -- Procedures --
 
 void main(void)
 {
-  gl_Position = vs_mvp * vec4(vs_position.x, vs_position.y, vs_position.z, 1.0);
+  gl_Position = mvp * vec4(position.x, position.y, position.z, 1.0);
 
-  fs_color = vs_color;
-  fs_tex_coord = vs_tex_coord;
+  outblock.color = color;
+  outblock.texture_coord = texture_coord;
 }

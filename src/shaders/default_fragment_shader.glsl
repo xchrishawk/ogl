@@ -1,12 +1,29 @@
+//
+// default_fragment_shader.glsl
+// Chris Vig (chris@invictus.so)
+//
+
 #version 330 core
 
-in vec4 fs_color;
-in vec2 fs_tex_coord;
+// -- Uniforms --
 
-uniform bool fs_tex_avail;
-uniform sampler2D fs_tex;
+uniform bool texture_available;
+uniform sampler2D texture_sampler;
+
+// -- Inputs --
+
+in VertexFragmentBlock
+{
+  vec4 color;
+  vec2 texture_coord;
+} inblock;
+
+// -- Procedures --
 
 void main(void)
 {
-  gl_FragColor = fs_tex_avail ? texture(fs_tex, fs_tex_coord) : fs_color;
+  if (texture_available)
+    gl_FragColor = texture(texture_sampler, inblock.texture_coord);
+  else
+    gl_FragColor = inblock.color;
 }
