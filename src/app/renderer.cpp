@@ -59,12 +59,13 @@ void renderer::render(const renderer_args& args)
   m_program->activate();
   m_vao->activate();
 
-  // create VP matrix
-  mat4 vp = view_proj_matrix(args.width, args.height, args.state);
+  // get matrices
+  mat4 view_matrix = this->view_matrix(args);
+  mat4 projection_matrix = this->projection_matrix(args);
 
   // loop through each object to render
   for (const object& obj : args.state.objects())
-    render_object(obj, vp);
+    render_object(obj, view_matrix, projection_matrix);
 
   // deactivate program and VAO
   vertex_array::unactivate();
@@ -92,10 +93,15 @@ void renderer::clear_buffer(int width, int height)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void renderer::render_object(const object& obj, const mat4& vp)
+void renderer::render_object(const object& obj,
+			     const mat4& view_matrix,
+			     const mat4& projection_matrix)
 {
+  // create MVP matrix
+  mat4 model_matrix = this->model_matrix(obj);
+
   // create MVP matrix and set uniform
-  mat4 mvp = vp * model_matrix(obj);
+  mat4 mvp = projection_matrix * view_matrix * model_matrix;
   glUniformMatrix4fv(m_program->uniform_location("mvp"),
 		     1,
 		     GL_FALSE,
@@ -188,29 +194,37 @@ vertex_array::ptr renderer::init_vertex_array(program::ptr program)
   return vao;
 }
 
-mat4 renderer::view_proj_matrix(int width, int height, const state& state)
-{
-  // view matrix
-  mat4 view =
-    translate(state.camera_pos()) *			// translation (done second)
-    mat4_cast(state.camera_rot());			// rotation (done first)
-  view = inverse(view);					// invert origin->camera into camera->origin
-
-  // create projection matrix
-  mat4 proj = perspective(state.camera_fov(),		// field of view (Y axis)
-			  (float)width / (float)height,	// aspect ratio
-			  0.1f,				// near clip
-			  100.0f);			// far clip
-
-  return proj * view;
-}
-
 mat4 renderer::model_matrix(const object& obj)
 {
-  glm::mat4 model =
-    translate(obj.pos()) *				// translation (done third)
-    mat4_cast(obj.rot()) *				// rotation (done second)
-    scale(obj.scale());					// scale (done first)
+  mat4 model_matrix =
+    translate(obj.pos()) *			// translation (done third)
+    mat4_cast(obj.rot()) *			// rotation (done second)
+    scale(obj.scale());				// scaling (done first)
 
-  return model;
+  return model_matrix;
+}
+
+mat4 renderer::view_matrix(const renderer_args& args)
+{
+  mat4 view_matrix =
+    translate(args.state.camera_pos()) *	// translation (done second)
+    mat4_cast(args.state.camera_rot());		// rotation (done first)
+  view_matrix = inverse(view_matrix);		// invert origin->camera into camera->origin
+
+  return view_matrix;
+}
+
+mat4 renderer::projection_matrix(const renderer_args& args)
+{
+  float aspect_ratio =
+    static_cast<float>(args.width) /
+    static_cast<float>(args.height);
+
+  mat4 projection_matrix =
+    perspective(args.state.camera_fov(),	// camera FOV (Y axis)
+		aspect_ratio,			// display aspect ratio
+		0.1f,				// near clip (TODO)
+		100.0f);			// far clip (TODO)
+
+  return projection_matrix;
 }
