@@ -14,15 +14,15 @@ uniform sampler2D texture_sampler;
 
 in VertexBlock
 {
-  vec3 world_space_position;
-  vec3 world_space_normal;
+  vec3 camera_space_position;
+  vec3 camera_space_normal;
   vec4 color;
   vec2 texture_coord;
 } invertex;
 
 in PointLightBlock
 {
-  vec3 world_space_position;
+  vec3 camera_space_position;
   vec4 color;
   float intensity;
 } inpointlight;
@@ -37,9 +37,9 @@ in AmbientLightBlock
 
 void main(void)
 {
-  vec3 pointlight_delta = inpointlight.world_space_position - invertex.world_space_position;
+  vec3 pointlight_delta = inpointlight.camera_space_position - invertex.camera_space_position;
   float pointlight_dist = length(pointlight_delta);
-  float pointlight_costheta = dot(normalize(invertex.world_space_normal), normalize(pointlight_delta));
+  float pointlight_costheta = dot(normalize(invertex.camera_space_normal), normalize(pointlight_delta));
   pointlight_costheta = clamp(pointlight_costheta, 0, 1);
 
   vec4 diffuse =

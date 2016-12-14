@@ -23,15 +23,15 @@ in vec2 vertex_texture_coord;
 
 out VertexBlock
 {
-  vec3 world_space_position;
-  vec3 world_space_normal;
+  vec3 camera_space_position;
+  vec3 camera_space_normal;
   vec4 color;
   vec2 texture_coord;
 } outvertex;
 
 out PointLightBlock
 {
-  vec3 world_space_position;
+  vec3 camera_space_position;
   vec4 color;
   float intensity;
 } outpointlight;
@@ -47,7 +47,7 @@ out AmbientLightBlock
 void main(void)
 {
   // move position through MVP matrix
-  vec4 model_space_position = vec4(vertex_position.x, vertex_position.y, vertex_position.z, 1.0);
+  vec4 model_space_position = vec4(vertex_position, 1.0);
   vec4 world_space_position = model_matrix * model_space_position;
   vec4 camera_space_position = view_matrix * world_space_position;
   vec4 clip_space_position = projection_matrix * camera_space_position;
@@ -55,20 +55,26 @@ void main(void)
   // set output position
   gl_Position = clip_space_position;
 
-  // move normal into world space (fragment shader must normalize)
-  vec4 model_space_normal = vec4(vertex_normal.x, vertex_normal.y, vertex_normal.z, 1.0);
-  vec4 world_space_normal = model_matrix * model_space_normal;
+  // move normal into camera space (fragment shader must normalize)
+  vec4 model_space_normal = vec4(vertex_normal, 0.0);
+  mat4 normal_matrix = transpose(inverse(model_matrix));
+  vec4 world_space_normal = normal_matrix * model_space_normal;
+  vec4 camera_space_normal = view_matrix * world_space_normal;
 
   // set vertex interface block
-  outvertex.world_space_position = world_space_position.xyz;
-  outvertex.world_space_normal = world_space_normal.xyz;
+  outvertex.camera_space_position = camera_space_position.xyz;
+  outvertex.camera_space_normal = camera_space_normal.xyz;
   outvertex.color = vertex_color;
   outvertex.texture_coord = vertex_texture_coord;
 
+  // move point light into camera space
+  vec4 point_world_space_position = vec4(3.0, 3.0, 7.0, 1.0);
+  vec4 point_camera_space_position = view_matrix * point_world_space_position;
+
   // set point light interface block (constant for now)
-  outpointlight.world_space_position = vec3(10.0, 10.0, 10.0);
+  outpointlight.camera_space_position = point_camera_space_position.xyz;
   outpointlight.color = vec4(1.0, 1.0, 1.0, 1.0);
-  outpointlight.intensity = 800.0;
+  outpointlight.intensity = 50.0;
 
   // set ambient light interface block (constant for now)
   outambientlight.color = vec4(0.0, 0.0, 1.0, 1.0);
