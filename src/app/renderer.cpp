@@ -99,13 +99,13 @@ void renderer::render_object(const object& obj,
 {
   // create MVP matrix
   mat4 model_matrix = this->model_matrix(obj);
+  mat4 mvp_matrix = projection_matrix * view_matrix * model_matrix;
 
-  // create MVP matrix and set uniform
-  mat4 mvp = projection_matrix * view_matrix * model_matrix;
-  glUniformMatrix4fv(m_program->uniform_location("mvp"),
-		     1,
-		     GL_FALSE,
-		     value_ptr(mvp));
+  // set uniforms
+  set_matrix_uniform("model_matrix", model_matrix);
+  set_matrix_uniform("view_matrix", view_matrix);
+  set_matrix_uniform("projection_matrix", projection_matrix);
+  set_matrix_uniform("mvp_matrix", mvp_matrix);
 
   // activate buffer for this object
   mesh obj_mesh = obj.mesh();
@@ -227,4 +227,12 @@ mat4 renderer::projection_matrix(const renderer_args& args)
 		100.0f);			// far clip (TODO)
 
   return projection_matrix;
+}
+
+void renderer::set_matrix_uniform(const string& name, const mat4& matrix)
+{
+  glUniformMatrix4fv(m_program->uniform_location(name),		// location
+		     1,						// count
+		     GL_FALSE,					// transpose
+		     value_ptr(matrix));			// value
 }

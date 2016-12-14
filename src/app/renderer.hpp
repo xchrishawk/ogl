@@ -70,6 +70,7 @@ namespace ogl
     glm::mat4 model_matrix(const ogl::object& obj);
     glm::mat4 view_matrix(const ogl::renderer_args& args);
     glm::mat4 projection_matrix(const ogl::renderer_args& args);
+    void set_matrix_uniform(const std::string& name, const glm::mat4& matrix);
 
   };
 
