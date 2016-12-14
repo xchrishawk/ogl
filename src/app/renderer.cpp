@@ -50,20 +50,20 @@ renderer::~renderer()
 {
 }
 
-void renderer::render(int width, int height, const state& state)
+void renderer::render(const renderer_args& args)
 {
   // prepare the framebuffer for drawing
-  clear_buffer(width, height);
+  clear_buffer(args.width, args.height);
 
   // activate program and VAO
   m_program->activate();
   m_vao->activate();
 
   // create VP matrix
-  mat4 vp = view_proj_matrix(width, height, state);
+  mat4 vp = view_proj_matrix(args.width, args.height, args.state);
 
   // loop through each object to render
-  for (const object& obj : state.objects())
+  for (const object& obj : args.state.objects())
     render_object(obj, vp);
 
   // deactivate program and VAO

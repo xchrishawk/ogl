@@ -20,6 +20,25 @@ namespace ogl
 {
 
   /**
+   * Class containing information needed for a rendering cycle.
+   */
+  class renderer_args
+  {
+  public:
+
+    renderer_args(int width, int height, const ogl::state& state)
+      : width(width),
+	height(height),
+	state(state)
+    { }
+
+    const int width;
+    const int height;
+    const ogl::state& state;
+
+  };
+
+  /**
    * Primary class reponsible for OpenGL rendering.
    */
   class renderer
@@ -29,7 +48,7 @@ namespace ogl
     renderer();
     ~renderer();
 
-    void render(int width, int height, const ogl::state& state);
+    void render(const ogl::renderer_args& args);
 
   private:
 

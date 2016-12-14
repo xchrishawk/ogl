@@ -121,8 +121,11 @@ void application::handle_render(float abs_t, float delta_t)
   int height = 0;
   m_window.framebuffer_size(&width, &height);
 
+  // build args
+  renderer_args args(width, height, m_state);
+
   // render the display
-  m_renderer.render(width, height, m_state);
+  m_renderer.render(args);
   m_window.swap_buffers();
 
   // check for OpenGL errors
