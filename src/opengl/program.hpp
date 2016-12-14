@@ -12,8 +12,7 @@
 #include <string>
 #include <vector>
 
-#include <GL/glew.h>
-
+#include "opengl/opengl.hpp"
 #include "opengl/shader.hpp"
 
 /* -- Types -- */

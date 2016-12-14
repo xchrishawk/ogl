@@ -9,10 +9,8 @@
 #include <string>
 #include <sstream>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include "opengl/glfw.hpp"
+#include "opengl/opengl.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */

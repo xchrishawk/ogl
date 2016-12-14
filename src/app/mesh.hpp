@@ -9,10 +9,10 @@
 /* -- Includes -- */
 
 #include <vector>
-#include <GL/glew.h>
 
 #include "app/vertex.hpp"
 #include "opengl/buffer.hpp"
+#include "opengl/opengl.hpp"
 #include "opengl/texture.hpp"
 
 /* -- Types -- */

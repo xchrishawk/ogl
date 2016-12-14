@@ -11,7 +11,7 @@
 #include <memory>
 #include <string>
 
-#include <GL/glew.h>
+#include "opengl/opengl.hpp"
 
 /* -- Types -- */
 

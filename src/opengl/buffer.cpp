@@ -6,10 +6,10 @@
 /* -- Includes -- */
 
 #include <memory>
-#include <GL/glew.h>
 
 #include "opengl/buffer.hpp"
 #include "opengl/error.hpp"
+#include "opengl/opengl.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */

@@ -7,9 +7,8 @@
 
 #include <memory>
 
-#include <GL/glew.h>
-
 #include "opengl/error.hpp"
+#include "opengl/opengl.hpp"
 #include "opengl/texture.hpp"
 #include "util/debug.hpp"
 

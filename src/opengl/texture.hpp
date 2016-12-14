@@ -9,7 +9,7 @@
 /* -- Includes -- */
 
 #include <memory>
-#include <GL/glew.h>
+#include "opengl/opengl.hpp"
 
 /* -- Types -- */
 

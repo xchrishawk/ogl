@@ -8,9 +8,8 @@
 #include <sstream>
 #include <string>
 
-#include <GL/glew.h>
-
 #include "opengl/error.hpp"
+#include "opengl/opengl.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */

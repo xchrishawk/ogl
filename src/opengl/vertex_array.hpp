@@ -9,9 +9,9 @@
 /* -- Includes -- */
 
 #include <memory>
-#include <GL/glew.h>
 
 #include "opengl/buffer.hpp"
+#include "opengl/opengl.hpp"
 
 /* -- Types -- */
 

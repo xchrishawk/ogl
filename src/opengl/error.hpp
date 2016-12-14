@@ -9,7 +9,7 @@
 /* -- Includes -- */
 
 #include <string>
-#include <GL/glew.h>
+#include "opengl/opengl.hpp"
 
 /* -- Procedure Prototypes -- */
 

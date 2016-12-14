@@ -7,11 +7,10 @@
 
 #include <vector>
 
-#include <GL/glew.h>
-
 #include "app/examples.hpp"
 #include "app/mesh.hpp"
 #include "app/vertex.hpp"
+#include "opengl/opengl.hpp"
 #include "opengl/texture.hpp"
 #include "util/debug.hpp"
 #include "util/misc.hpp"

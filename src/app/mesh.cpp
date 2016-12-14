@@ -7,10 +7,9 @@
 
 #include <vector>
 
-#include <GL/glew.h>
-
 #include "app/mesh.hpp"
 #include "opengl/buffer.hpp"
+#include "opengl/opengl.hpp"
 
 /* -- Namespaces -- */
 

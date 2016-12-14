@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -20,6 +18,7 @@
 #include "app/renderer.hpp"
 #include "app/vertex.hpp"
 #include "opengl/buffer.hpp"
+#include "opengl/opengl.hpp"
 #include "opengl/vertex_array.hpp"
 #include "shaders/shader_sources.hpp"
 #include "util/debug.hpp"

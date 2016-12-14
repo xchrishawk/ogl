@@ -1,33 +1,14 @@
 cmake_minimum_required(VERSION 3.5)
 project(ogl)
 
-# -- Package Setup --
+# -- Imports --
 
 find_package(PkgConfig)
 
-pkg_check_modules(GLEW REQUIRED glew)
-pkg_check_modules(GLFW REQUIRED glfw3)
+# -- Inputs --
 
-# -- Pre-Process Shader Code --
-
-set(GLSL_SOURCES
-  default_vertex_shader.glsl
-  default_fragment_shader.glsl)
-
-foreach(GLSL ${GLSL_SOURCES})
-  set(GLSL_INPUT_PATH ${CMAKE_SOURCE_DIR}/shaders/${GLSL})
-  set(GLSL_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/gen/${GLSL}.inc)
-  list(APPEND PROCESSED_GLSL_SOURCES ${GLSL_OUTPUT_PATH})
-  add_custom_command(
-    OUTPUT ${GLSL_OUTPUT_PATH}
-    DEPENDS ${GLSL_INPUT_PATH}
-    COMMAND cat ${GLSL_INPUT_PATH} | xxd -i > ${GLSL_OUTPUT_PATH}
-    COMMENT "Processing ${GLSL}")
-endforeach()
-
-# -- Main Executable --
-
-set(EXECUTABLE_TARGET ${CMAKE_PROJECT_NAME})
+set(EXECUTABLE_TARGET
+  ${CMAKE_PROJECT_NAME})
 
 set(EXECUTABLE_SOURCES
   main.cpp
@@ -51,28 +32,82 @@ set(EXECUTABLE_SOURCES
   util/debug.cpp
   util/misc.cpp)
 
+set(EXECUTABLE_SHADERS
+  default_vertex_shader.glsl
+  default_fragment_shader.glsl)
+
+# -- Common Setup --
+
+# Include root of source tree as an include dir so relative paths work
+list(APPEND EXECUTABLE_INCLUDE_DIRS ${CMAKE_SOURCE_DIR})
+
+# Compiler configuration
+set(CMAKE_CXX_FLAGS_DEBUG "-std=gnu++11 -g -Wall -Wpedantic")
+set(CMAKE_CXX_FLAGS_RELEASE "-std=gnu++11 -s -O3")
+
+# Add GLFW library
+pkg_check_modules(GLFW REQUIRED glfw3)
+list(APPEND EXECUTABLE_INCLUDE_DIRS ${GLFW_INCLUDE_DIRS})
+list(APPEND EXECUTABLE_CFLAGS ${GLFW_CFLAGS_OTHER})
+list(APPEND EXECUTABLE_LIBRARIES ${GLFW_LIBRARIES})
+
+# -- Platform-Specific Setup --
+
+if(UNIX AND NOT APPLE)
+
+  # Define Linux platform
+  list(APPEND EXECUTABLE_DEFINITIONS OGL_PLATFORM=LINUX)
+
+  # Add GLEW library
+  pkg_check_modules(GLEW REQUIRED glew)
+  list(APPEND EXECUTABLE_INCLUDE_DIRS ${GLEW_INCLUDE_DIRS})
+  list(APPEND EXECUTABLE_CFLAGS ${GLEW_CFLAGS_OTHER})
+  list(APPEND EXECUTABLE_LIBRARIES ${GLEW_LIBRARIES})
+
+elseif(APPLE)
+
+  # Define MacOS platform
+  list(APPEND EXECUTABLE_DEFINITIONS OGL_PLATFORM=MACOS)
+
+else()
+
+  # Unknown platform??
+  message(FATAL_ERROR "Unknown platform")
+
+endif()
+
+# -- Pre-Process Shader Code --
+
+foreach(SHADER ${EXECUTABLE_SHADERS})
+  set(SHADER_INPUT_PATH "${CMAKE_SOURCE_DIR}/shaders/${SHADER}")
+  set(SHADER_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/gen/${SHADER}.inc")
+  list(APPEND EXECUTABLE_PROCESSED_SHADERS ${SHADER_OUTPUT_PATH})
+  add_custom_command(
+    DEPENDS ${SHADER_INPUT_PATH}
+    OUTPUT ${SHADER_OUTPUT_PATH}
+    COMMAND cat ${SHADER_INPUT_PATH} | xxd -i > ${SHADER_OUTPUT_PATH}
+    COMMENT "Processing ${SHADER}")
+endforeach()
+
+# -- Main Executable --
+
 add_executable(
   ${EXECUTABLE_TARGET}
   ${EXECUTABLE_SOURCES}
-  ${PROCESSED_GLSL_SOURCES})
+  ${EXECUTABLE_PROCESSED_SHADERS})
 
 target_compile_definitions(
   ${EXECUTABLE_TARGET}
-  PUBLIC OGL_DEBUG)
+  PUBLIC ${EXECUTABLE_DEFINITIONS})
 
 target_include_directories(
   ${EXECUTABLE_TARGET}
-  PUBLIC ${CMAKE_SOURCE_DIR}
-  PUBLIC ${GLEW_INCLUDE_DIRS}
-  PUBLIC ${GLFW_INCLUDE_DIRS})
+  PUBLIC ${EXECUTABLE_INCLUDE_DIRS})
 
 target_compile_options(
   ${EXECUTABLE_TARGET}
-  PUBLIC -std=gnu++11 -g -Wall -Wpedantic
-  PUBLIC ${GLEW_CFLAGS_OTHER}
-  PUBLIC ${GLFW_CFLAGS_OTHER})
+  PUBLIC ${EXECUTABLE_CFLAGS})
 
 target_link_libraries(
   ${EXECUTABLE_TARGET}
-  PUBLIC ${GLEW_LIBRARIES}
-  PUBLIC ${GLFW_LIBRARIES})
+  PUBLIC ${EXECUTABLE_LIBRARIES})

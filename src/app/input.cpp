@@ -8,10 +8,8 @@
 #include <cstring>
 #include <iostream>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include "app/input.hpp"
+#include "opengl/opengl.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */
