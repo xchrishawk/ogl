@@ -14,24 +14,24 @@ uniform mat4 mvp_matrix;
 
 // -- Inputs --
 
-in vec3 position;
-in vec3 normal;
-in vec4 color;
-in vec2 texture_coord;
+in vec3 vertex_position;
+in vec3 vertex_normal;
+in vec4 vertex_color;
+in vec2 vertex_texture_coord;
 
 // -- Outvertexs --
 
 out VertexBlock
 {
-  vec3 position;
-  vec3 normal;
+  vec3 world_space_position;
+  vec3 world_space_normal;
   vec4 color;
   vec2 texture_coord;
 } outvertex;
 
 out PointLightBlock
 {
-  vec3 position;
+  vec3 world_space_position;
   vec4 color;
   float intensity;
 } outpointlight;
@@ -46,21 +46,31 @@ out AmbientLightBlock
 
 void main(void)
 {
-  gl_Position =
-    projection_matrix *
-    view_matrix *
-    model_matrix *
-    vec4(position.x, position.y, position.z, 1.0);
+  // move position through MVP matrix
+  vec4 model_space_position = vec4(vertex_position.x, vertex_position.y, vertex_position.z, 1.0);
+  vec4 world_space_position = model_matrix * model_space_position;
+  vec4 camera_space_position = view_matrix * world_space_position;
+  vec4 clip_space_position = projection_matrix * camera_space_position;
 
-  outvertex.position = position;
-  outvertex.normal = normal;
-  outvertex.color = color;
-  outvertex.texture_coord = texture_coord;
+  // set output position
+  gl_Position = clip_space_position;
 
-  outpointlight.position = vec3(0.0, 3.0, 3.0);
+  // move normal into world space (fragment shader must normalize)
+  vec4 model_space_normal = vec4(vertex_normal.x, vertex_normal.y, vertex_normal.z, 1.0);
+  vec4 world_space_normal = model_matrix * model_space_normal;
+
+  // set vertex interface block
+  outvertex.world_space_position = world_space_position.xyz;
+  outvertex.world_space_normal = world_space_normal.xyz;
+  outvertex.color = vertex_color;
+  outvertex.texture_coord = vertex_texture_coord;
+
+  // set point light interface block (constant for now)
+  outpointlight.world_space_position = vec3(10.0, 10.0, 10.0);
   outpointlight.color = vec4(1.0, 1.0, 1.0, 1.0);
-  outpointlight.intensity = 25.0;
+  outpointlight.intensity = 800.0;
 
+  // set ambient light interface block (constant for now)
   outambientlight.color = vec4(0.0, 0.0, 1.0, 1.0);
   outambientlight.intensity = 0.15;
 }
