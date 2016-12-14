@@ -42,7 +42,7 @@ set(EXECUTABLE_SHADERS
 list(APPEND EXECUTABLE_INCLUDE_DIRS ${CMAKE_SOURCE_DIR})
 
 # Compiler configuration
-set(CMAKE_CXX_FLAGS_DEBUG "-std=gnu++11 -g -Wall -Wpedantic")
+set(CMAKE_CXX_FLAGS_DEBUG "-std=gnu++11 -g -Wall -Wpedantic -DOGL_DEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-std=gnu++11 -s -O3")
 
 # Add GLFW library
