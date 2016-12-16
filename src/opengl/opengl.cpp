@@ -10,16 +10,20 @@
 #include "opengl/opengl.hpp"
 #include "util/debug.hpp"
 
+#if defined(OGL_LINUX)
+  #include "opengl/linux/opengl_linux.hpp"
+#endif
+
 /* -- Namespaces -- */
 
 using namespace ogl;
 
 /* -- Procedures -- */
 
-opengl_stub::opengl_stub()
+opengl_factory& opengl_factory::platform_default()
 {
-}
-
-opengl_stub::~opengl_stub()
-{
+#if defined(OGL_LINUX)
+  static opengl_linux_factory factory;
+#endif
+  return factory;
 }

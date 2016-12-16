@@ -10,9 +10,6 @@
 #include <sstream>
 #include <string>
 
-#include <OpenGL/gl.h>
-#include <GLFW/glfw3.h>
-
 #include "app/application.hpp"
 #include "opengl/opengl.hpp"
 #include "util/debug.hpp"
@@ -27,17 +24,11 @@ int main(int argc, char** argv)
 {
   try
   {
-    glfwInit();
-    GLFWwindow *window = glfwCreateWindow(800, 600, "Hi", NULL, NULL);
-    while (!glfwWindowShouldClose(window))
-      glfwPollEvents();
-    glfwDestroyWindow(window);
-
     // required initialization objects
-    opengl_stub_factory opengl_fact;
+    opengl_factory& ogl_factory = opengl_factory::platform_default();
 
     // create and run application
-    application app(opengl_fact);
+    application app(ogl_factory);
     app.main();
 
     // successful app run!

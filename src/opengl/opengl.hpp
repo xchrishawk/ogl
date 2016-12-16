@@ -8,6 +8,7 @@
 /* -- Includes -- */
 
 #include <memory>
+#include "opengl/api.hpp"
 
 /* -- Types -- */
 
@@ -42,34 +43,12 @@ namespace ogl
   {
   public:
 
+    /** Returns the platform default factory. */
+    static opengl_factory& platform_default();
+
     /** Creates a new OpenGL interface instance. */
     virtual opengl::ptr build() const = 0;
 
-  };
-
-  /**
-   * Implementation of `opengl` using GLFW and GLEW.
-   */
-  class opengl_stub : public opengl
-  {
-  public:
-
-    ~opengl_stub();
-
-  private:
-
-    friend class opengl_stub_factory;
-    opengl_stub();
-
-  };
-
-  /**
-   * Class constructing a stub OpenGL interface.
-   */
-  class opengl_stub_factory : public opengl_factory
-  {
-  public:
-    virtual opengl::ptr build() const { return opengl::ptr(new opengl_stub()); }
   };
 
 }

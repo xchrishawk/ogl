@@ -5,8 +5,22 @@
 
 # -- Inputs --
 
-set(LIBOPENGL_LIBRARY_SOURCES
-  opengl.cpp)
+list(APPEND LIBOPENGL_LIBRARY_SOURCES
+  opengl.cpp
+  glfw/glfw.cpp)
+
+if(UNIX AND NOT APPLE)
+
+  # Linux-specific sources
+  list(APPEND LIBOPENGL_LIBRARY_SOURCES
+    linux/opengl_linux.cpp)
+
+else()
+
+  # Unknown platform?
+  message(FATAL_ERROR "Unrecognized or unsupported platform!")
+
+endif()
 
 # -- Target Definition --
 
