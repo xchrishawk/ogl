@@ -15,12 +15,13 @@ using namespace ogl;
 /* -- Procedures -- */
 
 opengl_linux::opengl_linux()
-  : m_glfw()
+  : m_glfw(),
+    m_glew()
 {
-  ogl_trace_message("Constructed OpenGL instance for Linux");
+  ogl_trace_message("OpenGL initialized.");
 }
 
 opengl_linux::~opengl_linux()
 {
-  ogl_trace_message("Destroyed OpenGL instance for Linux");
+  ogl_trace_message("OpenGL shut down.");
 }

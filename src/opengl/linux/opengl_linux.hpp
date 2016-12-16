@@ -13,6 +13,7 @@
 
 #include "opengl/opengl.hpp"
 #include "opengl/glfw/glfw.hpp"
+#include "opengl/linux/glew.hpp"
 
 /* -- Types -- */
 
@@ -31,6 +32,7 @@ namespace ogl
   private:
 
     glfw m_glfw;
+    glew m_glew;
 
     friend class opengl_linux_factory;
     opengl_linux();

@@ -5,6 +5,8 @@
 
 /* -- Includes -- */
 
+#include <stdexcept>
+
 #include "opengl/api.hpp"
 #include "opengl/glfw/glfw.hpp"
 #include "util/debug.hpp"
@@ -17,10 +19,14 @@ using namespace ogl;
 
 glfw::glfw()
 {
+  if (!glfwInit())
+    throw std::runtime_error("Failed to initialize GLFW!");
+
   ogl_trace_message("GLFW initialized.");
 }
 
 glfw::~glfw()
 {
+  glfwTerminate();
   ogl_trace_message("GLFW shut down.");
 }

@@ -13,6 +13,7 @@ if(UNIX AND NOT APPLE)
 
   # Linux-specific sources
   list(APPEND LIBOPENGL_LIBRARY_SOURCES
+    linux/glew.cpp
     linux/opengl_linux.cpp)
 
 else()
