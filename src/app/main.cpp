@@ -25,7 +25,8 @@ int main(int argc, char** argv)
   try
   {
     // required initialization objects
-    opengl_factory& ogl_factory = opengl_factory::platform_default();
+    glfw_factory glfw_fact;
+    opengl_factory& ogl_fact = opengl_factory::platform_default();
 
     // create and run application
     application app(ogl_factory);

@@ -15,8 +15,7 @@ using namespace ogl;
 /* -- Procedures -- */
 
 opengl_linux::opengl_linux()
-  : m_glfw(),
-    m_glew()
+  : m_glew()
 {
   ogl_trace_message("OpenGL initialized.");
 }

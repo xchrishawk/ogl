@@ -8,6 +8,8 @@
 /* -- Includes -- */
 
 #include "opengl/opengl.hpp"
+#include "opengl/glfw/glfw.hpp"
+#include "opengl/glfw/window.hpp"
 
 /* -- Types -- */
 
@@ -19,7 +21,8 @@ namespace ogl
   {
   public:
 
-    application(const opengl_factory& opengl_fact);
+    application(const glfw_factory& glfw_fact,
+		const opengl_factory& opengl_fact);
     ~application();
 
     /** Main application procedure. */
@@ -28,6 +31,8 @@ namespace ogl
   private:
 
     static application* m_instance;
+
+    const glfw::ptr m_glfw;
     const opengl::ptr m_opengl;
 
     application(const application&) = delete;

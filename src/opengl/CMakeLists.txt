@@ -7,7 +7,8 @@
 
 list(APPEND LIBOPENGL_LIBRARY_SOURCES
   opengl.cpp
-  glfw/glfw.cpp)
+  glfw/glfw.cpp
+  glfw/window.cpp)
 
 if(UNIX AND NOT APPLE)
 

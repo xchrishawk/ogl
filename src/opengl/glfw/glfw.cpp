@@ -30,3 +30,8 @@ glfw::~glfw()
   glfwTerminate();
   ogl_trace_message("GLFW shut down.");
 }
+
+glfw_factory& glfw_factory::platform_default()
+{
+
+}

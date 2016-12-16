@@ -8,6 +8,8 @@
 #include <stdexcept>
 
 #include "app/application.hpp"
+#include "opengl/opengl.hpp"
+#include "opengl/glfw/glfw.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */
@@ -20,8 +22,10 @@ application* application::m_instance;
 
 /* -- Procedures -- */
 
-application::application(const opengl_factory& opengl_fact)
-  : m_opengl(opengl_fact.build())
+application::application(const glfw_factory& glfw_fact,
+			 const opengl_factory& opengl_fact)
+  : m_glfw(glfw_fact.build()),
+    m_opengl(opengl_fact.build())
 {
   // sanity check - there should only be one instance at a time
   ogl_assert(application::m_instance == nullptr);
