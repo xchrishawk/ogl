@@ -28,9 +28,11 @@ int main(int argc, char** argv)
   }
   catch (const std::exception& ex)
   {
+#if defined(OGL_DEBUG)
     std::ostringstream message;
     message << "Uncaught exception: " << ex.what();
     ogl_fail_message(message.str());
+#endif /* defined(OGL_DEBUG) */
     return EXIT_FAILURE;
   }
 }
