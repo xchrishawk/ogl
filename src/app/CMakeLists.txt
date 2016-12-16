@@ -16,4 +16,5 @@ add_executable(
 # Libraries
 target_link_libraries(
   ${APP_EXECUTABLE_NAME}
+  ${OPENGL_LIBRARY_NAME}
   ${UTIL_LIBRARY_NAME})

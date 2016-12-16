@@ -8,6 +8,7 @@ project(ogl)
 
 # Project names
 set(APP_EXECUTABLE_NAME 	${CMAKE_PROJECT_NAME})
+set(OPENGL_LIBRARY_NAME		opengl)
 set(UTIL_LIBRARY_NAME		util)
 
 # Toolchain configuration
@@ -25,4 +26,5 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 # Subdirectories
 add_subdirectory(app)
+add_subdirectory(opengl)
 add_subdirectory(util)
