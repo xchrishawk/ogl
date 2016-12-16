@@ -1,6 +1,7 @@
 /**
- * random.cpp
- * Chris Vig (chris@invictus.so)
+ * @file	random.cpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
 /* -- Includes -- */

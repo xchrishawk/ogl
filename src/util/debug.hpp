@@ -1,6 +1,9 @@
 /**
- * debug.hpp
- * Chris Vig (chris@invictus.so)
+ * @file	debug.hpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
+ *
+ * File containing macros and functions to assist with debugging.
  */
 
 #pragma once

@@ -1,6 +1,7 @@
 /**
- * debug.cpp
- * Chris Vig (chris@invictus.so)
+ * @file	debug.cpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
 #if defined(OGL_DEBUG)

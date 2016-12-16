@@ -44,4 +44,5 @@ include_directories(${CMAKE_SOURCE_DIR})
 # -- Subdirectories --
 
 add_subdirectory(app)
+add_subdirectory(doc)
 add_subdirectory(util)
