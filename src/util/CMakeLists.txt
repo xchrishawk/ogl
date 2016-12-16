@@ -5,9 +5,7 @@
 
 # -- Inputs --
 
-set(LIBUTIL_LIBRARY_SOURCES
-  debug.cpp
-  random.cpp)
+set(LIBUTIL_LIBRARY_SOURCES)
 
 # -- Target Definition --
 
