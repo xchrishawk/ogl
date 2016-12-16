@@ -44,5 +44,4 @@ include_directories(${CMAKE_SOURCE_DIR})
 # -- Subdirectories --
 
 add_subdirectory(app)
-add_subdirectory(opengl)
 add_subdirectory(util)
