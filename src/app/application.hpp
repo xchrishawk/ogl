@@ -5,6 +5,10 @@
 
 #pragma once
 
+/* -- Includes -- */
+
+#include "opengl/opengl.hpp"
+
 /* -- Types -- */
 
 namespace ogl
@@ -15,9 +19,7 @@ namespace ogl
   {
   public:
 
-    /** The singleton application instance. */
-    static application& instance();
-
+    application(const opengl_factory& opengl_fact);
     ~application();
 
     /** Main application procedure. */
@@ -25,7 +27,9 @@ namespace ogl
 
   private:
 
-    application();
+    static application* m_instance;
+    const opengl::ptr m_opengl;
+
     application(const application&) = delete;
     application& operator =(const application&) = delete;
 

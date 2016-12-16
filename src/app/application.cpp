@@ -14,26 +14,26 @@
 
 using namespace ogl;
 
+/* -- Variables -- */
+
+application* application::m_instance;
+
 /* -- Procedures -- */
 
-application& application::instance()
+application::application(const opengl_factory& opengl_fact)
+  : m_opengl(opengl_fact.build())
 {
-  static application app;
-  return app;
-}
-
-application::application()
-{
-  ogl_trace_message("Application launched successfully!");
+  // sanity check - there should only be one instance at a time
+  ogl_assert(application::m_instance == nullptr);
+  application::m_instance = this;
 }
 
 application::~application()
 {
-  ogl_trace_message("Application terminating...");
+  // release the instance pointer
+  application::m_instance = nullptr;
 }
 
 void application::main()
 {
-  // TODO
-  throw std::runtime_error("Application not implemented!");
 }
