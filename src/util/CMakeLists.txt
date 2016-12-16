@@ -5,7 +5,8 @@
 
 # -- Inputs --
 
-set(LIBUTIL_LIBRARY_SOURCES)
+set(LIBUTIL_LIBRARY_SOURCES
+  strings.cpp)
 
 # -- Target Definition --
 
