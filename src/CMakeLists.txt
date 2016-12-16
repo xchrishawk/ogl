@@ -21,6 +21,15 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_definitions(-DOGL_DEBUG)
 endif()
 
+# Platform-specific configuration
+if(UNIX AND NOT APPLE)
+  add_definitions(-DOGL_LINUX)
+elseif(APPLE)
+  add_definitions(-DOGL_MACOS)
+else()
+  message(FATAL_ERROR "Unrecognized or unsupported platform!")
+endif()
+
 # Include root directory so we can use qualified paths
 include_directories(${CMAKE_SOURCE_DIR})
 
