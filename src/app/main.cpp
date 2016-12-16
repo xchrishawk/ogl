@@ -14,7 +14,7 @@
 
 int main(int argc, char** argv)
 {
-  ogl_trace();
-  ogl_trace_message("blah blah");
+  ogl_assert(1 == 1);
+  ogl_assert(1 == 2);
   return 0;
 }
