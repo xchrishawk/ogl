@@ -5,6 +5,7 @@
 
 # Source files
 set(UTIL_LIBRARY_SOURCES
+  debug.cpp
   random.cpp)
 
 # Library configuration

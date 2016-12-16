@@ -13,7 +13,7 @@ set(UTIL_LIBRARY_NAME		util)
 # Toolchain configuration
 set(CMAKE_CXX_FLAGS		"-std=gnu++11")
 set(CMAKE_CXX_FLAGS_DEBUG	"-g -Wall -Wpedantic")
-set(CMAKE_CXX_FLAGS_RELEASE	"-O3 -s -Wall -Wpedantic -Wextra -Werror")
+set(CMAKE_CXX_FLAGS_RELEASE	"-O3 -s -Wall -Wpedantic")
 
 # Build-specific configuration
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
