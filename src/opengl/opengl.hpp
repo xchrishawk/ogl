@@ -8,7 +8,6 @@
 /* -- Includes -- */
 
 #include <memory>
-#include <GL/gl.h>
 
 /* -- Types -- */
 
@@ -51,26 +50,26 @@ namespace ogl
   /**
    * Implementation of `opengl` using GLFW and GLEW.
    */
-  class opengl_glfw_glew : public opengl
+  class opengl_stub : public opengl
   {
   public:
 
-    ~opengl_glfw_glew();
+    ~opengl_stub();
 
   private:
 
-    friend class opengl_glfw_glew_factory;
-    opengl_glfw_glew();
+    friend class opengl_stub_factory;
+    opengl_stub();
 
   };
 
   /**
-   * Class constructing an OpenGL interface using GLFW and GLEW.
+   * Class constructing a stub OpenGL interface.
    */
-  class opengl_glfw_glew_factory : public opengl_factory
+  class opengl_stub_factory : public opengl_factory
   {
   public:
-    virtual opengl::ptr build() const { return opengl::ptr(new opengl_glfw_glew()); }
+    virtual opengl::ptr build() const { return opengl::ptr(new opengl_stub()); }
   };
 
 }

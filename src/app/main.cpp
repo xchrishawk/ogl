@@ -25,7 +25,7 @@ int main(int argc, char** argv)
   try
   {
     // required initialization objects
-    opengl_glfw_glew_factory opengl_fact;
+    opengl_stub_factory opengl_fact;
 
     // create and run application
     application app(opengl_fact);

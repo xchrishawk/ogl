@@ -16,10 +16,10 @@ using namespace ogl;
 
 /* -- Procedures -- */
 
-opengl_glfw_glew::opengl_glfw_glew()
+opengl_stub::opengl_stub()
 {
 }
 
-opengl_glfw_glew::~opengl_glfw_glew()
+opengl_stub::~opengl_stub()
 {
 }
