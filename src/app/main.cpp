@@ -5,16 +5,32 @@
 
 /* -- Includes -- */
 
-#include <iostream>
+#include <cstdlib>
+#include <exception>
+#include <sstream>
+#include <string>
 
+#include "app/application.hpp"
 #include "util/debug.hpp"
-#include "util/random.hpp"
+
+/* -- Namespaces -- */
+
+using namespace ogl;
 
 /* -- Procedures -- */
 
 int main(int argc, char** argv)
 {
-  ogl_assert(1 == 1);
-  ogl_assert(1 == 2);
-  return 0;
+  try
+  {
+    application::instance().main();
+    return EXIT_SUCCESS;
+  }
+  catch (const std::exception& ex)
+  {
+    std::ostringstream message;
+    message << "Uncaught exception: " << ex.what();
+    ogl_fail_message(message.str());
+    return EXIT_FAILURE;
+  }
 }
