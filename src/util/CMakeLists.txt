@@ -3,12 +3,14 @@
 # Chris Vig (chris@invictus.so)
 #
 
-# Source files
-set(UTIL_LIBRARY_SOURCES
+# -- Inputs --
+
+set(LIBUTIL_LIBRARY_SOURCES
   debug.cpp
   random.cpp)
 
-# Library configuration
+# -- Target Definition --
+
 add_library(
-  ${UTIL_LIBRARY_NAME} STATIC
-  ${UTIL_LIBRARY_SOURCES})
+  ${LIBUTIL_LIBRARY_NAME} STATIC
+  ${LIBUTIL_LIBRARY_SOURCES})

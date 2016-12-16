@@ -3,11 +3,13 @@
 # Chris Vig (chris@invictus.so)
 #
 
-# Source files
-set(OPENGL_LIBRARY_SOURCES
+# -- Inputs --
+
+set(LIBOPENGL_LIBRARY_SOURCES
   opengl.cpp)
 
-# Library configuration
+# -- Target Definition --
+
 add_library(
-  ${OPENGL_LIBRARY_NAME} STATIC
-  ${OPENGL_LIBRARY_SOURCES})
+  ${LIBOPENGL_LIBRARY_NAME} STATIC
+  ${LIBOPENGL_LIBRARY_SOURCES})

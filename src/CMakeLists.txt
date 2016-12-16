@@ -3,13 +3,21 @@
 # Chris Vig (chris@invictus.so)
 #
 
+# -- Setup --
+
+# Initial definitions
 cmake_minimum_required(VERSION 3.4)
 project(ogl)
 
+# CMake libraries
+find_package(PkgConfig)
+
+# -- Common Variables --
+
 # Project names
 set(APP_EXECUTABLE_NAME 	${CMAKE_PROJECT_NAME})
-set(OPENGL_LIBRARY_NAME		opengl)
-set(UTIL_LIBRARY_NAME		util)
+set(LIBOPENGL_LIBRARY_NAME	opengl)
+set(LIBUTIL_LIBRARY_NAME	util)
 
 # Toolchain configuration
 set(CMAKE_CXX_FLAGS		"-std=gnu++11")
@@ -33,7 +41,8 @@ endif()
 # Include root directory so we can use qualified paths
 include_directories(${CMAKE_SOURCE_DIR})
 
-# Subdirectories
+# -- Subdirectories --
+
 add_subdirectory(app)
 add_subdirectory(opengl)
 add_subdirectory(util)
