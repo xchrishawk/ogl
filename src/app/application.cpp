@@ -31,5 +31,8 @@ application::~application()
 
 void application::main()
 {
-  while (true);
+  while (!m_window->should_close())
+  {
+    m_glfw.poll_events();
+  }
 }

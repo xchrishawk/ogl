@@ -21,6 +21,12 @@ namespace ogl
     glfw();
     ~glfw();
 
+    /** Polls GLFW for events. */
+    void poll_events() const;
+
+    /** Waits for the next GLFW events. */
+    void wait_events() const;
+
   private:
 
     glfw(const glfw&) = delete;

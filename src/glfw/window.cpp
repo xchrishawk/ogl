@@ -34,3 +34,8 @@ window::~window()
 {
   glfwDestroyWindow(m_handle);
 }
+
+bool window::should_close() const
+{
+  return static_cast<bool>(glfwWindowShouldClose(m_handle));
+}

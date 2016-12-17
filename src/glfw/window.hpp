@@ -30,6 +30,9 @@ namespace ogl
 
     ~window();
 
+    /** Returns `true` if the window should close. */
+    bool should_close() const;
+
   private:
 
     GLFWwindow* m_handle;

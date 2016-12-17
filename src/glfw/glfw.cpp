@@ -34,6 +34,16 @@ glfw::~glfw()
   ogl_debug_print("GLFW terminated.");
 }
 
+void glfw::poll_events() const
+{
+  glfwPollEvents();
+}
+
+void glfw::wait_events() const
+{
+  glfwWaitEvents();
+}
+
 void glfw::error_callback(int error, const char* description)
 {
   std::ostringstream message;
