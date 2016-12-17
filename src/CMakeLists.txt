@@ -15,6 +15,8 @@ set(APP_EXECUTABLE_SOURCES
   app/input.cpp
   app/renderer.cpp
   app/state.cpp
+  glfw/glfw.cpp
+  glfw/window.cpp
   util/debug.cpp)
 
 # Include src directory so we can use relative paths
