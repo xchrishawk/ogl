@@ -22,12 +22,14 @@ using namespace ogl;
 
 input::input()
 {
+  // initialize all of our tables to zero
   memset(m_type_mod_none, 0, sizeof(m_type_mod_none));
   memset(m_type_mod_shift, 0, sizeof(m_type_mod_shift));
   memset(m_type_mod_ctrl, 0, sizeof(m_type_mod_ctrl));
   memset(m_type_mod_alt, 0, sizeof(m_type_mod_alt));
   memset(m_key_active, 0, sizeof(m_key_active));
 
+  // initialize the key map
   init_key_map();
 }
 
@@ -92,6 +94,9 @@ void input::handle_press(int key, int mods)
     break;
   case GLFW_MOD_ALT:
     type = m_type_mod_alt[key];
+    break;
+  default:
+    // not handling this combination
     break;
   }
   set_input_key_active(type, true);

@@ -39,7 +39,8 @@ application::application()
   : m_glfw(),
     m_window(window::create()),
     m_glew(),
-    m_input()
+    m_input(),
+    m_state()
 {
   if (application::s_instance)
   {
@@ -98,13 +99,21 @@ void application::main()
 
 void application::handle_input(double abs_t, double delta_t)
 {
+  // poll GLFW events
   m_glfw.poll_events();
+
+  // set the window close flag if the user selects to exit
   if (m_input.input_active(INPUT_KEY_EXIT_APPLICATION))
     m_window->set_should_close(true);
 }
 
 void application::handle_state(double abs_t, double delta_t)
 {
+  // create arguments with required data
+  state_args args(m_input, abs_t, delta_t);
+
+  // update state
+  m_state.run(args);
 }
 
 void application::handle_render(double abs_t, double delta_t)
@@ -116,6 +125,7 @@ void application::handle_render(double abs_t, double delta_t)
 
 void application::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+  // this gets farmed out to the input object
   if (s_instance)
     s_instance->m_input.key_pressed(key, scancode, action, mods);
 }

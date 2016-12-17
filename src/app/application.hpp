@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include "app/input.hpp"
+#include "app/state.hpp"
 #include "glew/glew.hpp"
 #include "glfw/glfw.hpp"
 #include "glfw/window.hpp"
@@ -39,6 +40,7 @@ namespace ogl
     window::ptr m_window;
     glew m_glew;
     input m_input;
+    state m_state;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;

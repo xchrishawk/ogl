@@ -13,6 +13,7 @@ set(APP_EXECUTABLE_SOURCES
   main.cpp
   app/application.cpp
   app/input.cpp
+  app/state.cpp
   glew/glew.cpp
   glfw/glfw.cpp
   glfw/window.cpp

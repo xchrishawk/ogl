@@ -4,6 +4,8 @@
  * @date	2016/12/16
  */
 
+#pragma once
+
 /* -- Includes -- */
 
 #include <GLFW/glfw3.h>
@@ -13,7 +15,7 @@
 namespace ogl
 {
 
-  // forward declaration
+  // required forward declaration
   class application;
 
   /**
