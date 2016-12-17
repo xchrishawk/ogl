@@ -11,9 +11,6 @@
 #include "app/input.hpp"
 #include "app/renderer.hpp"
 #include "app/state.hpp"
-#include "glew/glew.hpp"
-#include "glfw/glfw.hpp"
-#include "glfw/window.hpp"
 
 /* -- Types -- */
 
@@ -37,9 +34,6 @@ namespace ogl
 
     static application* s_instance;
 
-    glfw m_glfw;
-    window::ptr m_window;
-    glew m_glew;
     input m_input;
     state m_state;
     renderer m_renderer;
@@ -50,8 +44,6 @@ namespace ogl
     void handle_input(double abs_t, double delta_t);
     void handle_state(double abs_t, double delta_t);
     void handle_render(double abs_t, double delta_t);
-
-    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
   };
 
