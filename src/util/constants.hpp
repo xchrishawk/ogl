@@ -29,6 +29,7 @@ namespace ogl
 #endif
 
     const int OPENGL_PROFILE			= GLFW_OPENGL_CORE_PROFILE;
+    const int OPENGL_FORWARD_COMPAT		= GLFW_TRUE;
     const int OPENGL_CONTEXT_VERSION_MAJOR	= 3;
     const int OPENGL_CONTEXT_VERSION_MINOR	= 3;
     const int OPENGL_SWAP_INTERVAL		= 1;

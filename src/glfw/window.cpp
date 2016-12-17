@@ -33,6 +33,7 @@ window::window(bool make_current,
   : m_handle(nullptr)
 {
   glfwWindowHint(GLFW_OPENGL_PROFILE, constants::OPENGL_PROFILE);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, constants::OPENGL_FORWARD_COMPAT);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, constants::OPENGL_CONTEXT_VERSION_MAJOR);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, constants::OPENGL_CONTEXT_VERSION_MINOR);
 

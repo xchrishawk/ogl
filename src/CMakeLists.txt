@@ -46,6 +46,11 @@ elseif(APPLE)
   # Define MacOS macro
   list(APPEND APP_EXECUTABLE_DEFINITIONS -DOGL_MACOS)
 
+  # Use OpenGL.framework
+  find_package(OpenGL REQUIRED)
+  list(APPEND APP_EXECUTABLE_INCLUDE_DIRECTORIES ${OPENGL_INCLUDE_DIR})
+  list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${OPENGL_LIBRARIES})
+
 else()
 
   # Unknown platform???
