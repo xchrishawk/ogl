@@ -7,6 +7,7 @@
 
 # Source files
 set(APP_EXECUTABLE_SOURCES
+  application.cpp
   main.cpp)
 
 # Project libraries
