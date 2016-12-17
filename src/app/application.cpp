@@ -38,13 +38,16 @@ application* application::s_instance = nullptr;
 application::application()
   : m_glfw(),
     m_window(window::create()),
-    m_glew()
+    m_glew(),
+    m_input()
 {
   if (application::s_instance)
   {
     ogl_debug_print_always("Attempted to initialize application while it was already initialized!");
     ogl::fail();
   }
+
+  m_window->set_key_callback(application::key_callback);
 
   application::s_instance = this;
   ogl_debug_print("Application initialized successfully.");
@@ -96,6 +99,8 @@ void application::main()
 void application::handle_input(double abs_t, double delta_t)
 {
   m_glfw.poll_events();
+  if (m_input.input_active(INPUT_KEY_EXIT_APPLICATION))
+    m_window->set_should_close(true);
 }
 
 void application::handle_state(double abs_t, double delta_t)
@@ -107,4 +112,10 @@ void application::handle_render(double abs_t, double delta_t)
   glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
   m_window->swap_buffers();
+}
+
+void application::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+  if (s_instance)
+    s_instance->m_input.key_pressed(key, scancode, action, mods);
 }

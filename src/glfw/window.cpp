@@ -46,7 +46,17 @@ bool window::should_close() const
   return static_cast<bool>(glfwWindowShouldClose(m_handle));
 }
 
+void window::set_should_close(bool should_close)
+{
+  glfwSetWindowShouldClose(m_handle, static_cast<int>(should_close));
+}
+
 void window::swap_buffers()
 {
   glfwSwapBuffers(m_handle);
+}
+
+void window::set_key_callback(GLFWkeyfun callback)
+{
+  glfwSetKeyCallback(m_handle, callback);
 }

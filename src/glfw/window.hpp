@@ -34,8 +34,14 @@ namespace ogl
     /** Returns `true` if the window should close. */
     bool should_close() const;
 
+    /** Sets the should close flag. */
+    void set_should_close(bool should_close);
+
     /** Swaps the window's frame buffer with the OpenGL back buffer. */
     void swap_buffers();
+
+    /** Sets the keypress callback for this window. */
+    void set_key_callback(GLFWkeyfun callback);
 
   private:
 

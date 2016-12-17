@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include "app/input.hpp"
 #include "glew/glew.hpp"
 #include "glfw/glfw.hpp"
 #include "glfw/window.hpp"
@@ -37,6 +38,7 @@ namespace ogl
     glfw m_glfw;
     window::ptr m_window;
     glew m_glew;
+    input m_input;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;
@@ -44,6 +46,8 @@ namespace ogl
     void handle_input(double abs_t, double delta_t);
     void handle_state(double abs_t, double delta_t);
     void handle_render(double abs_t, double delta_t);
+
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
   };
 
