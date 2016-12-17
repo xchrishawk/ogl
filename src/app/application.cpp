@@ -40,7 +40,8 @@ application::application()
     m_window(window::create()),
     m_glew(),
     m_input(),
-    m_state()
+    m_state(),
+    m_renderer()
 {
   if (application::s_instance)
   {
@@ -118,8 +119,11 @@ void application::handle_state(double abs_t, double delta_t)
 
 void application::handle_render(double abs_t, double delta_t)
 {
-  glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+  // create arguments with required data
+  render_args args(m_state, abs_t, delta_t);
+
+  // render and swap buffers
+  m_renderer.render(args);
   m_window->swap_buffers();
 }
 

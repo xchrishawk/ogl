@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include "app/input.hpp"
+#include "app/renderer.hpp"
 #include "app/state.hpp"
 #include "glew/glew.hpp"
 #include "glfw/glfw.hpp"
@@ -41,6 +42,7 @@ namespace ogl
     glew m_glew;
     input m_input;
     state m_state;
+    renderer m_renderer;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;
