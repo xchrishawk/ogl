@@ -12,6 +12,7 @@
 #include <GLFW/glfw3.h>
 
 #include "glfw/glfw.hpp"
+#include "util/constants.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */

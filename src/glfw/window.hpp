@@ -53,6 +53,9 @@ namespace ogl
     /** Returns `true` if this window is the current OpenGL context. */
     bool is_context_current() const;
 
+    /** Gets the size of the window's framebuffer. */
+    void framebuffer_size(int* width, int* height) const;
+
   private:
 
     GLFWwindow* m_handle;

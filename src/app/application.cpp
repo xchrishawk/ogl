@@ -10,30 +10,12 @@
 #include <GLFW/glfw3.h>
 
 #include "app/application.hpp"
+#include "util/constants.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */
 
 using namespace ogl;
-
-/* -- Constants -- */
-
-namespace
-{
-  // timing information
-  const double FREQ_60_HZ = (1.0 / 60.0);
-  const double TARGET_INPUT_RATE = FREQ_60_HZ;
-  const double TARGET_STATE_RATE = FREQ_60_HZ;
-  const double TARGET_RENDER_RATE = FREQ_60_HZ;
-
-  // initial app setup
-  const int INITIAL_WIDTH = 800;
-  const int INITIAL_HEIGHT = 600;
-  const std::string INITIAL_TITLE = "OGL";
-
-  // OpenGL frame swap interval
-  const int SWAP_INTERVAL = 1;
-}
 
 /* -- Variables -- */
 
@@ -43,7 +25,10 @@ application* application::s_instance = nullptr;
 
 application::application()
   : m_glfw(),
-    m_window(window::create(true, INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_TITLE)),
+    m_window(window::create(true,
+			    constants::WINDOW_INITIAL_WIDTH,
+			    constants::WINDOW_INITIAL_HEIGHT,
+			    constants::WINDOW_TITLE)),
     m_glew(),
     m_input(),
     m_state(),
@@ -55,7 +40,7 @@ application::application()
     ogl::fail();
   }
 
-  m_glfw.set_swap_interval(SWAP_INTERVAL);
+  m_glfw.set_swap_interval(constants::OPENGL_SWAP_INTERVAL);
   m_window->set_key_callback(application::key_callback);
 
   application::s_instance = this;
@@ -83,21 +68,21 @@ void application::main()
     last_t = abs_t;
 
     // handle user input
-    if (abs_t - last_input_t > TARGET_INPUT_RATE)
+    if (abs_t - last_input_t >= constants::TARGET_INPUT_DELTA_T)
     {
       handle_input(abs_t, delta_t);
       last_input_t = abs_t;
     }
 
     // handle state updates
-    if (abs_t - last_state_t > TARGET_STATE_RATE)
+    if (abs_t - last_state_t >= constants::TARGET_STATE_DELTA_T)
     {
       handle_state(abs_t, delta_t);
       last_state_t = abs_t;
     }
 
     // handle rendering
-    if (abs_t - last_render_t > TARGET_RENDER_RATE)
+    if (abs_t - last_render_t >= constants::TARGET_RENDER_DELTA_T)
     {
       handle_render(abs_t, delta_t);
       last_render_t = abs_t;

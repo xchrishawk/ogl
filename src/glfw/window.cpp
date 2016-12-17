@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 #include "glfw/window.hpp"
+#include "util/constants.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */
@@ -31,8 +32,9 @@ window::window(bool make_current,
 	       const std::string& initial_title)
   : m_handle(nullptr)
 {
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, constants::OPENGL_PROFILE);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, constants::OPENGL_CONTEXT_VERSION_MAJOR);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, constants::OPENGL_CONTEXT_VERSION_MINOR);
 
   m_handle = glfwCreateWindow(initial_width,		// width
 			      initial_height,		// height
@@ -80,4 +82,9 @@ void window::make_context_current()
 bool window::is_context_current() const
 {
   return (glfwGetCurrentContext() == m_handle);
+}
+
+void window::framebuffer_size(int* width, int* height) const
+{
+  glfwGetFramebufferSize(m_handle, width, height);
 }
