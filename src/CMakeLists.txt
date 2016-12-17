@@ -10,7 +10,8 @@ set(APP_EXECUTABLE_NAME ${CMAKE_PROJECT_NAME})
 
 # Executable source code
 set(APP_EXECUTABLE_SOURCES
-  main.cpp)
+  main.cpp
+  util/debug.cpp)
 
 # Include src directory so we can use relative paths
 list(APPEND APP_EXECUTABLE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR})
