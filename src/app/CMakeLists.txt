@@ -12,8 +12,8 @@ set(APP_EXECUTABLE_SOURCES
 
 # Project libraries
 list(APPEND APP_EXECUTABLE_LIBRARIES
-  ${LIBGLFW_LIBRARY_NAME}
-  ${LIBUTIL_LIBRARY_NAME})
+  ${GLFWWRAPPER_LIBRARY_NAME}
+  ${UTIL_LIBRARY_NAME})
 
 # -- Third Party Libraries --
 
@@ -38,13 +38,12 @@ list(APPEND APP_EXECUTABLE_LIBRARIES
 #   message(FATAL_ERROR "Unrecognized or unsupported platform!")
 #
 # endif()
-#
-# # GLFW library is required regardless of platform
-# pkg_check_modules(GLFW REQUIRED glfw3)
-# link_directories(${GLFW_LIBRARY_DIRS})
-# list(APPEND APP_EXECUTABLE_INCLUDE_DIRS ${GLFW_INCLUDE_DIRS})
-# list(APPEND APP_EXECUTABLE_COMPILE_OPTIONS ${GLFW_CFLAGS_OTHER})
-# list(APPEND APP_EXECUTABLE_LIBRARIES ${GLFW_LIBRARIES})
+
+# GLFW library is required regardless of platform
+link_directories(${GLFW_LIBRARY_DIRS})
+list(APPEND APP_EXECUTABLE_INCLUDE_DIRS ${GLFW_INCLUDE_DIRS})
+list(APPEND APP_EXECUTABLE_COMPILE_OPTIONS ${GLFW_CFLAGS_OTHER})
+list(APPEND APP_EXECUTABLE_LIBRARIES ${GLFW_LIBRARIES})
 
 # -- Target Definition --
 

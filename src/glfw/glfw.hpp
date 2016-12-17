@@ -26,6 +26,8 @@ namespace ogl
     glfw(const glfw&) = delete;
     glfw& operator =(const glfw&) = delete;
 
+    static void error_callback(int error, const char* description);
+
   };
 
 }

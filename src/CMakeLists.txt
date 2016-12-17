@@ -16,8 +16,8 @@ find_package(PkgConfig)
 
 # Project names
 set(APP_EXECUTABLE_NAME 	${CMAKE_PROJECT_NAME})
-set(LIBGLFW_LIBRARY_NAME	glfw)
-set(LIBUTIL_LIBRARY_NAME	util)
+set(GLFWWRAPPER_LIBRARY_NAME	glfwwrapper)
+set(UTIL_LIBRARY_NAME		util)
 
 # Toolchain configuration
 set(CMAKE_CXX_FLAGS		"-std=gnu++11")
@@ -37,6 +37,9 @@ elseif(APPLE)
 else()
   message(FATAL_ERROR "Unrecognized or unsupported platform!")
 endif()
+
+# Common libraries
+pkg_check_modules(GLFW REQUIRED glfw3)
 
 # Include root directory so we can use qualified paths
 include_directories(${CMAKE_SOURCE_DIR})

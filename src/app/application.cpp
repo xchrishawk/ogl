@@ -31,5 +31,5 @@ application::~application()
 
 void application::main()
 {
-  throw std::runtime_error("App not implemented!");
+  while (true);
 }

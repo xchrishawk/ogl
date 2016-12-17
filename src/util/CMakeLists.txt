@@ -5,11 +5,11 @@
 
 # -- Inputs --
 
-set(LIBUTIL_LIBRARY_SOURCES
+set(UTIL_LIBRARY_SOURCES
   debug.cpp)
 
 # -- Target Definition --
 
 add_library(
-  ${LIBUTIL_LIBRARY_NAME} STATIC
-  ${LIBUTIL_LIBRARY_SOURCES})
+  ${UTIL_LIBRARY_NAME} STATIC
+  ${UTIL_LIBRARY_SOURCES})

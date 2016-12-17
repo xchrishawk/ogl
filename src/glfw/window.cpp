@@ -6,6 +6,8 @@
 
 /* -- Includes -- */
 
+#include <stdexcept>
+
 #include "glfw/window.hpp"
 #include "util/debug.hpp"
 
@@ -21,9 +23,14 @@ window::ptr window::create()
 }
 
 window::window()
+  : m_handle(nullptr)
 {
+  m_handle = glfwCreateWindow(800, 600, "Test", NULL, NULL);
+  if (!m_handle)
+    throw std::runtime_error("Failed to create GLFW window!");
 }
 
 window::~window()
 {
+  glfwDestroyWindow(m_handle);
 }
