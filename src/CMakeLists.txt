@@ -12,6 +12,7 @@ set(APP_EXECUTABLE_NAME ${CMAKE_PROJECT_NAME})
 set(APP_EXECUTABLE_SOURCES
   main.cpp
   app/application.cpp
+  glew/glew.cpp
   glfw/glfw.cpp
   glfw/window.cpp
   util/debug.cpp)
@@ -24,13 +25,29 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   list(APPEND APP_EXECUTABLE_DEFINITIONS -DOGL_DEBUG)
 endif()
 
-# Define platform macros
+# Platform-specific setup
 if(UNIX AND NOT APPLE)
+
+  # Define Linux macro
   list(APPEND APP_EXECUTABLE_DEFINITIONS -DOGL_LINUX)
+
+  # Include GLEW library
+  pkg_check_modules(GLEW REQUIRED glew)
+  link_directories(${GLEW_LIBRARY_DIRS})
+  list(APPEND APP_EXECUTABLE_INCLUDE_DIRECTORIES ${GLEW_INCLUDE_DIRS})
+  list(APPEND APP_EXECUTABLE_COMPILE_OPTIONS ${GLEW_CFLAGS_OTHER})
+  list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${GLEW_LIBRARIES})
+
 elseif(APPLE)
+
+  # Define MacOS macro
   list(APPEND APP_EXECUTABLE_DEFINITIONS -DOGL_MACOS)
+
 else()
+
+  # Unknown platform???
   message(FATAL_ERROR "Unrecognized or unsupported platform!")
+
 endif()
 
 # -- Libraries --

@@ -9,6 +9,8 @@
 
 #include <stdexcept>
 
+#include <GL/glew.h>
+
 #include "app/application.hpp"
 #include "util/debug.hpp"
 
@@ -20,7 +22,8 @@ using namespace ogl;
 
 application::application()
   : m_glfw(),
-    m_window(window::create())
+    m_window(window::create()),
+    m_glew()
 {
   ogl_debug_print("Application initialized successfully.");
 }
@@ -35,6 +38,10 @@ void application::main()
   while (!m_window->should_close())
   {
     m_glfw.poll_events();
+
+    glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
     m_window->swap_buffers();
   }
 }

@@ -25,9 +25,15 @@ window::ptr window::create()
 window::window()
   : m_handle(nullptr)
 {
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   m_handle = glfwCreateWindow(800, 600, "Test", NULL, NULL);
   if (!m_handle)
     throw std::runtime_error("Failed to create GLFW window!");
+
+  // FIXME: these should probably go somewhere else?
+  glfwMakeContextCurrent(m_handle);
+  glfwSwapInterval(1);
 }
 
 window::~window()
