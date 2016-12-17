@@ -23,4 +23,5 @@ set(CMAKE_CXX_FLAGS_RELEASE	"-O3 -s -Wall -Wpedantic")
 
 # -- Subdirectories --
 
+add_subdirectory(doc)
 add_subdirectory(src)
