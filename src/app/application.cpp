@@ -18,6 +18,21 @@
 
 using namespace ogl;
 
+/* -- Constants -- */
+
+namespace
+{
+  // timing information
+  const double FREQ_60_HZ = (1.0 / 60.0);
+  const double TARGET_INPUT_RATE = FREQ_60_HZ;
+  const double TARGET_STATE_RATE = FREQ_60_HZ;
+  const double TARGET_RENDER_RATE = FREQ_60_HZ;
+}
+
+/* -- Variables -- */
+
+application* application::s_instance = nullptr;
+
 /* -- Procedures -- */
 
 application::application()
@@ -25,23 +40,71 @@ application::application()
     m_window(window::create()),
     m_glew()
 {
+  if (application::s_instance)
+  {
+    ogl_debug_print_always("Attempted to initialize application while it was already initialized!");
+    ogl::fail();
+  }
+
+  application::s_instance = this;
   ogl_debug_print("Application initialized successfully.");
 }
 
 application::~application()
 {
+  application::s_instance = nullptr;
   ogl_debug_print("Application shutting down...");
 }
 
 void application::main()
 {
+  double last_t = m_glfw.time();
+  double last_input_t = last_t;
+  double last_state_t = last_t;
+  double last_render_t = last_t;
+
   while (!m_window->should_close())
   {
-    m_glfw.poll_events();
+    // get time statistics
+    double abs_t = m_glfw.time();
+    double delta_t = abs_t - last_t;
+    last_t = abs_t;
 
-    glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    // handle user input
+    if (abs_t - last_input_t > TARGET_INPUT_RATE)
+    {
+      handle_input(abs_t, delta_t);
+      last_input_t = abs_t;
+    }
 
-    m_window->swap_buffers();
+    // handle state updates
+    if (abs_t - last_state_t > TARGET_STATE_RATE)
+    {
+      handle_state(abs_t, delta_t);
+      last_state_t = abs_t;
+    }
+
+    // handle rendering
+    if (abs_t - last_render_t > TARGET_RENDER_RATE)
+    {
+      handle_render(abs_t, delta_t);
+      last_render_t = abs_t;
+    }
   }
+}
+
+void application::handle_input(double abs_t, double delta_t)
+{
+  m_glfw.poll_events();
+}
+
+void application::handle_state(double abs_t, double delta_t)
+{
+}
+
+void application::handle_render(double abs_t, double delta_t)
+{
+  glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  m_window->swap_buffers();
 }

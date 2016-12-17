@@ -48,6 +48,11 @@ glfw::~glfw()
   ogl_debug_print("GLFW terminated.");
 }
 
+double glfw::time() const
+{
+  return glfwGetTime();
+}
+
 void glfw::poll_events() const
 {
   glfwPollEvents();

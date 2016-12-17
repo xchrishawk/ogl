@@ -21,6 +21,9 @@ namespace ogl
     glfw();
     ~glfw();
 
+    /** The current GLFW timer value, in seconds. */
+    double time() const;
+
     /** Polls GLFW for events. */
     void poll_events() const;
 
