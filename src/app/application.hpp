@@ -6,6 +6,10 @@
 
 #pragma once
 
+/* -- Includes -- */
+
+#include "glfw/glfw.hpp"
+
 /* -- Types -- */
 
 namespace ogl
@@ -25,6 +29,8 @@ namespace ogl
     void main();
 
   private:
+
+    glfw m_glfw;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;

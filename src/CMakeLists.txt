@@ -16,7 +16,7 @@ find_package(PkgConfig)
 
 # Project names
 set(APP_EXECUTABLE_NAME 	${CMAKE_PROJECT_NAME})
-set(LIBOPENGL_LIBRARY_NAME	opengl)
+set(LIBGLFW_LIBRARY_NAME	glfw)
 set(LIBUTIL_LIBRARY_NAME	util)
 
 # Toolchain configuration
@@ -45,4 +45,5 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 add_subdirectory(app)
 add_subdirectory(doc)
+add_subdirectory(glfw)
 add_subdirectory(util)

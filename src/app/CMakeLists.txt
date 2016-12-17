@@ -12,6 +12,7 @@ set(APP_EXECUTABLE_SOURCES
 
 # Project libraries
 list(APPEND APP_EXECUTABLE_LIBRARIES
+  ${LIBGLFW_LIBRARY_NAME}
   ${LIBUTIL_LIBRARY_NAME})
 
 # -- Third Party Libraries --

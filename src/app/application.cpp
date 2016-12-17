@@ -18,6 +18,7 @@ using namespace ogl;
 /* -- Procedures -- */
 
 application::application()
+  : m_glfw()
 {
   ogl_debug_print("Application initialized successfully.");
 }
