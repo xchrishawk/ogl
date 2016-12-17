@@ -7,6 +7,7 @@
 /* -- Includes -- */
 
 #include <cmath>
+
 #include <GL/glew.h>
 
 #include "app/renderer.hpp"
@@ -20,6 +21,6 @@ using namespace ogl;
 
 void renderer::render(const render_args& args)
 {
-  glClearColor(fabs(sin(args.abs_t * 200.0f)), fabs(cos(args.abs_t * 200.0f)), 0.0f, 1.0f);
+  glClearColor(fabs(sin(args.abs_t)), fabs(cos(args.abs_t)), 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 }
