@@ -30,6 +30,9 @@ namespace ogl
     /** Waits for the next GLFW events. */
     void wait_events() const;
 
+    /** Sets the swap interval for the currently active OpenGL context. */
+    void set_swap_interval(int interval);
+
   private:
 
     glfw(const glfw&) = delete;

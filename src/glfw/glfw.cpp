@@ -63,6 +63,11 @@ void glfw::wait_events() const
   glfwWaitEvents();
 }
 
+void glfw::set_swap_interval(int interval)
+{
+  glfwSwapInterval(interval);
+}
+
 void glfw::error_callback(int error, const char* description)
 {
   std::ostringstream message;

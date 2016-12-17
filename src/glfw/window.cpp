@@ -33,7 +33,6 @@ window::window()
 
   // FIXME: these should probably go somewhere else?
   glfwMakeContextCurrent(m_handle);
-  glfwSwapInterval(1);
 }
 
 window::~window()

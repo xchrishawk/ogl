@@ -1,4 +1,3 @@
-
 /**
  * @file	application.cpp
  * @author	Chris Vig (chris@invictus.so)
@@ -26,6 +25,9 @@ namespace
   const double TARGET_INPUT_RATE = FREQ_60_HZ;
   const double TARGET_STATE_RATE = FREQ_60_HZ;
   const double TARGET_RENDER_RATE = FREQ_60_HZ;
+
+  // OpenGL frame swap interval
+  const int SWAP_INTERVAL = 1;
 }
 
 /* -- Variables -- */
@@ -48,6 +50,7 @@ application::application()
     ogl::fail();
   }
 
+  m_glfw.set_swap_interval(SWAP_INTERVAL);
   m_window->set_key_callback(application::key_callback);
 
   application::s_instance = this;
