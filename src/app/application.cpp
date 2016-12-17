@@ -26,6 +26,11 @@ namespace
   const double TARGET_STATE_RATE = FREQ_60_HZ;
   const double TARGET_RENDER_RATE = FREQ_60_HZ;
 
+  // initial app setup
+  const int INITIAL_WIDTH = 800;
+  const int INITIAL_HEIGHT = 600;
+  const std::string INITIAL_TITLE = "OGL";
+
   // OpenGL frame swap interval
   const int SWAP_INTERVAL = 1;
 }
@@ -38,7 +43,7 @@ application* application::s_instance = nullptr;
 
 application::application()
   : m_glfw(),
-    m_window(window::create()),
+    m_window(window::create(true, INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_TITLE)),
     m_glew(),
     m_input(),
     m_state(),

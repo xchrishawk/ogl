@@ -27,7 +27,11 @@ namespace ogl
     typedef std::shared_ptr<window> ptr;
     typedef std::shared_ptr<const window> const_ptr;
 
-    static window::ptr create();
+    /** Creates and returns a shared pointer to a new `window` instance. */
+    static window::ptr create(bool make_current,
+			      int initial_width,
+			      int initial_height,
+			      const std::string& initial_title);
 
     ~window();
 
@@ -43,11 +47,20 @@ namespace ogl
     /** Sets the keypress callback for this window. */
     void set_key_callback(GLFWkeyfun callback);
 
+    /** Makes this window the current OpenGL context. */
+    void make_context_current();
+
+    /** Returns `true` if this window is the current OpenGL context. */
+    bool is_context_current() const;
+
   private:
 
     GLFWwindow* m_handle;
 
-    window();
+    window(bool make_current,
+	   int initial_width,
+	   int initial_height,
+	   const std::string& initial_title);
     window(const window&) = delete;
     window& operator =(const window&) = delete;
 
