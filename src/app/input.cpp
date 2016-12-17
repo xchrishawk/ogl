@@ -9,9 +9,8 @@
 #include <cstring>
 #include <iostream>
 
-#include <GLFW/glfw3.h>
-
 #include "app/input.hpp"
+#include "opengl/api.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */

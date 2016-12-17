@@ -14,6 +14,8 @@
 #include "app/state.hpp"
 #include "glfw/glfw.hpp"
 #include "glfw/window.hpp"
+#include "opengl/api.hpp"
+#include "opengl/opengl.hpp"
 #include "util/constants.hpp"
 #include "util/debug.hpp"
 
@@ -33,6 +35,7 @@ application::application()
 			    constants::WINDOW_INITIAL_WIDTH,
 			    constants::WINDOW_INITIAL_HEIGHT,
 			    constants::WINDOW_TITLE)),
+    m_opengl(),
     m_input(),
     m_state(),
     m_renderer()

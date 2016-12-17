@@ -8,10 +8,9 @@
 
 #include <cmath>
 
-#include <GL/glew.h>
-
 #include "app/renderer.hpp"
 #include "app/state.hpp"
+#include "opengl/api.hpp"
 
 /* -- Namespaces -- */
 

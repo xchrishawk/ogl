@@ -9,9 +9,8 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <GLFW/glfw3.h>
-
 #include "glfw/glfw.hpp"
+#include "opengl/api.hpp"
 #include "util/constants.hpp"
 #include "util/debug.hpp"
 
@@ -39,6 +38,7 @@ glfw::glfw()
 
   glfw::s_instance = this;
   ogl_debug_print("GLFW initialized.");
+  print_version_info();
 }
 
 glfw::~glfw()
@@ -75,4 +75,13 @@ void glfw::error_callback(int error, const char* description)
   message << "* GLFW error! Code " << error << " (" << description << ")";
   ogl_debug_print_always(message.str());
   ogl_breakpoint();
+}
+
+void glfw::print_version_info()
+{
+#if defined(OGL_DEBUG)
+  std::ostringstream output;
+  output << "  GLFW Version:   " << glfwGetVersionString();
+  ogl_debug_print(output.str());
+#endif
 }

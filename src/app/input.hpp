@@ -8,7 +8,7 @@
 
 /* -- Includes -- */
 
-#include <GLFW/glfw3.h>
+#include "opengl/api.hpp"
 
 /* -- Types -- */
 
