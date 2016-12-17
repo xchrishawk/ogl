@@ -33,6 +33,9 @@ namespace ogl
     /** Returns `true` if the window should close. */
     bool should_close() const;
 
+    /** Swaps the window's frame buffer with the OpenGL back buffer. */
+    void swap_buffers();
+
   private:
 
     GLFWwindow* m_handle;

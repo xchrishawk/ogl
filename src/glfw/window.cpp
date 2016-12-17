@@ -39,3 +39,8 @@ bool window::should_close() const
 {
   return static_cast<bool>(glfwWindowShouldClose(m_handle));
 }
+
+void window::swap_buffers()
+{
+  glfwSwapBuffers(m_handle);
+}

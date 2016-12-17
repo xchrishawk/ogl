@@ -18,19 +18,33 @@
 
 using namespace ogl;
 
+/* -- Variables -- */
+
+glfw* glfw::s_instance = nullptr;
+
 /* -- Procedures -- */
 
 glfw::glfw()
 {
+  if (glfw::s_instance)
+  {
+    ogl_error_print_always("Attempted to initialize GLFW while it was already initialized!");
+    ogl::fail();
+  }
+
+  glfwSetErrorCallback(glfw::error_callback);
   if (!glfwInit())
     throw std::runtime_error("Failed to initialize GLFW!");
 
+  glfw::s_instance = this;
   ogl_debug_print("GLFW initialized.");
 }
 
 glfw::~glfw()
 {
   glfwTerminate();
+
+  glfw::s_instance = nullptr;
   ogl_debug_print("GLFW terminated.");
 }
 

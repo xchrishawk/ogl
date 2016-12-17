@@ -34,5 +34,6 @@ void application::main()
   while (!m_window->should_close())
   {
     m_glfw.poll_events();
+    m_window->swap_buffers();
   }
 }
