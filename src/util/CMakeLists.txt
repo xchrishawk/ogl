@@ -6,7 +6,7 @@
 # -- Inputs --
 
 set(LIBUTIL_LIBRARY_SOURCES
-  strings.cpp)
+  debug.cpp)
 
 # -- Target Definition --
 
