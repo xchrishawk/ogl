@@ -10,6 +10,7 @@
 #include <stdexcept>
 
 #include "opengl/api.hpp"
+#include "opengl/error.hpp"
 #include "opengl/opengl.hpp"
 #include "util/debug.hpp"
 
@@ -34,6 +35,7 @@ opengl::opengl()
 #if defined(OGL_LINUX)
   if (glewInit() != GLEW_OK)
     throw std::runtime_error("Failed to initialize GLFW!");
+  ogl_opengl_check_error();
 #endif
 
   opengl::s_instance = this;

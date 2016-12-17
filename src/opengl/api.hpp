@@ -18,6 +18,7 @@
 
   // Use OpenGL framework and GLFW on macOS
   #include <OpenGL/gl.h>
+  #include <OpenGL/glu.h>
   #include <GLFW/glfw3.h>
 
 #else

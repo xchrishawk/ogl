@@ -6,6 +6,7 @@
 
 /* -- Includes -- */
 
+#include <sstream>
 #include <stdexcept>
 
 #include "app/application.hpp"
@@ -15,6 +16,7 @@
 #include "glfw/glfw.hpp"
 #include "glfw/window.hpp"
 #include "opengl/api.hpp"
+#include "opengl/error.hpp"
 #include "opengl/opengl.hpp"
 #include "util/constants.hpp"
 #include "util/debug.hpp"
@@ -127,6 +129,18 @@ void application::handle_render(double abs_t, double delta_t)
   // render and swap buffers
   m_renderer.render(args);
   m_window->swap_buffers();
+
+#if defined(OGL_DEBUG)
+  // if this is a debug build, check for errors
+  GLenum error = ogl::opengl_last_error();
+  if (error != GL_NO_ERROR)
+  {
+    std::ostringstream message;
+    message << "* OpenGL error detected in run loop!" << std::endl;
+    message << "  " << ogl::opengl_error_string(error);
+    ogl_error_print(message.str());
+  }
+#endif /* OGL_DEBUG */
 }
 
 void application::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
