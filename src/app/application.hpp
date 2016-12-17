@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include "glfw/glfw.hpp"
+#include "glfw/window.hpp"
 
 /* -- Types -- */
 
@@ -31,6 +32,7 @@ namespace ogl
   private:
 
     glfw m_glfw;
+    window::ptr m_window;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;

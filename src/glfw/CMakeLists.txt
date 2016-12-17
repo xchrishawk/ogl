@@ -6,7 +6,8 @@
 # -- Inputs --
 
 set(LIBGLFW_LIBRARY_SOURCES
-  glfw.cpp)
+  glfw.cpp
+  window.cpp)
 
 # -- Target Definition --
 
