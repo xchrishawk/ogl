@@ -8,8 +8,7 @@
 /* -- Includes -- */
 
 #include <stdexcept>
-
-#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #include "app/application.hpp"
 #include "util/debug.hpp"

@@ -19,6 +19,7 @@ int main(int argc, char** argv)
   {
     ogl::application app;
     app.main();
+    return 0;
   }
   catch (const std::exception& ex)
   {
