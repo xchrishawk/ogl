@@ -40,7 +40,7 @@ namespace
 renderer::renderer()
   : m_program(renderer::init_program()),
     m_vao(renderer::init_vao(m_program)),
-    m_component(renderer::init_component())
+    m_object(renderer::init_object())
 {
   // one-time initial setup - TEMPORARILY DISABLED
   // enable_depth_testing();
@@ -60,7 +60,7 @@ void renderer::render(const render_args& args)
   vertex_array::bind(m_vao);
   glUniform1f(m_program->uniform_location("abs_t"), static_cast<float>(args.abs_t));
 
-  draw_component(m_component, glm::mat4());
+  draw_object(m_object);
 
   vertex_array::bind_none();
   program::use_none();
@@ -145,7 +145,7 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
   return vao;
 }
 
-component renderer::init_component()
+object renderer::init_object()
 {
   static const std::vector<vertex> vertices = {
     { { 0.0f, 0.0f, 0.0f }, { }, { 1.0f, 0.0f, 0.0f, 1.0f } },
@@ -157,12 +157,24 @@ component renderer::init_component()
   static const std::vector<GLuint> indices = {
     0, 1, 2, 0, 3, 4, 0, 1, 4, 0, 2, 3
   };
+
   ogl::mesh mesh(GL_TRIANGLES, vertices, indices);
 
-  return component(mesh,
-		   glm::vec3(-0.5, 0.5, 0.0),
-		   glm::quat(),
-		   glm::vec3(1.0, 1.0, 1.0));
+  ogl::component component1(mesh,
+			    glm::vec3(-0.5, 0.5, 0.0),
+			    glm::quat(),
+			    glm::vec3(1.0, 0.5, 1.0));
+  ogl::component component2(mesh,
+			    glm::vec3(0.5, -0.5, 0.0),
+			    glm::quat(),
+			    glm::vec3(1.0, 0.5, 1.0));
+
+  ogl::object object({ component1, component2 },
+		     glm::vec3(0.0, 0.0, 0.0),
+		     glm::quat(),
+		     glm::vec3(1.0, 1.0, 1.0));
+
+  return object;
 }
 
 
@@ -189,6 +201,13 @@ void renderer::clear_buffer(const render_args& args)
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClearDepthf(1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void renderer::draw_object(const object& object)
+{
+  glm::mat4 model_matrix = object.matrix();
+  for (const component& comp : object.components())
+    draw_component(comp, model_matrix);
 }
 
 void renderer::draw_component(const component& component, const glm::mat4& model_matrix)

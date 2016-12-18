@@ -13,7 +13,7 @@
 #include "app/state.hpp"
 #include "opengl/program.hpp"
 #include "opengl/vertex_array.hpp"
-#include "scene/component.hpp"
+#include "scene/object.hpp"
 
 /* -- Types -- */
 
@@ -64,11 +64,11 @@ namespace ogl
 
     static program::ptr init_program();
     static vertex_array::ptr init_vao(const program::const_ptr& program);
-    static component init_component();
+    static object init_object();
 
     const program::ptr m_program;
     const vertex_array::ptr m_vao;
-    const component m_component;
+    const object m_object;
 
     renderer(const renderer&) = delete;
     renderer& operator =(const renderer&) = delete;
@@ -77,6 +77,7 @@ namespace ogl
     void enable_face_culling();
 
     void clear_buffer(const render_args& args);
+    void draw_object(const object& object);
     void draw_component(const component& component, const glm::mat4& model_matrix);
     void draw_mesh(const mesh& mesh);
 
