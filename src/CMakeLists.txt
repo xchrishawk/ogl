@@ -22,6 +22,7 @@ set(APP_EXECUTABLE_SOURCES
   opengl/opengl.cpp
   opengl/program.cpp
   opengl/shader.cpp
+  opengl/vertex_array.cpp
   shaders/shader_manager.cpp
   util/debug.cpp)
 

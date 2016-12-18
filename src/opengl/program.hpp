@@ -30,6 +30,9 @@ namespace ogl
     /** Shared pointer to an `ogl::program` object. */
     typedef std::shared_ptr<program> ptr;
 
+    /** Shared pointer to a constant `ogl::program` object. */
+    typedef std::shared_ptr<const program> const_ptr;
+
     /**
      * Creates a new OpenGL program.
      *
@@ -38,8 +41,11 @@ namespace ogl
      */
     static ptr create();
 
-    /** Deactivates the currently active OpenGL program, if there is one. */
-    static void deactivate();
+    /** Sets the specified program as the currently active shader program. */
+    static void use(const program::const_ptr& program);
+
+    /** Deactivates the currently active shader program, if there is one. */
+    static void use_none();
 
     ~program();
 
@@ -53,9 +59,6 @@ namespace ogl
      * Thrown if the program cannot be linked for any reason.
      */
     void link(const std::vector<shader::ptr>& shaders);
-
-    /** Makes this program the currently active OpenGL program. */
-    void activate() const;
 
     /** Returns the internal OpenGL handle for this program. */
     GLuint handle() const { return m_handle; }

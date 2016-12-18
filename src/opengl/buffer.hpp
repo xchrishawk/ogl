@@ -23,6 +23,12 @@ namespace ogl
   {
   public:
 
+    /** Shared pointer to an `ogl::buffer` object. */
+    typedef std::shared_ptr<buffer> ptr;
+
+    /** Shared pointer to a constant `ogl::buffer` object. */
+    typedef std::shared_ptr<const buffer> const_ptr;
+
     virtual ~buffer();
 
     /** Returns the internal OpenGL handle for this buffer. */

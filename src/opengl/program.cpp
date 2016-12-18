@@ -28,7 +28,12 @@ program::ptr program::create()
   return program::ptr(new program());
 }
 
-void program::deactivate()
+void program::use(const program::const_ptr& program)
+{
+  glUseProgram(program->m_handle);
+}
+
+void program::use_none()
 {
   glUseProgram(0);
 }
@@ -59,11 +64,6 @@ void program::link(const std::vector<shader::ptr>& shaders)
     message << "Failed to link program." << std::endl << info_log();
     throw shader_exception(message.str());
   }
-}
-
-void program::activate() const
-{
-  glUseProgram(m_handle);
 }
 
 bool program::is_linked() const
