@@ -13,6 +13,7 @@
 #include "opengl/program.hpp"
 #include "opengl/shader.hpp"
 #include "shaders/shader_manager.hpp"
+#include "util/constants.hpp"
 #include "util/misc.hpp"
 
 /* -- Namespaces -- */
@@ -78,19 +79,59 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
 
   // vertex position attribute
   GLint position_attribute = program->attribute_location("vertex_position");
-  ogl_assert(position_attribute != -1);
-  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
-			    position_attribute,
-			    vertex_position::COUNT,
-			    offsetof(vertex, position));
+  if (position_attribute != constants::OPENGL_INVALID_LOCATION)
+  {
+    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			      position_attribute,
+			      vertex_position::COUNT,
+			      offsetof(vertex, position));
+  }
+  else
+  {
+    ogl_debug_print("Warning: Did not find attribute location for vertex_position");
+  }
+
+  // vertex normal attribute
+  GLint normal_attribute = program->attribute_location("vertex_normal");
+  if (normal_attribute != constants::OPENGL_INVALID_LOCATION)
+  {
+    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			      normal_attribute,
+			      vertex_normal::COUNT,
+			      offsetof(vertex, color));
+  }
+  else
+  {
+    ogl_debug_print("Warning: Did not find attribute location for vertex_normal");
+  }
 
   // vertex color attribute
   GLint color_attribute = program->attribute_location("vertex_color");
-  ogl_assert(color_attribute != -1);
-  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
-			    color_attribute,
-			    vertex_color::COUNT,
-			    offsetof(vertex, color));
+  if (color_attribute != constants::OPENGL_INVALID_LOCATION)
+  {
+    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			      color_attribute,
+			      vertex_color::COUNT,
+			      offsetof(vertex, color));
+  }
+  else
+  {
+    ogl_debug_print("Warning: Did not find attribute location for vertex_color");
+  }
+
+  // vertex texture coordinates attribute
+  GLint texture_attribute = program->attribute_location("vertex_texture");
+  if (texture_attribute != constants::OPENGL_INVALID_LOCATION)
+  {
+    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			      texture_attribute,
+			      vertex_texture::COUNT,
+			      offsetof(vertex, texture));
+  }
+  else
+  {
+    ogl_debug_print("Warning: Did not find attribute location for vertex_texture");
+  }
 
   return vao;
 }

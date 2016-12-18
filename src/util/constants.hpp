@@ -34,5 +34,7 @@ namespace ogl
     const int OPENGL_CONTEXT_VERSION_MINOR	= 3;
     const int OPENGL_SWAP_INTERVAL		= 1;
 
+    const GLint OPENGL_INVALID_LOCATION		= -1;
+
   }
 }
