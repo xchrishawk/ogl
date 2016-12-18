@@ -17,6 +17,7 @@ set(APP_EXECUTABLE_SOURCES
   app/state.cpp
   glfw/glfw.cpp
   glfw/window.cpp
+  opengl/buffer.cpp
   opengl/error.cpp
   opengl/opengl.cpp
   opengl/program.cpp
