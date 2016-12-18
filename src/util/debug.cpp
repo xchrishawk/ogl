@@ -9,15 +9,43 @@
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include "util/debug.hpp"
 
-/* -- Constants -- */
+/* -- Procedures -- */
 
-namespace
+void ogl::fail()
 {
-  std::ostream& DEBUG_STREAM = std::cerr;
-  std::ostream& ERROR_STREAM = std::cerr;
+  abort();
 }
 
-/* -- Procedures -- */
+void ogl::breakpoint()
+{
+  std::raise(SIGINT);
+}
+
+std::ostream& ogl::debug_stream()
+{
+  return std::cout;
+}
+
+std::ostream& ogl::error_stream()
+{
+  return std::cerr;
+}
+
+std::string ogl::debug_message(const std::string& title,
+			       const std::string& function,
+			       const std::string& file,
+			       int line,
+			       const std::vector<std::string> messages)
+{
+  std::ostringstream alert;
+  alert << "* " << title << " - " << function << " (" << file << ":" << line << ")" << std::endl;
+  for (std::string message : messages)
+    alert << "  " << message << std::endl;
+  return alert.str();
+}
