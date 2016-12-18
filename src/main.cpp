@@ -23,9 +23,7 @@ int main(int argc, char** argv)
   }
   catch (const std::exception& ex)
   {
-    #warning FIX
-//    ogl_debug_print("*** Uncaught exception!");
-//    ogl_debug_print(ex.what());
-//    ogl::fail();
+    ogl_dbg_error("Uncaught exception!", ex.what());
+    ogl::fail();
   }
 }

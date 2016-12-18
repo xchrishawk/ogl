@@ -89,8 +89,7 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
   }
   else
   {
-    #warning FIX
-    // ogl_debug_print("Warning: Did not find attribute location for vertex_position");
+    ogl_dbg_warning("Did not find attribute location for vertex_position");
   }
 
   // vertex normal attribute
@@ -104,8 +103,7 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
   }
   else
   {
-    #warning FIX
-    // ogl_debug_print("Warning: Did not find attribute location for vertex_normal");
+    ogl_dbg_warning("Did not find attribute location for vertex_normal");
   }
 
   // vertex color attribute
@@ -119,8 +117,7 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
   }
   else
   {
-    #warning FIX
-    // ogl_debug_print("Warning: Did not find attribute location for vertex_color");
+    ogl_dbg_warning("Did not find attribute location for vertex_color");
   }
 
   // vertex texture coordinates attribute
@@ -134,8 +131,7 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
   }
   else
   {
-    #warning FIX
-    // ogl_debug_print("Warning: Did not find attribute location for vertex_texture");
+    ogl_dbg_warning("Did not find attribute location for vertex_texture");
   }
 
   return vao;

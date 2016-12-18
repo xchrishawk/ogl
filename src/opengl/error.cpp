@@ -25,17 +25,12 @@ GLenum ogl::opengl_last_error()
 
   while ((this_error = glGetError()) != GL_NO_ERROR)
   {
-#if defined(OGL_DEBUG)
+    // if we have to swallow an error, report it to the console
     if (last_error != GL_NO_ERROR)
     {
-      // this error is getting swallowed, so report it
-      #warning FIX
-      // std::ostringstream message;
-      // message << "* Ignoring OpenGL error because there are additional errors in the queue!" << std::endl;
-      // message << "  " << opengl_error_string(last_error);
-      // ogl_error_print(message.str());
+      ogl_dbg_warning("Ignoring OpenGL error because there are additional errors in the queue!",
+		      opengl_error_string(last_error));
     }
-#endif
     last_error = this_error;
   }
 
@@ -49,22 +44,21 @@ std::string ogl::opengl_error_string(GLenum error)
   case GL_NO_ERROR:
     return "No Error";
   case GL_INVALID_ENUM:
-    return "OpenGL Error 0x0500 (GL_INVALID_ENUM)";
+    return "GL_INVALID_ENUM (0x0500)";
   case GL_INVALID_VALUE:
-    return "OpenGL Error 0x0501 (GL_INVALID_VALUE)";
+    return "GL_INVALID_VALUE (0x0501)";
   case GL_INVALID_OPERATION:
-    return "OpenGL Error 0x0502 (GL_INVALID_OPERATION)";
+    return "GL_INVALID_OPERATION (0x0502)";
   case GL_STACK_OVERFLOW:
-    return "OpenGL Error 0x0503 (GL_STACK_OVERFLOW)";
+    return "GL_STACK_OVERFLOW (0x0503)";
   case GL_STACK_UNDERFLOW:
-    return "OpenGL Error 0x0504 (GL_STACK_UNDERFLOW)";
+    return "GL_STACK_UNDERFLOW (0x0504)";
   case GL_OUT_OF_MEMORY:
-    return "OpenGL Error 0x0505 (GL_OUT_OF_MEMORY)";
+    return "GL_OUT_OF_MEMORY (0x0505)";
   case GL_INVALID_FRAMEBUFFER_OPERATION:
-    return "OpenGL Error 0x0506 (GL_INVALID_FRAMEBUFFER_OPERATION)";
+    return "GL_INVALID_FRAMEBUFFER_OPERATION (0x0506)";
   default:
-    #warning FIX
-    // ogl_assert_fail("Unknown OpenGL error code!");
+    ogl_dbg_assert_fail("Unknown OpenGL error code!");
     return "Unknown Error";
   }
 }
@@ -78,13 +72,13 @@ void ogl::_opengl_check_error(const std::string& func,
   GLenum error = opengl_last_error();
   if (error != GL_NO_ERROR)
   {
-    #warning FIX
-    // std::ostringstream message;
-    // message << "* ogl_opengl_check_error - " << func << " (" << file << ":" << line << ")" << std::endl;
-    // message << "  Unexpected OpenGL error: " << opengl_error_string(error);
-
-    // ogl_error_print(message.str());
-    // ogl_breakpoint();
+    std::string message = ogl::debug_message("ogl_opengl_check_error",
+					     func,
+					     file,
+					     line,
+					     { "Unexpected OpenGL error!", opengl_error_string(error) });
+    ogl::error_stream() << message << std::endl;
+    ogl_breakpoint();
   }
 }
 

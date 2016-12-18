@@ -28,9 +28,8 @@ glfw::glfw()
 {
   if (glfw::s_instance)
   {
-    #warning FIX
-    // ogl_error_print_always("Attempted to initialize GLFW while it was already initialized!");
-    // ogl::fail();
+    ogl_dbg_error("Attempted to initialize GLFW while it was already initialized!");
+    ogl::fail();
   }
 
   glfwSetErrorCallback(glfw::error_callback);
@@ -38,9 +37,8 @@ glfw::glfw()
     throw std::runtime_error("Failed to initialize GLFW!");
 
   glfw::s_instance = this;
-  #warning FIX
-  // ogl_debug_print("GLFW initialized.");
-  print_version_info();
+  ogl_dbg_status("GLFW initialized.",
+		 "Version:            " + version());
 }
 
 glfw::~glfw()
@@ -48,8 +46,12 @@ glfw::~glfw()
   glfwTerminate();
 
   glfw::s_instance = nullptr;
-  #warning FIX
-  // ogl_debug_print("GLFW terminated.");
+  ogl_dbg_status("GLFW terminated.");
+}
+
+std::string glfw::version() const
+{
+  return std::string(glfwGetVersionString());
 }
 
 double glfw::time() const
@@ -74,19 +76,8 @@ void glfw::set_swap_interval(int interval)
 
 void glfw::error_callback(int error, const char* description)
 {
-  #warning FIX
-  // std::ostringstream message;
-  // message << "* GLFW error! Code " << error << " (" << description << ")";
-  // ogl_debug_print_always(message.str());
-  // ogl_breakpoint();
-}
-
-void glfw::print_version_info()
-{
-  #warning FIX
-#if defined(OGL_DEBUG)
-  // std::ostringstream output;
-  // output << "  GLFW Version:   " << glfwGetVersionString();
-  // ogl_debug_print(output.str());
-#endif
+  std::ostringstream message;
+  message << "GLFW error! Code " << error << " (" << description << ")";
+  ogl_dbg_warning(message.str());
+  ogl_dbg_breakpoint();
 }

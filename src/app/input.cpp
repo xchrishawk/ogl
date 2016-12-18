@@ -34,8 +34,7 @@ input::input()
 
 bool input::input_active(input_key key) const
 {
-  #warning FIX
-  // ogl_assert(input_key_valid(key));
+  ogl_dbg_assert(input_key_valid(key));
   return m_key_active[key];
 }
 
@@ -64,8 +63,7 @@ void input::init_key_map()
 
 void input::key_pressed(int key, int scancode, int action, int mods)
 {
-  #warning FIX
-  // ogl_assert(key < GLFW_KEY_COUNT);
+  ogl_dbg_assert(key < GLFW_KEY_COUNT);
   switch (action)
   {
   case GLFW_PRESS:
@@ -117,7 +115,6 @@ void input::set_input_key_active(input_key key, bool active)
   if (key == INPUT_KEY_INVALID)
     return;
 
-  #warning FIX
-  // ogl_assert(input_key_valid(key));
+  ogl_dbg_assert(input_key_valid(key));
   m_key_active[key] = active;
 }

@@ -21,7 +21,10 @@ namespace ogl
     glfw();
     ~glfw();
 
-    /** The current GLFW timer value, in seconds. */
+    /** Returns the GLFW version string. */
+    std::string version() const;
+
+    /** Returns the current GLFW timer value, in seconds. */
     double time() const;
 
     /** Polls GLFW for events. */
@@ -37,8 +40,6 @@ namespace ogl
 
     glfw(const glfw&) = delete;
     glfw& operator =(const glfw&) = delete;
-
-    void print_version_info();
 
     static glfw* s_instance;
     static void error_callback(int error, const char* description);

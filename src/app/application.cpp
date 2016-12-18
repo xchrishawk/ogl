@@ -42,12 +42,11 @@ application::application()
     m_state(),
     m_renderer()
 {
-  #warning FIX
-  // if (application::s_instance)
-  // {
-  //   ogl_debug_print_always("Attempted to initialize application while it was already initialized!");
-  //   ogl::fail();
-  // }
+  if (application::s_instance)
+  {
+    ogl_dbg_error("Attempted to initialize application while it was already initialized!");
+    ogl::fail();
+  }
 
   std::ostringstream message;
   std::ostringstream bard;
@@ -56,15 +55,13 @@ application::application()
   m_window->set_key_callback(application::key_callback);
 
   application::s_instance = this;
-  #warning FIX
-  // ogl_debug_print("Application initialized successfully.");
+  ogl_dbg_status("Application initialized successfully.");
 }
 
 application::~application()
 {
   application::s_instance = nullptr;
-  #warning FIX
-  // ogl_debug_print("Application shutting down...");
+  ogl_dbg_status("Application shutting down...");
 }
 
 void application::main()
@@ -137,16 +134,12 @@ void application::handle_render(double abs_t, double delta_t)
   m_window->swap_buffers();
 
 #if defined(OGL_DEBUG)
+
   // if this is a debug build, check for errors
   GLenum error = ogl::opengl_last_error();
   if (error != GL_NO_ERROR)
-  {
-    #warning FIX
-    // std::ostringstream message;
-    // message << "* OpenGL error detected in run loop!" << std::endl;
-    // message << "  " << ogl::opengl_error_string(error);
-    // ogl_error_print(message.str());
-  }
+    ogl_dbg_warning("OpenGL error detected in run loop!", opengl_error_string(error));
+
 #endif /* OGL_DEBUG */
 }
 

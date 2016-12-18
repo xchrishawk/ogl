@@ -36,7 +36,8 @@
 					      __PRETTY_FUNCTION__,		\
 					      __FILE__,				\
 					      __LINE__,				\
-					      { __VA_ARGS__ });			\
+					      { __VA_ARGS__ })			\
+			<< std::endl;						\
   }										\
   while (false)
 
@@ -48,7 +49,8 @@
 					      __PRETTY_FUNCTION__,		\
 					      __FILE__,				\
 					      __LINE__,				\
-					      { __VA_ARGS__ });			\
+					      { __VA_ARGS__ })			\
+			<< std::endl;						\
   }										\
   while (false)
 
@@ -60,7 +62,8 @@
 					      __PRETTY_FUNCTION__,		\
 					      __FILE__,				\
 					      __LINE__,				\
-					      { __VA_ARGS__ });			\
+					      { __VA_ARGS__ })			\
+			<< std::endl;						\
   }										\
   while (false)
 
@@ -74,7 +77,8 @@
 						__PRETTY_FUNCTION__,		\
 						__FILE__,			\
 						__LINE__,			\
-						{ "failed: " #cond });		\
+						{ "failed: " #cond })		\
+			  << std::endl;						\
       ogl::breakpoint();							\
       ogl::fail();								\
     }										\
@@ -89,7 +93,8 @@
 					      __PRETTY_FUNCTION__,		\
 					      __FILE__,				\
 					      __LINE__,				\
-					      { message });			\
+					      { message })			\
+			<< std::endl;						\
     ogl::breakpoint();								\
     ogl::fail();								\
   }										\

@@ -28,9 +28,8 @@ opengl::opengl()
 {
   if (opengl::s_instance)
   {
-    #warning FIX
-    // ogl_error_print_always("Attempted to initialize OpenGL while it was already initialized!");
-    // ogl::fail();
+    ogl_dbg_error("Attempted to initialize OpenGL while it was already initialized!");
+    ogl::fail();
   }
 
 #if defined(OGL_LINUX)
@@ -43,33 +42,40 @@ opengl::opengl()
   // there is a bug where GLEW triggers an error on init. flush it from the queue.
   // http://stackoverflow.com/q/20034615/434245
   GLenum error __attribute__((unused)) = ogl::opengl_last_error();
-  #warning FIX
-  // ogl_assert_message(error == GL_INVALID_ENUM, "Unexpected GLEW init error!");
+  ogl_dbg_assert(error == GL_INVALID_ENUM);
 
 #endif
 
   opengl::s_instance = this;
-  #warning FIX
-  // ogl_debug_print("OpenGL initialized.");
-  print_version_info();
+  ogl_dbg_status("OpenGL initialized.",
+		 "API Version:        " + version(),
+		 "GLSL Version:       " + glsl_version(),
+		 "Vendor:             " + vendor(),
+		 "Renderer:           " + renderer());
 }
 
 opengl::~opengl()
 {
   opengl::s_instance = nullptr;
-  #warning FIX
-  // ogl_debug_print("OpenGL terminated.");
+  ogl_dbg_status("OpenGL terminated.");
 }
 
-void opengl::print_version_info()
+std::string opengl::version() const
 {
-#if defined(OGL_DEBUG)
-  #warning FIX
-  // std::ostringstream output;
-  // output << "  API Version:    " << glGetString(GL_VERSION) << std::endl;
-  // output << "  GLSL Version:   " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-  // output << "  Vendor:         " << glGetString(GL_VENDOR) << std::endl;
-  // output << "  Renderer:       " << glGetString(GL_RENDERER);
-  // ogl_debug_print(output.str());
-#endif
+  return reinterpret_cast<const char*>(glGetString(GL_VERSION));
+}
+
+std::string opengl::glsl_version() const
+{
+  return reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+}
+
+std::string opengl::vendor() const
+{
+  return reinterpret_cast<const char*>(glGetString(GL_VENDOR));
+}
+
+std::string opengl::renderer() const
+{
+  return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 }
