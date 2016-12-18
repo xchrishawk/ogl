@@ -58,10 +58,7 @@ void renderer::render(const render_args& args)
   // TEMP
   program::use(m_program);
   vertex_array::bind(m_vao);
-  glUniform1f(m_program->uniform_location("abs_t"), static_cast<float>(args.abs_t));
-
   draw_object(m_object);
-
   vertex_array::bind_none();
   program::use_none();
 }
@@ -166,16 +163,16 @@ object renderer::init_object()
   ogl::component component1({ mesh1, mesh2 },
 			    glm::vec3(-0.5f, 0.5f, 0.0f),
 			    glm::quat(),
-			    glm::vec3(0.5f, 0.5f, 0.5f));
+			    glm::vec3(2.0f, 0.5f, 0.5f));
   ogl::component component2({ mesh1, mesh2 },
 			    glm::vec3(0.5f, -0.5f, 0.0f),
 			    glm::quat(),
-			    glm::vec3(0.5f, 0.5f, 0.5f));
+			    glm::vec3(3.0f, 0.5f, 0.5f));
 
   ogl::object object({ component1, component2 },
 		     glm::vec3(0.0f, 0.0f, 0.0f),
 		     glm::quat(),
-		     glm::vec3(1.0f, 1.0f, 1.0f));
+		     glm::vec3(0.333f, 1.0f, 1.0f));
 
   return object;
 }
@@ -220,10 +217,10 @@ void renderer::draw_component(const component& component, const glm::mat4& model
 {
   // create final model matrix, and set uniform with transform
   glm::mat4 matrix = model_matrix * component.matrix();
-  glUniformMatrix4fv(m_program->uniform_location("vertex_model_matrix"),	// location
-		     1,								// count
-		     GL_FALSE,							// transpose
-		     value_ptr(matrix));					// value
+  glUniformMatrix4fv(m_program->uniform_location("model_matrix"),	// location
+		     1,							// count
+		     GL_FALSE,						// transpose
+		     value_ptr(matrix));				// value
 
   // draw each mesh in component
   for (const mesh& mesh : component.meshes())

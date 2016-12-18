@@ -1,7 +1,6 @@
 #version 330 core
 
-uniform mat4 vertex_model_matrix;
-uniform float abs_t;
+uniform mat4 model_matrix;
 
 in vec3 vertex_position;
 in vec3 vertex_normal;
@@ -18,7 +17,7 @@ out VertexBlock
 
 void main(void)
 {
-  gl_Position = vertex_model_matrix * vec4(vertex_position, 1.0);
+  gl_Position = model_matrix * vec4(vertex_position, 1.0);
 
   outvertex.position = vertex_position;
   outvertex.normal = vertex_normal;
