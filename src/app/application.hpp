@@ -47,7 +47,7 @@ namespace ogl
     application(const application&) = delete;
     application& operator =(const application&) = delete;
 
-    void handle_input(double abs_t, double delta_t);
+    void handle_input();
     void handle_state(double abs_t, double delta_t);
     void handle_render(double abs_t, double delta_t);
 

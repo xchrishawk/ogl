@@ -66,42 +66,36 @@ application::~application()
 
 void application::main()
 {
-  double last_t = m_glfw.time();
-  double last_input_t = last_t;
-  double last_state_t = last_t;
-  double last_render_t = last_t;
+  double last_state_t = m_glfw.time();
+  double last_render_t = m_glfw.time();
 
   while (!m_window->should_close())
   {
-    // get time statistics
-    double abs_t = m_glfw.time();
-    double delta_t = abs_t - last_t;
-    last_t = abs_t;
+    // handle user input every loop
+    handle_input();
 
-    // handle user input
-    if (abs_t - last_input_t >= constants::TARGET_INPUT_DELTA_T)
-    {
-      handle_input(abs_t, delta_t);
-      last_input_t = abs_t;
-    }
+    // get timing info
+    double abs_t = m_glfw.time();
 
     // handle state updates
-    if (abs_t - last_state_t >= constants::TARGET_STATE_DELTA_T)
+    double state_delta_t = abs_t - last_state_t;
+    if (state_delta_t >= constants::TARGET_STATE_DELTA_T)
     {
-      handle_state(abs_t, delta_t);
+      handle_state(abs_t, state_delta_t);
       last_state_t = abs_t;
     }
 
     // handle rendering
-    if (abs_t - last_render_t >= constants::TARGET_RENDER_DELTA_T)
+    double render_delta_t = abs_t - last_render_t;
+    if (render_delta_t >= constants::TARGET_RENDER_DELTA_T)
     {
-      handle_render(abs_t, delta_t);
+      handle_render(abs_t, render_delta_t);
       last_render_t = abs_t;
     }
   }
 }
 
-void application::handle_input(double abs_t, double delta_t)
+void application::handle_input()
 {
   // poll GLFW events
   m_glfw.poll_events();

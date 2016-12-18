@@ -6,6 +6,8 @@
 
 /* -- Includes -- */
 
+#include <iostream>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -55,10 +57,16 @@ void renderer::render(const render_args& args)
 {
   clear_buffer(args);
 
-  // TEMP
   program::use(m_program);
   vertex_array::bind(m_vao);
+
+  // set uniforms
+  set_matrix_uniform("view_matrix", view_matrix(args));
+  set_matrix_uniform("projection_matrix", projection_matrix(args));
+
+  // TEMP
   draw_object(m_object);
+
   vertex_array::bind_none();
   program::use_none();
 }
@@ -203,28 +211,18 @@ void renderer::clear_buffer(const render_args& args)
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void renderer::draw_object(const object& object)
+void renderer::draw_object(const object& obj)
 {
-  // get model->world matrix
-  glm::mat4 model_matrix = object.matrix();
-
   // draw each component in object
-  for (const component& comp : object.components())
-    draw_component(comp, model_matrix);
-}
+  for (const component& comp : obj.components())
+  {
+    // set matrix for this component
+    set_matrix_uniform("model_matrix", model_matrix(obj, comp));
 
-void renderer::draw_component(const component& component, const glm::mat4& model_matrix)
-{
-  // create final model matrix, and set uniform with transform
-  glm::mat4 matrix = model_matrix * component.matrix();
-  glUniformMatrix4fv(m_program->uniform_location("model_matrix"),	// location
-		     1,							// count
-		     GL_FALSE,						// transpose
-		     value_ptr(matrix));				// value
-
-  // draw each mesh in component
-  for (const mesh& mesh : component.meshes())
-    draw_mesh(mesh);
+    // draw each mesh in the component
+    for (const mesh& mesh : comp.meshes())
+      draw_mesh(mesh);
+  }
 }
 
 void renderer::draw_mesh(const mesh& mesh)
@@ -239,4 +237,50 @@ void renderer::draw_mesh(const mesh& mesh)
   // unbind/clean up
   m_vao->unbind_vertex_buffer(VERTEX_BUFFER_BINDING);
   m_vao->unbind_index_buffer();
+}
+
+glm::mat4 renderer::model_matrix(const object& object, const component& component)
+{
+  return object.matrix() * component.matrix();
+}
+
+glm::mat4 renderer::view_matrix(const render_args& args)
+{
+  glm::mat4 view_matrix =
+    glm::translate(args.state.camera_position()) *	// translation (done second)
+    glm::mat4_cast(args.state.camera_rotation());	// rotation (done first)
+  view_matrix = glm::inverse(view_matrix);		// invert origin->camera into camera->origin
+
+  return view_matrix;
+}
+
+glm::mat4 renderer::projection_matrix(const render_args& args)
+{
+  float aspect_ratio =
+    static_cast<float>(args.framebuffer_width) /
+    static_cast<float>(args.framebuffer_height);
+
+  glm::mat4 projection_matrix =
+    glm::perspective(args.state.camera_fov(),		// camera FOV (Y axis)
+		aspect_ratio,				// display aspect ratio
+		0.1f,					// near clip (TODO)
+		100.0f);				// far clip (TODO)
+
+  return projection_matrix;
+}
+
+void renderer::set_matrix_uniform(const std::string& name, const glm::mat4& matrix)
+{
+  GLint location = m_program->uniform_location(name);
+  if (location != constants::OPENGL_INVALID_LOCATION)
+  {
+    glUniformMatrix4fv(location,			// location
+		       1,				// count
+		       GL_FALSE,			// transpose
+		       value_ptr(matrix));		// value
+  }
+  else
+  {
+    ogl_dbg_warning("Did not find uniform location for " + name);
+  }
 }

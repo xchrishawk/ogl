@@ -77,10 +77,14 @@ namespace ogl
     void enable_face_culling();
 
     void clear_buffer(const render_args& args);
-
     void draw_object(const object& object);
-    void draw_component(const component& component, const glm::mat4& model_matrix);
     void draw_mesh(const mesh& mesh);
+
+    glm::mat4 model_matrix(const object& object, const component& component);
+    glm::mat4 view_matrix(const render_args& args);
+    glm::mat4 projection_matrix(const render_args& args);
+
+    void set_matrix_uniform(const std::string& name, const glm::mat4& matrix);
 
   };
 

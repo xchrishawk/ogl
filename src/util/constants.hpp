@@ -27,7 +27,6 @@ namespace ogl
     const glm::vec3 VEC3_UNIT_Y(0.0f, 1.0f, 0.0f);
     const glm::vec3 VEC3_UNIT_Z(0.0f, 0.0f, 1.0f);
 
-    const double TARGET_INPUT_DELTA_T		= (1.0 / 60.0);
     const double TARGET_STATE_DELTA_T		= (1.0 / 60.0);
     const double TARGET_RENDER_DELTA_T		= (1.0 / 60.0);
 
