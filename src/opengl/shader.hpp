@@ -4,6 +4,8 @@
  * @date	2016/12/17
  */
 
+#pragma once
+
 /* -- Includes -- */
 
 #include <memory>
@@ -25,6 +27,9 @@ namespace ogl
 
     /** Shared pointer to an `ogl::shader` object. */
     typedef std::shared_ptr<shader> ptr;
+
+    /** Shared pointer to a constant `ogl::shader` object. */
+    typedef std::shared_ptr<const shader> const_ptr;
 
     /**
      * Creates a new shader of the specified type.

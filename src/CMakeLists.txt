@@ -19,6 +19,7 @@ set(APP_EXECUTABLE_SOURCES
   glfw/window.cpp
   opengl/error.cpp
   opengl/opengl.cpp
+  opengl/program.cpp
   opengl/shader.cpp
   util/debug.cpp)
 
