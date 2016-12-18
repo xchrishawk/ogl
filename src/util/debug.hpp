@@ -12,6 +12,10 @@
 
 /* -- Macros -- */
 
+/** Performs a compile-time static assertion. */
+#define ogl_static_assert(cond, message)					\
+  static_assert(cond, message)
+
 /** Prints a message to the debug stream, even in release builds. */
 #define ogl_debug_print_always(message)						\
   ogl::_debug_print(message)

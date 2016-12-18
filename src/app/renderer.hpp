@@ -9,7 +9,9 @@
 /* -- Includes -- */
 
 #include "app/state.hpp"
+#include "opengl/buffer.hpp"
 #include "opengl/program.hpp"
+#include "opengl/vertex_array.hpp"
 
 /* -- Types -- */
 
@@ -59,8 +61,12 @@ namespace ogl
   private:
 
     static program::ptr init_program();
+    static vertex_array::ptr init_vao(const program::const_ptr& program);
+    static buffer::ptr init_buffer();
 
-    program::ptr m_program;
+    const program::ptr m_program;
+    const vertex_array::ptr m_vao;
+    const buffer::ptr m_buffer;
 
     renderer(const renderer&) = delete;
     renderer& operator =(const renderer&) = delete;

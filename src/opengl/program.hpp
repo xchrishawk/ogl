@@ -73,13 +73,13 @@ namespace ogl
      * Returns the location for the vertex attribute with the specified name,
      * or -1 if no matching vertex attribute is found.
      */
-    GLint attribute_location(const std::string& name);
+    GLint attribute_location(const std::string& name) const;
 
     /**
      * Returns the location for the uniform with the specified name, or -1 if no
      * matching uniform is found.
      */
-    GLint uniform_location(const std::string& name);
+    GLint uniform_location(const std::string& name) const;
 
   private:
 

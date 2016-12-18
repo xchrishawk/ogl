@@ -87,12 +87,12 @@ std::string program::info_log() const
   return info_log;
 }
 
-GLint program::attribute_location(const std::string& name)
+GLint program::attribute_location(const std::string& name) const
 {
   return glGetAttribLocation(m_handle, name.c_str());
 }
 
-GLint program::uniform_location(const std::string& name)
+GLint program::uniform_location(const std::string& name) const
 {
   return glGetUniformLocation(m_handle, name.c_str());
 }

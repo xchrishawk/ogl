@@ -6,27 +6,36 @@
 
 /* -- Includes -- */
 
-#include <cmath>
-
 #include "app/renderer.hpp"
 #include "app/state.hpp"
+#include "app/vertex.hpp"
 #include "opengl/api.hpp"
 #include "opengl/program.hpp"
 #include "opengl/shader.hpp"
 #include "shaders/shader_manager.hpp"
+#include "util/misc.hpp"
 
 /* -- Namespaces -- */
 
 using namespace ogl;
 
+/* -- Constants -- */
+
+namespace
+{
+  const GLuint VERTEX_BUFFER_BINDING = 0;
+}
+
 /* -- Procedures -- */
 
 renderer::renderer()
-  : m_program(renderer::init_program())
+  : m_program(renderer::init_program()),
+    m_vao(renderer::init_vao(m_program)),
+    m_buffer(renderer::init_buffer())
 {
-  // one-time initial setup
-  enable_depth_testing();
-  enable_face_culling();
+  // one-time initial setup - TEMPORARILY DISABLED
+  // enable_depth_testing();
+  // enable_face_culling();
 }
 
 renderer::~renderer()
@@ -36,6 +45,15 @@ renderer::~renderer()
 void renderer::render(const render_args& args)
 {
   clear_buffer(args);
+
+  // TEMP
+  program::use(m_program);
+  vertex_array::bind(m_vao);
+  m_vao->bind_vertex_buffer(VERTEX_BUFFER_BINDING, m_buffer, sizeof(vertex), 0);
+  glDrawArrays(GL_TRIANGLES, 0, 3);
+  m_vao->unbind_vertex_buffer(VERTEX_BUFFER_BINDING);
+  vertex_array::bind_none();
+  program::use_none();
 }
 
 program::ptr renderer::init_program()
@@ -52,6 +70,39 @@ program::ptr renderer::init_program()
   program->link({ vertex_shader, fragment_shader });
 
   return program;
+}
+
+vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
+{
+  vertex_array::ptr vao = vertex_array::create();
+
+  // vertex position attribute
+  GLint position_attribute = program->attribute_location("vertex_position");
+  ogl_assert(position_attribute != -1);
+  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			    position_attribute,
+			    vertex_position::COUNT,
+			    offsetof(vertex, position));
+
+  // vertex color attribute
+  GLint color_attribute = program->attribute_location("vertex_color");
+  ogl_assert(color_attribute != -1);
+  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			    color_attribute,
+			    vertex_color::COUNT,
+			    offsetof(vertex, color));
+
+  return vao;
+}
+
+buffer::ptr renderer::init_buffer()
+{
+  static const vertex vertices[] = {
+    { { 0.0f, 0.0f, 0.0f }, { }, { 1.0f, 0.0f, 0.0f, 1.0f } },
+    { { 0.0f, 0.5f, 0.0f }, { }, { 0.0f, 1.0f, 0.0f, 1.0f } },
+    { { 0.5f, 0.0f, 0.0f }, { }, { 0.0f, 0.0f, 1.0f, 1.0f } },
+  };
+  return immutable_buffer::create(sizeof(vertices), vertices, 0);
 }
 
 void renderer::enable_depth_testing()
