@@ -29,10 +29,11 @@ GLenum ogl::opengl_last_error()
     if (last_error != GL_NO_ERROR)
     {
       // this error is getting swallowed, so report it
-      std::ostringstream message;
-      message << "* Ignoring OpenGL error because there are additional errors in the queue!" << std::endl;
-      message << "  " << opengl_error_string(last_error);
-      ogl_error_print(message.str());
+      #warning FIX
+      // std::ostringstream message;
+      // message << "* Ignoring OpenGL error because there are additional errors in the queue!" << std::endl;
+      // message << "  " << opengl_error_string(last_error);
+      // ogl_error_print(message.str());
     }
 #endif
     last_error = this_error;
@@ -62,7 +63,8 @@ std::string ogl::opengl_error_string(GLenum error)
   case GL_INVALID_FRAMEBUFFER_OPERATION:
     return "OpenGL Error 0x0506 (GL_INVALID_FRAMEBUFFER_OPERATION)";
   default:
-    ogl_assert_fail("Unknown OpenGL error code!");
+    #warning FIX
+    // ogl_assert_fail("Unknown OpenGL error code!");
     return "Unknown Error";
   }
 }
@@ -76,12 +78,13 @@ void ogl::_opengl_check_error(const std::string& func,
   GLenum error = opengl_last_error();
   if (error != GL_NO_ERROR)
   {
-    std::ostringstream message;
-    message << "* ogl_opengl_check_error - " << func << " (" << file << ":" << line << ")" << std::endl;
-    message << "  Unexpected OpenGL error: " << opengl_error_string(error);
+    #warning FIX
+    // std::ostringstream message;
+    // message << "* ogl_opengl_check_error - " << func << " (" << file << ":" << line << ")" << std::endl;
+    // message << "  Unexpected OpenGL error: " << opengl_error_string(error);
 
-    ogl_error_print(message.str());
-    ogl_breakpoint();
+    // ogl_error_print(message.str());
+    // ogl_breakpoint();
   }
 }
 

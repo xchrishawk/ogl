@@ -123,7 +123,8 @@ std::string shader::shader_type_name(GLenum type)
   case GL_VERTEX_SHADER:
     return "GL_VERTEX_SHADER";
   default:
-    ogl_assert_fail("Unknown shader type!");
+    #warning FIX
+    // ogl_assert_fail("Unknown shader type!");
     return "Unknown";
   }
 }
