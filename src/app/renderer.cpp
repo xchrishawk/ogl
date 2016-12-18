@@ -8,10 +8,10 @@
 
 #include "app/renderer.hpp"
 #include "app/state.hpp"
-#include "app/vertex.hpp"
 #include "opengl/api.hpp"
 #include "opengl/program.hpp"
 #include "opengl/shader.hpp"
+#include "scene/vertex.hpp"
 #include "shaders/shader_manager.hpp"
 #include "util/constants.hpp"
 #include "util/misc.hpp"

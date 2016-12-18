@@ -9,6 +9,8 @@
 /* -- Includes -- */
 
 #include <memory>
+#include <vector>
+
 #include "opengl/api.hpp"
 
 /* -- Types -- */
@@ -67,7 +69,7 @@ namespace ogl
     typedef std::shared_ptr<const immutable_buffer> const_ptr;
 
     /**
-     * Creates a new immutable buffer.
+     * Creates a new immutable buffer from an existing data buffer.
      *
      * @param size
      * The size of the buffer, in bytes.
@@ -82,6 +84,26 @@ namespace ogl
      * Thrown if a new buffer cannot be allocated.
      */
     static ptr create(GLsizei size, const void* data, GLbitfield flags);
+
+    /**
+     * Creates a new immutable buffer from a `std::vector`.
+     *
+     * @param elements
+     * A vector of elements to include in the buffer.
+     *
+     * @param flags
+     * Bitfield of OpenGL flags for this buffer.
+     *
+     * @exception ogl::alloc_exception
+     * Thrown if a new buffer cannot be allocated.
+     */
+    template<typename T>
+    static ptr create(std::vector<T> elements, GLbitfield flags)
+    {
+      return create(elements.size() * sizeof(T),
+		    elements.data(),
+		    flags);
+    }
 
   private:
 
