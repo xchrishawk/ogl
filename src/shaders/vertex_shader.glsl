@@ -1,5 +1,7 @@
 #version 330 core
 
+uniform float abs_t;
+
 in vec3 vertex_position;
 in vec3 vertex_normal;
 in vec4 vertex_color;

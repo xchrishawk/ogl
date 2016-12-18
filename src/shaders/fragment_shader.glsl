@@ -1,5 +1,7 @@
 #version 330 core
 
+uniform float abs_t;
+
 in VertexBlock
 {
   vec3 position;
@@ -10,5 +12,5 @@ in VertexBlock
 
 void main(void)
 {
-  gl_FragColor = invertex.color;
+  gl_FragColor = vec4(abs(sin(abs_t)), abs(cos(abs_t)), 1.0, 1.0);
 }

@@ -50,6 +50,7 @@ void renderer::render(const render_args& args)
   // TEMP
   program::use(m_program);
   vertex_array::bind(m_vao);
+  glUniform1f(m_program->uniform_location("abs_t"), static_cast<float>(args.abs_t));
   m_vao->bind_vertex_buffer(VERTEX_BUFFER_BINDING, m_buffer, sizeof(vertex), 0);
   glDrawArrays(GL_TRIANGLES, 0, 3);
   m_vao->unbind_vertex_buffer(VERTEX_BUFFER_BINDING);
