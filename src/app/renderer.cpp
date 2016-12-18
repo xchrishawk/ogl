@@ -44,9 +44,9 @@ renderer::renderer()
     m_vao(renderer::init_vao(m_program)),
     m_object(renderer::init_object())
 {
-  // one-time initial setup - TEMPORARILY DISABLED
-  // enable_depth_testing();
-  // enable_face_culling();
+  // one-time initial setup
+  enable_depth_testing();
+  enable_face_culling();
 }
 
 renderer::~renderer()
@@ -154,8 +154,8 @@ object renderer::init_object()
 {
   static const std::vector<vertex> mesh1_vertices = {
     { { 0.0f, 0.0f, 0.0f }, { }, { 1.0f, 0.0f, 0.0f, 1.0f } },
-    { { 0.0f, 0.5f, 0.0f }, { }, { 0.0f, 1.0f, 0.0f, 1.0f } },
-    { { 0.5f, 0.0f, 0.0f }, { }, { 0.0f, 0.0f, 1.0f, 1.0f } },
+    { { 0.5f, 0.0f, 0.0f }, { }, { 0.0f, 1.0f, 0.0f, 1.0f } },
+    { { 0.0f, 0.5f, 0.0f }, { }, { 0.0f, 0.0f, 1.0f, 1.0f } },
   };
   static const std::vector<GLuint> mesh1_indices = { 0, 1, 2 };
   mesh mesh1(GL_TRIANGLES, mesh1_vertices, mesh1_indices);
@@ -208,7 +208,7 @@ void renderer::clear_buffer(const render_args& args)
   // clear buffer
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClearDepthf(1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void renderer::draw_object(const object& obj)
