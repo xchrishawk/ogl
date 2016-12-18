@@ -8,6 +8,8 @@
 
 /* -- Includes -- */
 
+#include <vector>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
@@ -25,13 +27,13 @@ namespace ogl
   {
   public:
 
-    component(const ogl::mesh& mesh,
+    component(const std::vector<mesh>& meshes,
 	      const glm::vec3& position,
 	      const glm::quat& rotation,
 	      const glm::vec3& scale);
 
-    /** Returns the mesh for this component. */
-    ogl::mesh mesh() const { return m_mesh; }
+    /** Returns the meshes for this component. */
+    std::vector<mesh> meshes() const { return m_meshes; }
 
     /** Returns the position of this component in object space. */
     glm::vec3 position() const { return m_position; }
@@ -50,7 +52,7 @@ namespace ogl
 
   private:
 
-    const ogl::mesh m_mesh;
+    const std::vector<mesh> m_meshes;
     const glm::vec3 m_position;
     const glm::quat m_rotation;
     const glm::vec3 m_scale;

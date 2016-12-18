@@ -147,32 +147,35 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
 
 object renderer::init_object()
 {
-  static const std::vector<vertex> vertices = {
+  static const std::vector<vertex> mesh1_vertices = {
     { { 0.0f, 0.0f, 0.0f }, { }, { 1.0f, 0.0f, 0.0f, 1.0f } },
     { { 0.0f, 0.5f, 0.0f }, { }, { 0.0f, 1.0f, 0.0f, 1.0f } },
     { { 0.5f, 0.0f, 0.0f }, { }, { 0.0f, 0.0f, 1.0f, 1.0f } },
-    { { 0.0f, -0.5f, 0.0f } },
-    { { -0.5f, 0.0f, 0.0f } },
   };
-  static const std::vector<GLuint> indices = {
-    0, 1, 2, 0, 3, 4, 0, 1, 4, 0, 2, 3
+  static const std::vector<GLuint> mesh1_indices = { 0, 1, 2 };
+  mesh mesh1(GL_TRIANGLES, mesh1_vertices, mesh1_indices);
+
+  static const std::vector<vertex> mesh2_vertices = {
+    { { 0.0f, 0.0f, 0.0f }, { }, { 0.0f, 1.0f, 1.0f, 1.0f } },
+    { { 0.0f, -0.5f, 0.0f }, { }, { 1.0f, 0.0f, 1.0f, 1.0f } },
+    { { -0.5f, 0.0f, 0.0f }, { }, { 1.0f, 1.0f, 0.0f, 1.0f } },
   };
+  static const std::vector<GLuint> mesh2_indices = { 0, 1, 2 };
+  mesh mesh2(GL_TRIANGLES, mesh2_vertices, mesh2_indices);
 
-  ogl::mesh mesh(GL_TRIANGLES, vertices, indices);
-
-  ogl::component component1(mesh,
-			    glm::vec3(-0.5, 0.5, 0.0),
+  ogl::component component1({ mesh1, mesh2 },
+			    glm::vec3(-0.5f, 0.5f, 0.0f),
 			    glm::quat(),
-			    glm::vec3(1.0, 0.5, 1.0));
-  ogl::component component2(mesh,
-			    glm::vec3(0.5, -0.5, 0.0),
+			    glm::vec3(0.5f, 0.5f, 0.5f));
+  ogl::component component2({ mesh1, mesh2 },
+			    glm::vec3(0.5f, -0.5f, 0.0f),
 			    glm::quat(),
-			    glm::vec3(1.0, 0.5, 1.0));
+			    glm::vec3(0.5f, 0.5f, 0.5f));
 
   ogl::object object({ component1, component2 },
-		     glm::vec3(0.0, 0.0, 0.0),
+		     glm::vec3(0.0f, 0.0f, 0.0f),
 		     glm::quat(),
-		     glm::vec3(1.0, 1.0, 1.0));
+		     glm::vec3(1.0f, 1.0f, 1.0f));
 
   return object;
 }
@@ -205,7 +208,10 @@ void renderer::clear_buffer(const render_args& args)
 
 void renderer::draw_object(const object& object)
 {
+  // get model->world matrix
   glm::mat4 model_matrix = object.matrix();
+
+  // draw each component in object
   for (const component& comp : object.components())
     draw_component(comp, model_matrix);
 }
@@ -219,8 +225,9 @@ void renderer::draw_component(const component& component, const glm::mat4& model
 		     GL_FALSE,							// transpose
 		     value_ptr(matrix));					// value
 
-  // draw the compo
-  draw_mesh(component.mesh());
+  // draw each mesh in component
+  for (const mesh& mesh : component.meshes())
+    draw_mesh(mesh);
 }
 
 void renderer::draw_mesh(const mesh& mesh)

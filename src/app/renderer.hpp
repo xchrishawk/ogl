@@ -77,6 +77,7 @@ namespace ogl
     void enable_face_culling();
 
     void clear_buffer(const render_args& args);
+
     void draw_object(const object& object);
     void draw_component(const component& component, const glm::mat4& model_matrix);
     void draw_mesh(const mesh& mesh);

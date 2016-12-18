@@ -45,7 +45,7 @@ std::string ogl::debug_message(const std::string& title,
 {
   std::ostringstream alert;
   alert << "* " << title << " - " << function << " (" << file << ":" << line << ")" << std::endl;
-  for (std::string message : messages)
+  for (const std::string& message : messages)
     alert << "  " << message << std::endl;
   return alert.str();
 }
