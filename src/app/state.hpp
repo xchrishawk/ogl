@@ -8,6 +8,9 @@
 
 /* -- Includes -- */
 
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+
 #include "app/input.hpp"
 
 /* -- Types -- */
@@ -41,15 +44,32 @@ namespace ogl
   {
   public:
 
-    state() { }
+    state();
 
     /** Runs a loop of the state object. */
     void run(const state_args& args);
 
+    /** Returns the position of the camera, in world space. */
+    glm::vec3 camera_position() const { return m_camera_position; }
+
+    /** Returns the rotation of the camera, in world space. */
+    glm::quat camera_rotation() const { return m_camera_rotation; }
+
+    /** Returns the field of view of the camera, in radians. */
+    float camera_fov() const { return m_camera_fov; }
+
   private:
+
+    glm::vec3 m_camera_position;
+    glm::quat m_camera_rotation;
+    float m_camera_fov;
 
     state(const state&) = delete;
     state& operator =(const state&) = delete;
+
+    void update_camera_position(const state_args& args);
+    void update_camera_rotation(const state_args& args);
+    void update_camera_fov(const state_args& args);
 
   };
 

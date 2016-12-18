@@ -6,7 +6,11 @@
 
 /* -- Includes -- */
 
+#include <cmath>
 #include <string>
+
+#include <glm/glm.hpp>
+
 #include "opengl/api.hpp"
 
 /* -- Constants -- */
@@ -15,6 +19,13 @@ namespace ogl
 {
   namespace constants
   {
+
+    const double DEG_TO_RAD			= (M_PI / 180.0);
+    const double RAD_TO_DEG			= (180.0 / M_PI);
+
+    const glm::vec3 VEC3_UNIT_X(1.0f, 0.0f, 0.0f);
+    const glm::vec3 VEC3_UNIT_Y(0.0f, 1.0f, 0.0f);
+    const glm::vec3 VEC3_UNIT_Z(0.0f, 0.0f, 1.0f);
 
     const double TARGET_INPUT_DELTA_T		= (1.0 / 60.0);
     const double TARGET_STATE_DELTA_T		= (1.0 / 60.0);
