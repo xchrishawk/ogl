@@ -62,7 +62,7 @@ std::string ogl::opengl_error_string(GLenum error)
   case GL_INVALID_FRAMEBUFFER_OPERATION:
     return "OpenGL Error 0x0506 (GL_INVALID_FRAMEBUFFER_OPERATION)";
   default:
-    ogl_assert_message(false, "Unknown OpenGL error code!");
+    ogl_assert_fail("Unknown OpenGL error code!");
     return "Unknown Error";
   }
 }

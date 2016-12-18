@@ -50,6 +50,10 @@
 #define ogl_assert_message(condition, message)					\
   ((condition) ? ((void)0) : ogl::_fail_assert(__PRETTY_FUNCTION__, __FILE__, __LINE__, #condition, message))
 
+/** Unconditionally fails an assert. */
+#define ogl_assert_fail(message)					        \
+  ogl::_fail_assert(__PRETTY_FUNCTION__, __FILE__, __LINE__, message, "")
+
 #else
 
 // Stub macros
@@ -60,6 +64,7 @@
 #define ogl_breakpoint()
 #define ogl_assert(cond)
 #define ogl_assert_message(cond, message)
+#define ogl_assert_fail(message)
 
 #endif
 
