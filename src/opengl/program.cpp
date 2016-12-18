@@ -43,19 +43,16 @@ program::~program()
   glDeleteProgram(m_handle);
 }
 
-void program::attach_shader(shader::const_ptr shader)
+void program::link(const std::vector<shader::ptr>& shaders)
 {
-  glAttachShader(m_handle, shader->handle());
-}
+  for (shader::ptr shader : shaders)
+    glAttachShader(m_handle, shader->handle());
 
-void program::detach_shader(shader::const_ptr shader)
-{
-  glDetachShader(m_handle, shader->handle());
-}
-
-void program::link()
-{
   glLinkProgram(m_handle);
+
+  for (shader::ptr shader : shaders)
+    glDetachShader(m_handle, shader->handle());
+
   if (!is_linked())
   {
     std::ostringstream message;

@@ -43,19 +43,16 @@ namespace ogl
 
     ~program();
 
-    /** Attaches a shader to this program. */
-    void attach_shader(ogl::shader::const_ptr shader);
-
-    /** Detaches a shader from this program. */
-    void detach_shader(ogl::shader::const_ptr shader);
-
     /**
      * Links this shader program.
+     *
+     * @param shaders
+     * A `std::vector` of `ogl::shader` objects to include.
      *
      * @exception ogl::shader_exception
      * Thrown if the program cannot be linked for any reason.
      */
-    void link();
+    void link(const std::vector<shader::ptr>& shaders);
 
     /** Makes this program the currently active OpenGL program. */
     void activate() const;
