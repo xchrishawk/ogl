@@ -35,6 +35,7 @@ opengl::opengl()
 #if defined(OGL_LINUX)
 
   // initialize GLEW
+  glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK)
     throw std::runtime_error("Failed to initialize GLFW!");
 

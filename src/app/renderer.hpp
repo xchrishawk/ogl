@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include "app/state.hpp"
+#include "opengl/program.hpp"
 
 /* -- Types -- */
 
@@ -49,15 +50,24 @@ namespace ogl
   {
   public:
 
-    renderer() { }
+    renderer();
+    ~renderer();
 
     /** Renders a frame to the current OpenGL context. */
     void render(const render_args& args);
 
   private:
 
+    static program::ptr init_program();
+
+    program::ptr m_program;
+
     renderer(const renderer&) = delete;
     renderer& operator =(const renderer&) = delete;
+
+    void enable_depth_testing();
+    void enable_face_culling();
+    void clear_buffer(const render_args& args);
 
   };
 
