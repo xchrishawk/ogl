@@ -6,6 +6,11 @@
 
 #pragma once
 
+/* -- Includes -- */
+
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+
 /* -- Types -- */
 
 namespace ogl
@@ -16,6 +21,10 @@ namespace ogl
    */
   class object
   {
+
+  private:
+
+
 
   };
 

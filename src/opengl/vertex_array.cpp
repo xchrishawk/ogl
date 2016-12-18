@@ -89,6 +89,18 @@ void vertex_array::unbind_vertex_buffer(GLuint binding_index)
 			    0);				// stride
 }
 
+void vertex_array::bind_index_buffer(const buffer::const_ptr& buffer)
+{
+  glVertexArrayElementBuffer(m_handle,			// vaobj
+			     buffer->handle());		// buffer
+}
+
+void vertex_array::unbind_index_buffer()
+{
+  glVertexArrayElementBuffer(m_handle,			// vaobj
+			     0);			// buffer
+}
+
 GLuint vertex_array::new_handle()
 {
   GLuint handle = 0;

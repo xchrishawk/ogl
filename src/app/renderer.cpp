@@ -6,11 +6,19 @@
 
 /* -- Includes -- */
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/transform.hpp>
+
 #include "app/renderer.hpp"
 #include "app/state.hpp"
 #include "opengl/api.hpp"
 #include "opengl/program.hpp"
 #include "opengl/shader.hpp"
+#include "scene/component.hpp"
+#include "scene/mesh.hpp"
 #include "scene/vertex.hpp"
 #include "shaders/shader_manager.hpp"
 #include "util/constants.hpp"
@@ -32,7 +40,7 @@ namespace
 renderer::renderer()
   : m_program(renderer::init_program()),
     m_vao(renderer::init_vao(m_program)),
-    m_buffer(renderer::init_buffer())
+    m_component(renderer::init_component())
 {
   // one-time initial setup - TEMPORARILY DISABLED
   // enable_depth_testing();
@@ -51,9 +59,9 @@ void renderer::render(const render_args& args)
   program::use(m_program);
   vertex_array::bind(m_vao);
   glUniform1f(m_program->uniform_location("abs_t"), static_cast<float>(args.abs_t));
-  m_vao->bind_vertex_buffer(VERTEX_BUFFER_BINDING, m_buffer, sizeof(vertex), 0);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
-  m_vao->unbind_vertex_buffer(VERTEX_BUFFER_BINDING);
+
+  draw_component(m_component, glm::mat4());
+
   vertex_array::bind_none();
   program::use_none();
 }
@@ -137,15 +145,27 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
   return vao;
 }
 
-buffer::ptr renderer::init_buffer()
+component renderer::init_component()
 {
-  static const vertex vertices[] = {
+  static const std::vector<vertex> vertices = {
     { { 0.0f, 0.0f, 0.0f }, { }, { 1.0f, 0.0f, 0.0f, 1.0f } },
     { { 0.0f, 0.5f, 0.0f }, { }, { 0.0f, 1.0f, 0.0f, 1.0f } },
     { { 0.5f, 0.0f, 0.0f }, { }, { 0.0f, 0.0f, 1.0f, 1.0f } },
+    { { 0.0f, -0.5f, 0.0f } },
+    { { -0.5f, 0.0f, 0.0f } },
   };
-  return immutable_buffer::create(sizeof(vertices), vertices, 0);
+  static const std::vector<GLuint> indices = {
+    0, 1, 2, 0, 3, 4, 0, 1, 4, 0, 2, 3
+  };
+  ogl::mesh mesh(GL_TRIANGLES, vertices, indices);
+
+  return component(mesh,
+		   glm::vec3(-0.5, 0.5, 0.0),
+		   glm::quat(),
+		   glm::vec3(1.0, 1.0, 1.0));
 }
+
+
 
 void renderer::enable_depth_testing()
 {
@@ -169,4 +189,31 @@ void renderer::clear_buffer(const render_args& args)
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClearDepthf(1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void renderer::draw_component(const component& component, const glm::mat4& model_matrix)
+{
+  // create final model matrix, and set uniform with transform
+  glm::mat4 matrix = model_matrix * component.matrix();
+  glUniformMatrix4fv(m_program->uniform_location("vertex_model_matrix"),	// location
+		     1,								// count
+		     GL_FALSE,							// transpose
+		     value_ptr(matrix));					// value
+
+  // draw the compo
+  draw_mesh(component.mesh());
+}
+
+void renderer::draw_mesh(const mesh& mesh)
+{
+  // bind the vertex and index buffers for this mesh
+  m_vao->bind_vertex_buffer(VERTEX_BUFFER_BINDING, mesh.vertex_buffer(), sizeof(vertex), 0);
+  m_vao->bind_index_buffer(mesh.index_buffer());
+
+  // draw the mesh
+  glDrawElements(mesh.type(), mesh.index_count(), GL_UNSIGNED_INT, nullptr);
+
+  // unbind/clean up
+  m_vao->unbind_vertex_buffer(VERTEX_BUFFER_BINDING);
+  m_vao->unbind_index_buffer();
 }

@@ -104,6 +104,20 @@ namespace ogl
     /** Unbinds any buffer associated with the specified binding index. */
     void unbind_vertex_buffer(GLuint binding_index);
 
+    /**
+     * Binds an index (elements) buffer for this vertex array.
+     *
+     * This calls `glVertexArrayElementsBuffer()` to set the OpenGL elements
+     * buffer for this vertex array to use.
+     *
+     * @param buffer
+     * The buffer containing the indices to draw.
+     */
+    void bind_index_buffer(const buffer::const_ptr& buffer);
+
+    /** Unbinds any index (elements) buffer associated with this vertex array. */
+    void unbind_index_buffer();
+
     /** Returns the internal OpenGL handle for this vertex array. */
     GLuint handle() const { return m_handle; }
 
