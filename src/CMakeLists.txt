@@ -19,6 +19,7 @@ set(APP_EXECUTABLE_SOURCES
   glfw/window.cpp
   opengl/error.cpp
   opengl/opengl.cpp
+  opengl/shader.cpp
   util/debug.cpp)
 
 # Include src directory so we can use relative paths

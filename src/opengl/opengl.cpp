@@ -33,9 +33,16 @@ opengl::opengl()
   }
 
 #if defined(OGL_LINUX)
+
+  // initialize GLEW
   if (glewInit() != GLEW_OK)
     throw std::runtime_error("Failed to initialize GLFW!");
-  ogl_opengl_check_error();
+
+  // there is a bug where GLEW triggers an error on init. flush it from the queue.
+  // http://stackoverflow.com/q/20034615/434245
+  GLenum error __attribute__((unused)) = ogl::opengl_last_error();
+  ogl_assert_message(error == GL_INVALID_ENUM, "Unexpected GLEW init error!");
+
 #endif
 
   opengl::s_instance = this;
