@@ -64,11 +64,9 @@ namespace ogl
 
     static program::ptr init_program();
     static vertex_array::ptr init_vao(const program::const_ptr& program);
-    static object init_object();
 
     const program::ptr m_program;
     const vertex_array::ptr m_vao;
-    const object m_object;
 
     renderer(const renderer&) = delete;
     renderer& operator =(const renderer&) = delete;
@@ -77,6 +75,7 @@ namespace ogl
     void enable_face_culling();
 
     void clear_buffer(const render_args& args);
+    void draw_scene(const render_args& args);
     void draw_object(const object& object);
     void draw_mesh(const mesh& mesh);
 

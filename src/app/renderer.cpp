@@ -42,8 +42,7 @@ namespace
 
 renderer::renderer()
   : m_program(renderer::init_program()),
-    m_vao(renderer::init_vao(m_program)),
-    m_object(renderer::init_object())
+    m_vao(renderer::init_vao(m_program))
 {
   // one-time initial setup
   enable_depth_testing();
@@ -57,19 +56,7 @@ renderer::~renderer()
 void renderer::render(const render_args& args)
 {
   clear_buffer(args);
-
-  program::use(m_program);
-  vertex_array::bind(m_vao);
-
-  // set uniforms
-  set_matrix_uniform("view_matrix", view_matrix(args));
-  set_matrix_uniform("projection_matrix", projection_matrix(args));
-
-  // TEMP
-  draw_object(m_object);
-
-  vertex_array::bind_none();
-  program::use_none();
+  draw_scene(args);
 }
 
 program::ptr renderer::init_program()
@@ -91,6 +78,8 @@ program::ptr renderer::init_program()
 vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
 {
   vertex_array::ptr vao = vertex_array::create();
+
+  // FIXME: there should probably be a utility function to do this
 
   // vertex position attribute
   GLint position_attribute = program->attribute_location("vertex_position");
@@ -151,27 +140,6 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
   return vao;
 }
 
-object renderer::init_object()
-{
-  ogl::component ground({ object_factory::plane({ 0.25f, 0.25f, 0.25f, 1.0f }) },
-			glm::vec3(),
-			glm::quat(),
-			glm::vec3(200.0f, 200.0f, 200.0f));
-  ogl::component pyramid({ object_factory::pyramid({ 0.5f, 0.5f, 0.5f, 1.0f }) },
-			 glm::vec3(),
-			 glm::quat(),
-			 glm::vec3(1.0f, 1.0f, 1.0f));
-
-  ogl::object object({ ground, pyramid },
-		     glm::vec3(0.0f, 0.0f, 0.0f),
-		     glm::quat(),
-		     glm::vec3(1.0f, 1.0f, 1.0f));
-
-  return object;
-}
-
-
-
 void renderer::enable_depth_testing()
 {
   glEnable(GL_DEPTH_TEST);
@@ -194,6 +162,25 @@ void renderer::clear_buffer(const render_args& args)
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClearDepthf(1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void renderer::draw_scene(const render_args& args)
+{
+  // init program and VAO
+  program::use(m_program);
+  vertex_array::bind(m_vao);
+
+  // set uniforms
+  set_matrix_uniform("view_matrix", view_matrix(args));
+  set_matrix_uniform("projection_matrix", projection_matrix(args));
+
+  // draw each object
+  for (const object& obj : args.state.scene().objects())
+    draw_object(obj);
+
+  // clean up
+  vertex_array::bind_none();
+  program::use_none();
 }
 
 void renderer::draw_object(const object& obj)

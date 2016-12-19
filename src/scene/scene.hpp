@@ -28,8 +28,14 @@ namespace ogl
     /** Creates a new scene with the specified object list. */
     scene(const std::vector<object>& objects);
 
+    scene(const scene& other);
+    scene& operator =(const scene& other);
+
     /** Returns the objects included in this scene. */
     std::vector<object> objects() const { return m_objects; }
+
+    /** Sets the objects included in this scene. */
+    void set_objects(const std::vector<object>& objects) { m_objects = objects; }
 
   private:
 

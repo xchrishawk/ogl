@@ -7,6 +7,7 @@
 /* -- Includes -- */
 
 #include "app/input.hpp"
+#include "app/object_factory.hpp"
 #include "app/state.hpp"
 #include "util/constants.hpp"
 #include "util/debug.hpp"
@@ -39,8 +40,19 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_scene()
 {
+  // TEMP
+  ogl::component ground_component({ object_factory::plane({ 0.25f, 0.25f, 0.25f, 1.0f }) },
+				  glm::vec3(),
+				  glm::quat(),
+				  glm::vec3(200.0f, 200.0f, 200.0f));
+  ogl::object ground_object({ ground_component });
+  ogl::component pyramid_component({ object_factory::pyramid({ 0.5f, 0.5f, 0.5f, 1.0f }) },
+				   glm::vec3(),
+				   glm::quat(),
+				   glm::vec3(1.0f, 1.0f, 1.0f));
+  ogl::object pyramid_object({ pyramid_component });
+  m_scene.set_objects({ ground_object, pyramid_object });
 }
-
 
 void state::run(const state_args& args)
 {
