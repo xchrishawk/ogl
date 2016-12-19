@@ -11,6 +11,7 @@
 #include "scene/component.hpp"
 #include "scene/mesh.hpp"
 #include "scene/object.hpp"
+#include "scene/vertex.hpp"
 
 /* -- Types -- */
 
@@ -26,6 +27,8 @@ namespace ogl
 
     static mesh rgb_triangle_mesh();
     static mesh cmy_triangle_mesh();
+    static mesh plane(const vertex_color& color);
+    static mesh pyramid(const vertex_color& color);
 
   private:
 
