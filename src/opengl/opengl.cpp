@@ -13,6 +13,7 @@
 #include "opengl/error.hpp"
 #include "opengl/opengl.hpp"
 #include "util/debug.hpp"
+#include "util/exceptions.hpp"
 
 /* -- Namespaces -- */
 
@@ -47,7 +48,7 @@ opengl::opengl()
   // initialize GLEW
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK)
-    throw std::runtime_error("Failed to initialize GLEW!");
+    throw library_exception("Failed to initialize GLEW!");
 
   // there is a bug where GLEW triggers an error on init. flush it from the queue.
   // http://stackoverflow.com/q/20034615/434245
@@ -107,6 +108,6 @@ void opengl::check_required_extensions() const
     message << "Unable to initialize OpenGL. Required extensions are not supported:";
     for (const std::string& extension : unsupported_extensions)
       message << " " << extension;
-    throw std::runtime_error(message.str());
+    throw library_exception(message.str());
   }
 }

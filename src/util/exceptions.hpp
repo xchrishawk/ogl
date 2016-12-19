@@ -39,6 +39,17 @@ namespace ogl
   };
 
   /**
+   * Exception thrown when a library cannot be initialized for any reason.
+   */
+  class library_exception : public std::runtime_error
+  {
+  public:
+    library_exception(const std::string& message)
+      : std::runtime_error(message)
+    { }
+  };
+
+  /**
    * Exception thrown when a shader program cannot be loaded or compiled.
    */
   class shader_exception : public std::runtime_error

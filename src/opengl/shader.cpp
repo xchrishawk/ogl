@@ -13,9 +13,9 @@
 
 #include "opengl/api.hpp"
 #include "opengl/error.hpp"
-#include "opengl/exceptions.hpp"
 #include "opengl/shader.hpp"
 #include "util/debug.hpp"
+#include "util/exceptions.hpp"
 
 /* -- Namespaces -- */
 

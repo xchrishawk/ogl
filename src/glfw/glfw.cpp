@@ -13,6 +13,7 @@
 #include "opengl/api.hpp"
 #include "util/constants.hpp"
 #include "util/debug.hpp"
+#include "util/exceptions.hpp"
 
 /* -- Namespaces -- */
 
@@ -34,7 +35,7 @@ glfw::glfw()
 
   glfwSetErrorCallback(glfw::error_callback);
   if (!glfwInit())
-    throw std::runtime_error("Failed to initialize GLFW!");
+    throw library_exception("Failed to initialize GLFW!");
 
   glfw::s_instance = this;
   ogl_dbg_status("GLFW initialized.",

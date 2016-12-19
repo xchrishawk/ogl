@@ -10,9 +10,9 @@
 #include <stdexcept>
 
 #include "opengl/error.hpp"
-#include "opengl/exceptions.hpp"
 #include "opengl/vertex_array.hpp"
 #include "util/debug.hpp"
+#include "util/exceptions.hpp"
 
 /* -- Namespaces -- */
 
