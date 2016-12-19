@@ -7,3 +7,19 @@
 /* -- Includes -- */
 
 #include "scene/scene.hpp"
+
+/* -- Namespaces -- */
+
+using namespace ogl;
+
+/* -- Procedures -- */
+
+scene::scene()
+  : m_objects()
+{
+}
+
+scene::scene(const std::vector<object>& objects)
+  : m_objects(objects)
+{
+}

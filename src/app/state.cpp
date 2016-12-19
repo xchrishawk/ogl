@@ -36,7 +36,8 @@ namespace
 state::state()
   : m_camera_position(CAMERA_POSITION_DEFAULT),
     m_camera_rotation(CAMERA_ROTATION_DEFAULT),
-    m_camera_fov(CAMERA_FOV_DEFAULT)
+    m_camera_fov(CAMERA_FOV_DEFAULT),
+    m_scene()
 {
 }
 

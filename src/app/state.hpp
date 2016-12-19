@@ -12,6 +12,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "app/input.hpp"
+#include "scene/scene.hpp"
 
 /* -- Types -- */
 
@@ -58,11 +59,15 @@ namespace ogl
     /** Returns the field of view of the camera, in radians. */
     float camera_fov() const { return m_camera_fov; }
 
+    /** The scene which should be rendered. */
+    ogl::scene scene() const { return m_scene; }
+
   private:
 
     glm::vec3 m_camera_position;
     glm::quat m_camera_rotation;
     float m_camera_fov;
+    ogl::scene m_scene;
 
     state(const state&) = delete;
     state& operator =(const state&) = delete;
