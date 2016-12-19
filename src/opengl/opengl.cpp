@@ -18,6 +18,18 @@
 
 using namespace ogl;
 
+/* -- Constants -- */
+
+namespace
+{
+
+  static const std::vector<std::string> REQUIRED_OPENGL_EXTENSIONS =
+  {
+    "GL_ARB_direct_state_access",
+  };
+
+}
+
 /* -- Variables -- */
 
 opengl* opengl::s_instance = nullptr;
@@ -32,19 +44,15 @@ opengl::opengl()
     ogl::fail();
   }
 
-#if defined(OGL_LINUX)
-
   // initialize GLEW
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK)
-    throw std::runtime_error("Failed to initialize GLFW!");
+    throw std::runtime_error("Failed to initialize GLEW!");
 
   // there is a bug where GLEW triggers an error on init. flush it from the queue.
   // http://stackoverflow.com/q/20034615/434245
   GLenum error __attribute__((unused)) = ogl::opengl_last_error();
   ogl_dbg_assert(error == GL_INVALID_ENUM);
-
-#endif
 
   opengl::s_instance = this;
   ogl_dbg_status("OpenGL initialized.",
@@ -52,6 +60,8 @@ opengl::opengl()
 		 "GLSL Version:       " + glsl_version(),
 		 "Vendor:             " + vendor(),
 		 "Renderer:           " + renderer());
+
+  check_required_extensions();
 }
 
 opengl::~opengl()
@@ -78,4 +88,25 @@ std::string opengl::vendor() const
 std::string opengl::renderer() const
 {
   return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+}
+
+void opengl::check_required_extensions() const
+{
+  // build list of unsupported extensions
+  std::vector<std::string> unsupported_extensions;
+  for (const std::string& extension : REQUIRED_OPENGL_EXTENSIONS)
+  {
+    if (!glewIsSupported(extension.c_str()))
+      unsupported_extensions.push_back(extension);
+  }
+
+  // if list isn't empty, throw
+  if (!unsupported_extensions.empty())
+  {
+    std::ostringstream message;
+    message << "Unable to initialize OpenGL. Required extensions are not supported:";
+    for (const std::string& extension : unsupported_extensions)
+      message << " " << extension;
+    throw std::runtime_error(message.str());
+  }
 }

@@ -40,6 +40,8 @@ namespace ogl
     opengl(const opengl&) = delete;
     opengl& operator =(const opengl&) = delete;
 
+    void check_required_extensions() const;
+
   };
 
 }

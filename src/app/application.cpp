@@ -48,9 +48,6 @@ application::application()
     ogl::fail();
   }
 
-  std::ostringstream message;
-  std::ostringstream bard;
-
   m_glfw.set_swap_interval(constants::OPENGL_SWAP_INTERVAL);
   m_window->set_key_callback(application::key_callback);
 

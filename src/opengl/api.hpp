@@ -16,9 +16,8 @@
 
 #elif defined(OGL_MACOS)
 
-  // Use OpenGL framework and GLFW on macOS
-  #include <OpenGL/gl.h>
-  #include <OpenGL/glu.h>
+  // Use GLEW and GLFW on macOS
+  #include <GL/glew.h>
   #include <GLFW/glfw3.h>
 
 #else

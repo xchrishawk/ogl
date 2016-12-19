@@ -24,6 +24,7 @@ int main(int argc, char** argv)
   catch (const std::exception& ex)
   {
     ogl_dbg_error("Uncaught exception!", ex.what());
-    ogl::fail();
+    ogl_dbg_fail();
+    return 1;
   }
 }

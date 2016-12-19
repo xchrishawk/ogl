@@ -8,7 +8,9 @@ in VertexBlock
   vec2 texture;
 } invertex;
 
+out vec4 fragment_color;
+
 void main(void)
 {
-  gl_FragColor = invertex.color;
+  fragment_color = invertex.color;
 }
