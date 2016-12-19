@@ -31,6 +31,24 @@ component::component(const std::vector<mesh>& meshes,
 {
 }
 
+component::component(const component& other)
+  : m_meshes(other.m_meshes),
+    m_position(other.m_position),
+    m_rotation(other.m_rotation),
+    m_scale(other.m_scale)
+{
+}
+
+component& component::operator =(const component& other)
+{
+  m_meshes = other.m_meshes;
+  m_position = other.m_position;
+  m_rotation = other.m_rotation;
+  m_scale = other.m_scale;
+
+  return *this;
+}
+
 glm::mat4 component::matrix() const
 {
   return

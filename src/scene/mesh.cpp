@@ -29,3 +29,23 @@ mesh::mesh(GLenum type,
     m_index_buffer(immutable_buffer::create(indices, 0))
 {
 }
+
+mesh::mesh(const mesh& other)
+  : m_type(other.m_type),
+    m_vertex_count(other.m_vertex_count),
+    m_vertex_buffer(other.m_vertex_buffer),
+    m_index_count(other.m_index_count),
+    m_index_buffer(other.m_index_buffer)
+{
+}
+
+mesh& mesh::operator =(const mesh& other)
+{
+  m_type = other.m_type;
+  m_vertex_count = other.m_vertex_count;
+  m_vertex_buffer = other.m_vertex_buffer;
+  m_index_count = other.m_index_count;
+  m_index_buffer = other.m_vertex_buffer;
+
+  return *this;
+}

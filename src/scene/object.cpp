@@ -33,6 +33,24 @@ object::object(const std::vector<component>& components,
 {
 }
 
+object::object(const object& other)
+  : m_components(other.m_components),
+    m_position(other.m_position),
+    m_rotation(other.m_rotation),
+    m_scale(other.m_scale)
+{
+}
+
+object& object::operator =(const object& other)
+{
+  m_components = other.m_components;
+  m_position = other.m_position;
+  m_rotation = other.m_rotation;
+  m_scale = other.m_scale;
+
+  return *this;
+}
+
 glm::mat4 object::matrix() const
 {
   return

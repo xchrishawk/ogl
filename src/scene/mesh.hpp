@@ -24,7 +24,6 @@ namespace ogl
    */
   class mesh
   {
-
   public:
 
     /**
@@ -46,6 +45,9 @@ namespace ogl
 	 const std::vector<ogl::vertex>& vertices,
 	 const std::vector<GLuint>& indices);
 
+    mesh(const mesh& other);
+    mesh& operator =(const mesh& other);
+
     /** The type of mesh to draw (e.g., `GL_TRIANGLES`, `GL_TRIANGLE_FAN`, etc). */
     GLenum type() const { return m_type; }
 
@@ -63,11 +65,11 @@ namespace ogl
 
   private:
 
-    const GLenum m_type;
-    const GLsizei m_vertex_count;
-    const ogl::buffer::const_ptr m_vertex_buffer;
-    const GLsizei m_index_count;
-    const ogl::buffer::const_ptr m_index_buffer;
+    GLenum m_type;
+    GLsizei m_vertex_count;
+    ogl::buffer::const_ptr m_vertex_buffer;
+    GLsizei m_index_count;
+    ogl::buffer::const_ptr m_index_buffer;
 
   };
 
