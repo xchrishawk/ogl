@@ -13,6 +13,7 @@ set(APP_EXECUTABLE_SOURCES
   main.cpp
   app/application.cpp
   app/input.cpp
+  app/object_factory.cpp
   app/renderer.cpp
   app/state.cpp
   glfw/glfw.cpp

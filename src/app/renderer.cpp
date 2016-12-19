@@ -14,6 +14,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include "app/object_factory.hpp"
 #include "app/renderer.hpp"
 #include "app/state.hpp"
 #include "opengl/api.hpp"
@@ -152,35 +153,31 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
 
 object renderer::init_object()
 {
-  static const std::vector<vertex> mesh1_vertices = {
-    { { 0.0f, 0.0f, 0.0f }, { }, { 1.0f, 0.0f, 0.0f, 1.0f } },
-    { { 0.5f, 0.0f, 0.0f }, { }, { 0.0f, 1.0f, 0.0f, 1.0f } },
-    { { 0.0f, 0.5f, 0.0f }, { }, { 0.0f, 0.0f, 1.0f, 1.0f } },
-  };
-  static const std::vector<GLuint> mesh1_indices = { 0, 1, 2 };
-  mesh mesh1(GL_TRIANGLES, mesh1_vertices, mesh1_indices);
+  mesh rgb_triangle = object_factory::rgb_triangle_mesh();
+  mesh cmy_triangle = object_factory::cmy_triangle_mesh();
 
-  static const std::vector<vertex> mesh2_vertices = {
-    { { 0.0f, 0.0f, 0.0f }, { }, { 0.0f, 1.0f, 1.0f, 1.0f } },
-    { { 0.0f, -0.5f, 0.0f }, { }, { 1.0f, 0.0f, 1.0f, 1.0f } },
-    { { -0.5f, 0.0f, 0.0f }, { }, { 1.0f, 1.0f, 0.0f, 1.0f } },
-  };
-  static const std::vector<GLuint> mesh2_indices = { 0, 1, 2 };
-  mesh mesh2(GL_TRIANGLES, mesh2_vertices, mesh2_indices);
-
-  ogl::component component1({ mesh1, mesh2 },
-			    glm::vec3(-0.5f, 0.5f, 0.0f),
+  ogl::component component1({ rgb_triangle },
+			    glm::vec3(),
 			    glm::quat(),
-			    glm::vec3(2.0f, 0.5f, 0.5f));
-  ogl::component component2({ mesh1, mesh2 },
-			    glm::vec3(0.5f, -0.5f, 0.0f),
+			    glm::vec3(0.5f, 0.5f, 0.5f));
+  ogl::component component2({ rgb_triangle },
+			    glm::vec3(),
 			    glm::quat(),
-			    glm::vec3(3.0f, 0.5f, 0.5f));
+			    glm::vec3(0.5f, -0.5f, 0.5f));
+  ogl::component component3({ cmy_triangle },
+			    glm::vec3(),
+			    glm::quat(),
+			    glm::vec3(-0.5f, -0.5f, -0.5f));
+  ogl::component component4({ cmy_triangle },
+			    glm::vec3(),
+			    glm::quat(),
+			    glm::vec3(-0.5f, 0.5f, -0.5f));
 
-  ogl::object object({ component1, component2 },
+
+  ogl::object object({ component1, component2, component3, component4 },
 		     glm::vec3(0.0f, 0.0f, 0.0f),
 		     glm::quat(),
-		     glm::vec3(0.333f, 1.0f, 1.0f));
+		     glm::vec3(1.0f, 1.0f, 1.0f));
 
   return object;
 }
