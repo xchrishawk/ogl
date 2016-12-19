@@ -226,7 +226,19 @@ void renderer::draw_mesh(const mesh& mesh)
 
 glm::mat4 renderer::model_matrix(const object& object, const component& component)
 {
-  return object.matrix() * component.matrix();
+  // component space -> model space
+  glm::mat4 component_matrix =
+    glm::translate(component.position()) *
+    glm::mat4_cast(component.rotation()) *
+    glm::scale(component.scale());
+
+  // model space -> world space
+  glm::mat4 object_matrix =
+    glm::translate(object.position()) *
+    glm::mat4_cast(object.rotation()) *
+    glm::scale(object.scale());
+
+  return object_matrix * component_matrix;
 }
 
 glm::mat4 renderer::view_matrix(const render_args& args)

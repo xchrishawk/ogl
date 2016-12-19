@@ -50,11 +50,3 @@ object& object::operator =(const object& other)
 
   return *this;
 }
-
-glm::mat4 object::matrix() const
-{
-  return
-    glm::translate(m_position) *	// translation (performed 3rd)
-    glm::mat4_cast(m_rotation) *	// rotation (performed 2nd)
-    glm::scale(m_scale);		// scaling (performed 1st)
-}

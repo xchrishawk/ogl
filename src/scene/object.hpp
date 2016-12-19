@@ -71,12 +71,6 @@ namespace ogl
     /** Sets the scale of this object in world space. */
     void set_scale(const glm::vec3& scale) { m_scale = scale; }
 
-    /**
-     * Returns a transformation matrix to transform this object's mesh vertex
-     * coordinates from model space into world space.
-     */
-    glm::mat4 matrix() const;
-
   private:
 
     std::vector<component> m_components;
