@@ -1,22 +1,15 @@
 /**
- * main.cpp
- * Chris Vig (chris@invictus.so)
+ * @file	main.cpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
 /* -- Includes -- */
 
-#include <cstdlib>
 #include <exception>
-#include <iostream>
-#include <sstream>
 
 #include "app/application.hpp"
 #include "util/debug.hpp"
-
-/* -- Namespaces -- */
-
-using namespace std;
-using namespace ogl;
 
 /* -- Procedures -- */
 
@@ -24,16 +17,14 @@ int main(int argc, char** argv)
 {
   try
   {
-    application::instance().main();
-    return EXIT_SUCCESS;
+    ogl::application app;
+    app.main();
+    return 0;
   }
-  catch (exception& ex)
+  catch (const std::exception& ex)
   {
-#ifdef OGL_DEBUG
-    ostringstream message;
-    message << "Unhandled exception: " << ex.what();
-    ogl_error_message(message.str());
-#endif
-    return EXIT_FAILURE;
+    ogl_dbg_error("Uncaught exception!", ex.what());
+    ogl_dbg_fail();
+    return 1;
   }
 }

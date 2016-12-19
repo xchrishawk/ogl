@@ -1,87 +1,102 @@
-cmake_minimum_required(VERSION 3.5)
-project(ogl)
+#
+# src/CMakeLists.txt
+# Chris Vig (chris@invictus.so)
+#
 
-# -- Imports --
+# -- Common Configuration --
 
-find_package(PkgConfig)
+# Executable name
+set(APP_EXECUTABLE_NAME ${CMAKE_PROJECT_NAME})
 
-# -- Inputs --
-
-set(EXECUTABLE_TARGET
-  ${CMAKE_PROJECT_NAME})
-
-set(EXECUTABLE_SOURCES
+# Executable source code
+set(APP_EXECUTABLE_SOURCES
   main.cpp
   app/application.cpp
-  app/examples.cpp
   app/input.cpp
-  app/mesh.cpp
-  app/object.cpp
+  app/object_factory.cpp
   app/renderer.cpp
   app/state.cpp
+  glfw/glfw.cpp
+  glfw/window.cpp
   opengl/buffer.cpp
   opengl/error.cpp
-  opengl/glew.cpp
-  opengl/glfw.cpp
+  opengl/opengl.cpp
   opengl/program.cpp
   opengl/shader.cpp
-  opengl/texture.cpp
   opengl/vertex_array.cpp
-  opengl/window.cpp
-  shaders/shader_sources.cpp
-  util/debug.cpp
-  util/misc.cpp)
+  scene/component.cpp
+  scene/mesh.cpp
+  scene/object.cpp
+  scene/scene.cpp
+  shaders/shader_manager.cpp
+  util/debug.cpp)
 
-set(EXECUTABLE_SHADERS
-  default_vertex_shader.glsl
-  default_fragment_shader.glsl)
+# Executable shader source code
+set(APP_EXECUTABLE_SHADERS
+  shaders/vertex_shader.glsl
+  shaders/fragment_shader.glsl)
 
-# -- Common Setup --
+# Include src directory so we can use relative paths
+list(APPEND APP_EXECUTABLE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Include root of source tree as an include dir so relative paths work
-list(APPEND EXECUTABLE_INCLUDE_DIRS ${CMAKE_SOURCE_DIR})
+# Define OGL_DEBUG if this is a debug build
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  list(APPEND APP_EXECUTABLE_DEFINITIONS -DOGL_DEBUG)
+endif()
 
-# Compiler configuration
-set(CMAKE_CXX_FLAGS_DEBUG "-std=gnu++11 -g -Wall -Wpedantic -DOGL_DEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-std=gnu++11 -s -O3")
-
-# Add GLFW library
+# Include GLFW library
 pkg_check_modules(GLFW REQUIRED glfw3)
-list(APPEND EXECUTABLE_INCLUDE_DIRS ${GLFW_INCLUDE_DIRS})
-list(APPEND EXECUTABLE_CFLAGS ${GLFW_CFLAGS_OTHER})
-list(APPEND EXECUTABLE_LIBRARIES ${GLFW_LIBRARIES})
+link_directories(${GLFW_LIBRARY_DIRS})
+list(APPEND APP_EXECUTABLE_INCLUDE_DIRECTORIES ${GLFW_INCLUDE_DIRS})
+list(APPEND APP_EXECUTABLE_COMPILE_OPTIONS ${GLFW_CFLAGS_OTHER})
+list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${GLFW_LIBRARIES})
 
-# -- Platform-Specific Setup --
+# Include GLEW library
+pkg_check_modules(GLEW REQUIRED glew)
+link_directories(${GLEW_LIBRARY_DIRS})
+list(APPEND APP_EXECUTABLE_INCLUDE_DIRECTORIES ${GLEW_INCLUDE_DIRS})
+list(APPEND APP_EXECUTABLE_COMPILE_OPTIONS ${GLEW_CFLAGS_OTHER})
+list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${GLEW_LIBRARIES})
+
+# -- Platform-Specific Configuration --
 
 if(UNIX AND NOT APPLE)
 
-  # Define Linux platform
-  list(APPEND EXECUTABLE_DEFINITIONS OGL_PLATFORM=LINUX)
-
-  # Add GLEW library
-  pkg_check_modules(GLEW REQUIRED glew)
-  list(APPEND EXECUTABLE_INCLUDE_DIRS ${GLEW_INCLUDE_DIRS})
-  list(APPEND EXECUTABLE_CFLAGS ${GLEW_CFLAGS_OTHER})
-  list(APPEND EXECUTABLE_LIBRARIES ${GLEW_LIBRARIES})
+  # Define Linux macro
+  list(APPEND APP_EXECUTABLE_DEFINITIONS -DOGL_LINUX)
 
 elseif(APPLE)
 
-  # Define MacOS platform
-  list(APPEND EXECUTABLE_DEFINITIONS OGL_PLATFORM=MACOS)
+  # Define MacOS macro
+  list(APPEND APP_EXECUTABLE_DEFINITIONS -DOGL_MACOS)
+
+  # Must link with OpenGL.framework
+  find_package(OpenGL REQUIRED)
+  list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${OPENGL_LIBRARIES})
+
+  # Explicitly include /usr/local/include for GLM
+  list(APPEND APP_EXECUTABLE_INCLUDE_DIRECTORIES /usr/local/include)
 
 else()
 
-  # Unknown platform??
-  message(FATAL_ERROR "Unknown platform")
+  # Unknown platform???
+  message(FATAL_ERROR "Unrecognized or unsupported platform!")
 
 endif()
 
-# -- Pre-Process Shader Code --
+# -- Shader Processing --
 
-foreach(SHADER ${EXECUTABLE_SHADERS})
-  set(SHADER_INPUT_PATH "${CMAKE_SOURCE_DIR}/shaders/${SHADER}")
-  set(SHADER_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/gen/${SHADER}.inc")
-  list(APPEND EXECUTABLE_PROCESSED_SHADERS ${SHADER_OUTPUT_PATH})
+# Create directory for shader include files
+set(SHADER_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/shaders)
+file(MAKE_DIRECTORY ${SHADER_OUTPUT_DIRECTORY})
+list(APPEND APP_EXECUTABLE_INCLUDE_DIRECTORIES ${SHADER_OUTPUT_DIRECTORY})
+
+# Process each shader
+foreach(SHADER ${APP_EXECUTABLE_SHADERS})
+  set(SHADER_INPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${SHADER}")
+  get_filename_component(SHADER_FILE_NAME ${SHADER_INPUT_PATH} NAME)
+  set(SHADER_OUTPUT_PATH "${SHADER_OUTPUT_DIRECTORY}/${SHADER_FILE_NAME}.inc")
+  list(APPEND APP_EXECUTABLE_PROCESSED_SHADERS ${SHADER_OUTPUT_PATH})
   add_custom_command(
     DEPENDS ${SHADER_INPUT_PATH}
     OUTPUT ${SHADER_OUTPUT_PATH}
@@ -89,25 +104,13 @@ foreach(SHADER ${EXECUTABLE_SHADERS})
     COMMENT "Processing ${SHADER}")
 endforeach()
 
-# -- Main Executable --
+# -- Target Definition --
 
-add_executable(
-  ${EXECUTABLE_TARGET}
-  ${EXECUTABLE_SOURCES}
-  ${EXECUTABLE_PROCESSED_SHADERS})
+add_executable(${APP_EXECUTABLE_NAME}
+  ${APP_EXECUTABLE_SOURCES}
+  ${APP_EXECUTABLE_PROCESSED_SHADERS})
 
-target_compile_definitions(
-  ${EXECUTABLE_TARGET}
-  PUBLIC ${EXECUTABLE_DEFINITIONS})
-
-target_include_directories(
-  ${EXECUTABLE_TARGET}
-  PUBLIC ${EXECUTABLE_INCLUDE_DIRS})
-
-target_compile_options(
-  ${EXECUTABLE_TARGET}
-  PUBLIC ${EXECUTABLE_CFLAGS})
-
-target_link_libraries(
-  ${EXECUTABLE_TARGET}
-  PUBLIC ${EXECUTABLE_LIBRARIES})
+target_compile_definitions(${APP_EXECUTABLE_NAME} PUBLIC ${APP_EXECUTABLE_DEFINITIONS})
+target_include_directories(${APP_EXECUTABLE_NAME} PUBLIC ${APP_EXECUTABLE_INCLUDE_DIRECTORIES})
+target_compile_options(${APP_EXECUTABLE_NAME} PUBLIC ${APP_EXECUTABLE_COMPILE_OPTIONS})
+target_link_libraries(${APP_EXECUTABLE_NAME} PUBLIC ${APP_EXECUTABLE_LINK_LIBRARIES})

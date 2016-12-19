@@ -1,18 +1,19 @@
 /**
- * renderer.hpp
- * Chris Vig (chris@invictus.so)
+ * @file	renderer.hpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
-#ifndef OGL_APP_RENDERER_HPP
-#define OGL_APP_RENDERER_HPP
+#pragma once
 
 /* -- Includes -- */
 
-#include <vector>
+#include <glm/glm.hpp>
 
 #include "app/state.hpp"
 #include "opengl/program.hpp"
 #include "opengl/vertex_array.hpp"
+#include "scene/object.hpp"
 
 /* -- Types -- */
 
@@ -20,26 +21,34 @@ namespace ogl
 {
 
   /**
-   * Class containing information needed for a rendering cycle.
+   * Struct containing information required to run a render loop.
    */
-  class renderer_args
+  class render_args
   {
   public:
 
-    renderer_args(int width, int height, const ogl::state& state)
-      : width(width),
-	height(height),
-	state(state)
+    render_args(const ogl::state& state,
+		double abs_t,
+		double delta_t,
+		int framebuffer_width,
+		int framebuffer_height)
+      : state(state),
+	abs_t(abs_t),
+	delta_t(delta_t),
+	framebuffer_width(framebuffer_width),
+	framebuffer_height(framebuffer_height)
     { }
 
-    const int width;
-    const int height;
     const ogl::state& state;
+    const double abs_t;
+    const double delta_t;
+    const int framebuffer_width;
+    const int framebuffer_height;
 
   };
 
   /**
-   * Primary class reponsible for OpenGL rendering.
+   * Class responsible for rendering the app's graphics.
    */
   class renderer
   {
@@ -48,32 +57,35 @@ namespace ogl
     renderer();
     ~renderer();
 
-    void render(const ogl::renderer_args& args);
+    /** Renders a frame to the current OpenGL context. */
+    void render(const render_args& args);
 
   private:
 
-    ogl::vertex_array::ptr m_vao;
-    ogl::program::ptr m_program;
+    static program::ptr init_program();
+    static vertex_array::ptr init_vao(const program::const_ptr& program);
+    static object init_object();
+
+    const program::ptr m_program;
+    const vertex_array::ptr m_vao;
+    const object m_object;
 
     renderer(const renderer&) = delete;
     renderer& operator =(const renderer&) = delete;
 
-    ogl::program::ptr init_program();
-    ogl::vertex_array::ptr init_vertex_array(ogl::program::ptr program);
+    void enable_depth_testing();
+    void enable_face_culling();
 
-    void clear_buffer(int width, int height);
-    void render_object(const ogl::object& obj,
-		       const glm::mat4& view_matrix,
-		       const glm::mat4& projection_matrix);
-    void render_mesh_elements(const ogl::mesh_elements& elements);
+    void clear_buffer(const render_args& args);
+    void draw_object(const object& object);
+    void draw_mesh(const mesh& mesh);
 
-    glm::mat4 model_matrix(const ogl::object& obj);
-    glm::mat4 view_matrix(const ogl::renderer_args& args);
-    glm::mat4 projection_matrix(const ogl::renderer_args& args);
+    glm::mat4 model_matrix(const object& object, const component& component);
+    glm::mat4 view_matrix(const render_args& args);
+    glm::mat4 projection_matrix(const render_args& args);
+
     void set_matrix_uniform(const std::string& name, const glm::mat4& matrix);
 
   };
 
 }
-
-#endif /* OGL_APP_RENDERER_HPP */

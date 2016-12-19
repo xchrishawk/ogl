@@ -1,21 +1,21 @@
 /**
- * input.hpp
- * Chris Vig (chris@invictus.so)
+ * @file	input.hpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
-#ifndef OGL_APP_INPUT_HPP
-#define OGL_APP_INPUT_HPP
+#pragma once
 
 /* -- Includes -- */
 
-#include "opengl/opengl.hpp"
+#include "opengl/api.hpp"
 
 /* -- Types -- */
 
 namespace ogl
 {
 
-  // forward declaration
+  // required forward declaration
   class application;
 
   /**
@@ -54,11 +54,12 @@ namespace ogl
 
     input();
 
+    /** Returns `true` if the specified input is active. */
     bool input_active(input_key key) const;
 
-    friend class ogl::application;
-
   private:
+
+    friend class ogl::application;
 
     static const int GLFW_KEY_COUNT = GLFW_KEY_LAST + 1;
 
@@ -86,6 +87,7 @@ namespace ogl
 namespace ogl
 {
 
+  /** Returns `true` if the specified key is valid. */
   inline bool input_key_valid(input_key key)
   {
     return (static_cast<int>(key) >= static_cast<int>(INPUT_KEY_FIRST_VALID) &&
@@ -93,5 +95,3 @@ namespace ogl
   }
 
 }
-
-#endif /* OGL_APP_INPUT_HPP */

@@ -1,20 +1,21 @@
 /**
- * buffer.cpp
- * Chris Vig (chris@invictus.so)
+ * @file	buffer.cpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/17
  */
 
 /* -- Includes -- */
 
 #include <memory>
 
+#include "opengl/api.hpp"
 #include "opengl/buffer.hpp"
 #include "opengl/error.hpp"
-#include "opengl/opengl.hpp"
 #include "util/debug.hpp"
+#include "util/exceptions.hpp"
 
 /* -- Namespaces -- */
 
-using namespace std;
 using namespace ogl;
 
 /* -- Procedures -- */
@@ -34,7 +35,7 @@ GLuint buffer::new_handle()
   GLuint handle = 0;
   glCreateBuffers(1, &handle);
   if (handle == 0)
-    opengl_throw_last_error("Failed to create buffer.");
+    throw alloc_exception("Failed to create buffer!");
   return handle;
 }
 

@@ -1,96 +1,90 @@
 /**
- * application.cpp
- * Chris Vig (chris@invictus.so)
+ * @file	application.cpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
 /* -- Includes -- */
+
+#include <sstream>
+#include <stdexcept>
 
 #include "app/application.hpp"
 #include "app/input.hpp"
 #include "app/renderer.hpp"
 #include "app/state.hpp"
+#include "glfw/glfw.hpp"
+#include "glfw/window.hpp"
+#include "opengl/api.hpp"
 #include "opengl/error.hpp"
-#include "opengl/glew.hpp"
-#include "opengl/glfw.hpp"
-#include "opengl/window.hpp"
+#include "opengl/opengl.hpp"
+#include "util/constants.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */
 
-using namespace std;
 using namespace ogl;
 
-/* -- Constants -- */
+/* -- Variables -- */
 
-namespace
-{
-  const int TARGET_CONTEXT_VERSION_MAJOR = 3;
-  const int TARGET_CONTEXT_VERSION_MINOR = 3;
-  const int INITIAL_WINDOW_WIDTH = 800;
-  const int INITIAL_WINDOW_HEIGHT = 600;
-  const string INITIAL_WINDOW_TITLE = "OGL";
-
-  const bool GLEW_USE_EXPERIMENTAL = true;
-
-  const float TARGET_STATE_RATE = 1.0f / 60.0f;
-  const float TARGET_RENDER_RATE = 1.0f / 60.0f;
-}
+application* application::s_instance = nullptr;
 
 /* -- Procedures -- */
 
-application& application::instance()
-{
-  static application instance;
-  return instance;
-}
-
 application::application()
   : m_glfw(),
-    m_window(TARGET_CONTEXT_VERSION_MAJOR,
-	     TARGET_CONTEXT_VERSION_MINOR,
-	     INITIAL_WINDOW_WIDTH,
-	     INITIAL_WINDOW_HEIGHT,
-	     INITIAL_WINDOW_TITLE,
-	     application::glfw_key_callback),
-    m_glew(GLEW_USE_EXPERIMENTAL),
+    m_window(window::create(true,
+			    constants::WINDOW_INITIAL_WIDTH,
+			    constants::WINDOW_INITIAL_HEIGHT,
+			    constants::WINDOW_TITLE)),
+    m_opengl(),
     m_input(),
     m_state(),
     m_renderer()
 {
-  ogl_trace_message("Application launched successfully.");
+  if (application::s_instance)
+  {
+    ogl_dbg_error("Attempted to initialize application while it was already initialized!");
+    ogl::fail();
+  }
+
+  m_glfw.set_swap_interval(constants::OPENGL_SWAP_INTERVAL);
+  m_window->set_key_callback(application::key_callback);
+
+  application::s_instance = this;
+  ogl_dbg_status("Application initialized successfully.");
 }
 
 application::~application()
 {
-  ogl_trace_message("Application terminated.");
+  application::s_instance = nullptr;
+  ogl_dbg_status("Application shutting down...");
 }
 
 void application::main()
 {
-  float last_state_t = time();
-  float last_render_t = time();
+  double last_state_t = m_glfw.time();
+  double last_render_t = m_glfw.time();
 
-  while (!m_window.should_close())
+  while (!m_window->should_close())
   {
-    // poll GLFW window events
-    window::poll_events();
+    // handle user input every loop
+    handle_input();
 
-    // handle application-level inputs
-    handle_app_input();
+    // get timing info
+    double abs_t = m_glfw.time();
 
-    float abs_t = time();
-
-    // perform state updates if needed
-    float state_delta_t = abs_t - last_state_t;
-    if (state_delta_t >= TARGET_STATE_RATE)
+    // handle state updates
+    double state_delta_t = abs_t - last_state_t;
+    if (state_delta_t >= constants::TARGET_STATE_DELTA_T)
     {
       handle_state(abs_t, state_delta_t);
       last_state_t = abs_t;
     }
 
-    // perform rendering if needed
-    float render_delta_t = abs_t - last_render_t;
-    if (render_delta_t >= TARGET_RENDER_RATE)
+    // handle rendering
+    double render_delta_t = abs_t - last_render_t;
+    if (render_delta_t >= constants::TARGET_RENDER_DELTA_T)
     {
       handle_render(abs_t, render_delta_t);
       last_render_t = abs_t;
@@ -98,45 +92,51 @@ void application::main()
   }
 }
 
-float application::time() const
+void application::handle_input()
 {
-  return static_cast<float>(glfwGetTime());
-}
+  // poll GLFW events
+  m_glfw.poll_events();
 
-void application::handle_app_input()
-{
+  // set the window close flag if the user selects to exit
   if (m_input.input_active(INPUT_KEY_EXIT_APPLICATION))
-    m_window.set_should_close(true);
+    m_window->set_should_close(true);
 }
 
-void application::handle_state(float abs_t, float delta_t)
+void application::handle_state(double abs_t, double delta_t)
 {
-  m_state.update(abs_t, delta_t, m_input);
+  // create arguments with required data
+  state_args args(m_input, abs_t, delta_t);
+
+  // update state
+  m_state.run(args);
 }
 
-void application::handle_render(float abs_t, float delta_t)
+void application::handle_render(double abs_t, double delta_t)
 {
-  // get framebuffer size
-  int width = 0;
-  int height = 0;
-  m_window.framebuffer_size(&width, &height);
+  // get dimensions of framebuffer
+  int fb_width = 0, fb_height = 0;
+  m_window->framebuffer_size(&fb_width, &fb_height);
 
-  // build args
-  renderer_args args(width, height, m_state);
+  // create arguments with required data
+  render_args args(m_state, abs_t, delta_t, fb_width, fb_height);
 
-  // render the display
+  // render and swap buffers
   m_renderer.render(args);
-  m_window.swap_buffers();
+  m_window->swap_buffers();
 
-  // check for OpenGL errors
-#ifdef OGL_DEBUG
-  GLenum last_error = opengl_last_error();
-  if (last_error != GL_NO_ERROR)
-    ogl_error_message(opengl_error_string(last_error));
+#if defined(OGL_DEBUG)
+
+  // if this is a debug build, check for errors
+  GLenum error = ogl::opengl_last_error();
+  if (error != GL_NO_ERROR)
+    ogl_dbg_warning("OpenGL error detected in run loop!", opengl_error_string(error));
+
 #endif /* OGL_DEBUG */
 }
 
-void application::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void application::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-  instance().m_input.key_pressed(key, scancode, action, mods);
+  // this gets farmed out to the input object
+  if (s_instance)
+    s_instance->m_input.key_pressed(key, scancode, action, mods);
 }

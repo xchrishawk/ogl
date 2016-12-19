@@ -1,6 +1,7 @@
 /**
- * debug.cpp
- * Chris Vig (chris@invictus.so)
+ * @file	debug.cpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
 /* -- Includes -- */
@@ -8,55 +9,43 @@
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <vector>
 
 #include "util/debug.hpp"
 
-/* -- Namespaces -- */
-
-using namespace std;
-
-/* -- Constants -- */
-
-namespace
-{
-#ifdef OGL_DEBUG
-  ostream& TRACE_STREAM = cout;
-  ostream& ERROR_STREAM = cerr;
-#endif
-}
-
 /* -- Procedures -- */
 
-#ifdef OGL_DEBUG
-
-void ogl::_ogl_fail(const string& func, const string& file, int line, const string& message)
+void ogl::fail()
 {
-  ERROR_STREAM << endl
-	       << "*** ogl_fail - " << func << " (" << file << ":" << line << ")" << endl
-	       << "    " << message << endl
-	       << endl;
-  ogl_break();
-  exit(EXIT_FAILURE);
+  abort();
 }
 
-void ogl::_ogl_trace(const string& func, const string& file, int line, const string& message)
-{
-  TRACE_STREAM << "* ogl_trace - " << func << " (" << file << ":" << line << ")" << endl;
-  if (message.length() != 0)
-    TRACE_STREAM << "  " << message << endl;
-}
-
-void ogl::_ogl_error(const string& func, const string& file, int line, const string& message)
-{
-  ERROR_STREAM << "* ogl_error - " << func << " (" << file << ":" << line << ")" << endl;
-  if (message.length() != 0)
-    ERROR_STREAM << "  " << message << endl;
-}
-
-void ogl::_ogl_break()
+void ogl::breakpoint()
 {
   std::raise(SIGINT);
 }
 
-#endif
+std::ostream& ogl::debug_stream()
+{
+  return std::cout;
+}
+
+std::ostream& ogl::error_stream()
+{
+  return std::cerr;
+}
+
+std::string ogl::debug_message(const std::string& title,
+			       const std::string& function,
+			       const std::string& file,
+			       int line,
+			       const std::vector<std::string> messages)
+{
+  std::ostringstream alert;
+  alert << "* " << title << " - " << function << " (" << file << ":" << line << ")" << std::endl;
+  for (const std::string& message : messages)
+    alert << "  " << message << std::endl;
+  return alert.str();
+}

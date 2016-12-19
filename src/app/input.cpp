@@ -1,6 +1,7 @@
 /**
- * input.cpp
- * Chris Vig (chris@invictus.so)
+ * @file	input.cpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
 /* -- Includes -- */
@@ -9,7 +10,7 @@
 #include <iostream>
 
 #include "app/input.hpp"
-#include "opengl/opengl.hpp"
+#include "opengl/api.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */
@@ -20,18 +21,20 @@ using namespace ogl;
 
 input::input()
 {
+  // initialize all of our tables to zero
   memset(m_type_mod_none, 0, sizeof(m_type_mod_none));
   memset(m_type_mod_shift, 0, sizeof(m_type_mod_shift));
   memset(m_type_mod_ctrl, 0, sizeof(m_type_mod_ctrl));
   memset(m_type_mod_alt, 0, sizeof(m_type_mod_alt));
   memset(m_key_active, 0, sizeof(m_key_active));
 
+  // initialize the key map
   init_key_map();
 }
 
 bool input::input_active(input_key key) const
 {
-  ogl_assert(input_key_valid(key));
+  ogl_dbg_assert(input_key_valid(key));
   return m_key_active[key];
 }
 
@@ -60,7 +63,7 @@ void input::init_key_map()
 
 void input::key_pressed(int key, int scancode, int action, int mods)
 {
-  ogl_assert(key < GLFW_KEY_COUNT);
+  ogl_dbg_assert(key < GLFW_KEY_COUNT);
   switch (action)
   {
   case GLFW_PRESS:
@@ -91,6 +94,9 @@ void input::handle_press(int key, int mods)
   case GLFW_MOD_ALT:
     type = m_type_mod_alt[key];
     break;
+  default:
+    // not handling this combination
+    break;
   }
   set_input_key_active(type, true);
 }
@@ -109,6 +115,6 @@ void input::set_input_key_active(input_key key, bool active)
   if (key == INPUT_KEY_INVALID)
     return;
 
-  ogl_assert(input_key_valid(key));
+  ogl_dbg_assert(input_key_valid(key));
   m_key_active[key] = active;
 }

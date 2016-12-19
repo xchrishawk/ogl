@@ -1,6 +1,7 @@
 /**
- * renderer.cpp
- * Chris Vig (chris@invictus.so)
+ * @file	renderer.cpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
 /* -- Includes -- */
@@ -13,79 +14,181 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include "app/mesh.hpp"
-#include "app/object.hpp"
+#include "app/object_factory.hpp"
 #include "app/renderer.hpp"
-#include "app/vertex.hpp"
-#include "opengl/buffer.hpp"
-#include "opengl/opengl.hpp"
-#include "opengl/vertex_array.hpp"
-#include "shaders/shader_sources.hpp"
-#include "util/debug.hpp"
+#include "app/state.hpp"
+#include "opengl/api.hpp"
+#include "opengl/program.hpp"
+#include "opengl/shader.hpp"
+#include "scene/component.hpp"
+#include "scene/mesh.hpp"
+#include "scene/vertex.hpp"
+#include "shaders/shader_manager.hpp"
+#include "util/constants.hpp"
 #include "util/misc.hpp"
 
 /* -- Namespaces -- */
 
-using namespace glm;
-using namespace std;
 using namespace ogl;
 
 /* -- Constants -- */
 
 namespace
 {
-  const GLuint BINDING_INDEX = 0;
+  const GLuint VERTEX_BUFFER_BINDING = 0;
 }
 
 /* -- Procedures -- */
 
 renderer::renderer()
-  : m_vao()
+  : m_program(renderer::init_program()),
+    m_vao(renderer::init_vao(m_program)),
+    m_object(renderer::init_object())
 {
-  m_program = init_program();
-  m_vao = init_vertex_array(m_program);
+  // one-time initial setup
+  enable_depth_testing();
+  enable_face_culling();
 }
 
 renderer::~renderer()
 {
 }
 
-void renderer::render(const renderer_args& args)
+void renderer::render(const render_args& args)
 {
-  // prepare the framebuffer for drawing
-  clear_buffer(args.width, args.height);
+  clear_buffer(args);
 
-  // activate program and VAO
-  m_program->activate();
-  m_vao->activate();
+  program::use(m_program);
+  vertex_array::bind(m_vao);
 
-  // get matrices
-  mat4 view_matrix = this->view_matrix(args);
-  mat4 projection_matrix = this->projection_matrix(args);
+  // set uniforms
+  set_matrix_uniform("view_matrix", view_matrix(args));
+  set_matrix_uniform("projection_matrix", projection_matrix(args));
 
-  // loop through each object to render
-  for (const object& obj : args.state.objects())
-    render_object(obj, view_matrix, projection_matrix);
+  // TEMP
+  draw_object(m_object);
 
-  // deactivate program and VAO
-  vertex_array::unactivate();
-  program::unactivate();
+  vertex_array::bind_none();
+  program::use_none();
+}
+
+program::ptr renderer::init_program()
+{
+  shader::ptr vertex_shader = shader::create(GL_VERTEX_SHADER);
+  vertex_shader->set_source(shaders::VERTEX_SHADER_SOURCE);
+  vertex_shader->compile();
+
+  shader::ptr fragment_shader = shader::create(GL_FRAGMENT_SHADER);
+  fragment_shader->set_source(shaders::FRAGMENT_SHADER_SOURCE);
+  fragment_shader->compile();
+
+  program::ptr program = program::create();
+  program->link({ vertex_shader, fragment_shader });
+
+  return program;
+}
+
+vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
+{
+  vertex_array::ptr vao = vertex_array::create();
+
+  // vertex position attribute
+  GLint position_attribute = program->attribute_location("vertex_position");
+  if (position_attribute != constants::OPENGL_INVALID_LOCATION)
+  {
+    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			      position_attribute,
+			      vertex_position::COUNT,
+			      offsetof(vertex, position));
+  }
+  else
+  {
+    ogl_dbg_warning("Did not find attribute location for vertex_position");
+  }
+
+  // vertex normal attribute
+  GLint normal_attribute = program->attribute_location("vertex_normal");
+  if (normal_attribute != constants::OPENGL_INVALID_LOCATION)
+  {
+    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			      normal_attribute,
+			      vertex_normal::COUNT,
+			      offsetof(vertex, color));
+  }
+  else
+  {
+    ogl_dbg_warning("Did not find attribute location for vertex_normal");
+  }
+
+  // vertex color attribute
+  GLint color_attribute = program->attribute_location("vertex_color");
+  if (color_attribute != constants::OPENGL_INVALID_LOCATION)
+  {
+    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			      color_attribute,
+			      vertex_color::COUNT,
+			      offsetof(vertex, color));
+  }
+  else
+  {
+    ogl_dbg_warning("Did not find attribute location for vertex_color");
+  }
+
+  // vertex texture coordinates attribute
+  GLint texture_attribute = program->attribute_location("vertex_texture");
+  if (texture_attribute != constants::OPENGL_INVALID_LOCATION)
+  {
+    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			      texture_attribute,
+			      vertex_texture::COUNT,
+			      offsetof(vertex, texture));
+  }
+  else
+  {
+    ogl_dbg_warning("Did not find attribute location for vertex_texture");
+  }
+
+  return vao;
+}
+
+object renderer::init_object()
+{
+  ogl::component ground({ object_factory::plane({ 0.25f, 0.25f, 0.25f, 1.0f }) },
+			glm::vec3(),
+			glm::quat(),
+			glm::vec3(200.0f, 200.0f, 200.0f));
+  ogl::component pyramid({ object_factory::pyramid({ 0.5f, 0.5f, 0.5f, 1.0f }) },
+			 glm::vec3(),
+			 glm::quat(),
+			 glm::vec3(1.0f, 1.0f, 1.0f));
+
+  ogl::object object({ ground, pyramid },
+		     glm::vec3(0.0f, 0.0f, 0.0f),
+		     glm::quat(),
+		     glm::vec3(1.0f, 1.0f, 1.0f));
+
+  return object;
 }
 
 
-void renderer::clear_buffer(int width, int height)
-{
-  // update viewport dimensions
-  glViewport(0, 0, width, height);
 
-  // enable depth testing
+void renderer::enable_depth_testing()
+{
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
+}
 
-  // enable face culling
+void renderer::enable_face_culling()
+{
   glEnable(GL_CULL_FACE);
   glFrontFace(GL_CCW);
   glCullFace(GL_BACK);
+}
+
+void renderer::clear_buffer(const render_args& args)
+{
+  // update viewport dimensions
+  glViewport(0, 0, args.framebuffer_width, args.framebuffer_height);
 
   // clear buffer
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -93,146 +196,88 @@ void renderer::clear_buffer(int width, int height)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void renderer::render_object(const object& obj,
-			     const mat4& view_matrix,
-			     const mat4& projection_matrix)
+void renderer::draw_object(const object& obj)
 {
-  // create MVP matrix
-  mat4 model_matrix = this->model_matrix(obj);
-  mat4 mvp_matrix = projection_matrix * view_matrix * model_matrix;
-
-  // set uniforms
-  set_matrix_uniform("model_matrix", model_matrix);
-  set_matrix_uniform("view_matrix", view_matrix);
-  set_matrix_uniform("projection_matrix", projection_matrix);
-  set_matrix_uniform("mvp_matrix", mvp_matrix);
-
-  // activate buffer for this object
-  mesh obj_mesh = obj.mesh();
-  m_vao->activate_vertex_buffer(BINDING_INDEX, obj_mesh.buffer(), sizeof(vertex), 0);
-
-  // render each mesh elements set
-  for (const mesh_elements& elements : obj_mesh.elements())
-    render_mesh_elements(elements);
-
-  // clean up
-  m_vao->unactivate_vertex_buffer(BINDING_INDEX);
-}
-
-void renderer::render_mesh_elements(const mesh_elements& elements)
-{
-  glActiveTexture(GL_TEXTURE0);
-
-  if (elements.texture())
+  // draw each component in object
+  for (const component& comp : obj.components())
   {
-    glBindTexture(GL_TEXTURE_2D, elements.texture()->handle());
-    glUniform1i(m_program->uniform_location("texture_sampler"), 0);
-    glUniform1i(m_program->uniform_location("texture_available"), true);
+    // set matrix for this component
+    set_matrix_uniform("model_matrix", model_matrix(obj, comp));
+
+    // draw each mesh in the component
+    for (const mesh& mesh : comp.meshes())
+      draw_mesh(mesh);
   }
-  else
-  {
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glUniform1i(m_program->uniform_location("texture_available"), false);
-  }
-
-  glDrawElements(elements.mode(), elements.count(), elements.type(), elements.indices());
 }
 
-program::ptr renderer::init_program()
+void renderer::draw_mesh(const mesh& mesh)
 {
-  shader::ptr vertex_shader = shader::create(GL_VERTEX_SHADER);
-  vertex_shader->set_source(DEFAULT_VERTEX_SHADER_SOURCE);
-  vertex_shader->compile();
+  // bind the vertex and index buffers for this mesh
+  m_vao->bind_vertex_buffer(VERTEX_BUFFER_BINDING, mesh.vertex_buffer(), sizeof(vertex), 0);
+  m_vao->bind_index_buffer(mesh.index_buffer());
 
-  shader::ptr fragment_shader = shader::create(GL_FRAGMENT_SHADER);
-  fragment_shader->set_source(DEFAULT_FRAGMENT_SHADER_SOURCE);
-  fragment_shader->compile();
+  // draw the mesh
+  glDrawElements(mesh.type(), mesh.index_count(), GL_UNSIGNED_INT, nullptr);
 
-  program::ptr program = program::create();
-  program->attach_shader(vertex_shader);
-  program->attach_shader(fragment_shader);
-  program->link();
-
-  program->detach_shader(vertex_shader);
-  program->detach_shader(fragment_shader);
-
-  return program;
+  // unbind/clean up
+  m_vao->unbind_vertex_buffer(VERTEX_BUFFER_BINDING);
+  m_vao->unbind_index_buffer();
 }
 
-vertex_array::ptr renderer::init_vertex_array(program::ptr program)
+glm::mat4 renderer::model_matrix(const object& object, const component& component)
 {
-  vertex_array::ptr vao = vertex_array::create();
+  // component space -> model space
+  glm::mat4 component_matrix =
+    glm::translate(component.position()) *
+    glm::mat4_cast(component.rotation()) *
+    glm::scale(component.scale());
 
-  GLint position_attribute = program->attribute_location("vertex_position");
-//  ogl_assert(position_attribute != -1);
-  vao->vertex_buffer_format(BINDING_INDEX,
-  			    position_attribute,
-  			    vertex_position::COUNT,
-   			    offsetof(vertex, position));
+  // model space -> component space
+  glm::mat4 object_matrix =
+    glm::translate(object.position()) *
+    glm::mat4_cast(object.rotation()) *
+    glm::scale(object.scale());
 
-  GLint normal_attribute = program->attribute_location("vertex_normal");
-//  ogl_assert(normal_attribute != -1);
-  vao->vertex_buffer_format(BINDING_INDEX,
-			    normal_attribute,
-			    vertex_normal::COUNT,
-			    offsetof(vertex, normal));
-
-  GLint color_attribute = program->attribute_location("vertex_color");
-//  ogl_assert(color_attribute != -1);
-  vao->vertex_buffer_format(BINDING_INDEX,
-   			    color_attribute,
-   			    vertex_color::COUNT,
-   			    offsetof(vertex, color));
-
-  GLint texture_attribute = program->attribute_location("vertex_texture_coord");
-//  ogl_assert(texture_attribute != -1);
-  vao->vertex_buffer_format(BINDING_INDEX,
-			    texture_attribute,
-			    vertex_texture::COUNT,
-			    offsetof(vertex, texture));
-
-  return vao;
+  return object_matrix * component_matrix;
 }
 
-mat4 renderer::model_matrix(const object& obj)
+glm::mat4 renderer::view_matrix(const render_args& args)
 {
-  mat4 model_matrix =
-    translate(obj.pos()) *			// translation (done third)
-    mat4_cast(obj.rot()) *			// rotation (done second)
-    scale(obj.scale());				// scaling (done first)
-
-  return model_matrix;
-}
-
-mat4 renderer::view_matrix(const renderer_args& args)
-{
-  mat4 view_matrix =
-    translate(args.state.camera_pos()) *	// translation (done second)
-    mat4_cast(args.state.camera_rot());		// rotation (done first)
-  view_matrix = inverse(view_matrix);		// invert origin->camera into camera->origin
+  glm::mat4 view_matrix =
+    glm::translate(args.state.camera_position()) *	// translation (done second)
+    glm::mat4_cast(args.state.camera_rotation());	// rotation (done first)
+  view_matrix = glm::inverse(view_matrix);		// invert origin->camera into camera->origin
 
   return view_matrix;
 }
 
-mat4 renderer::projection_matrix(const renderer_args& args)
+glm::mat4 renderer::projection_matrix(const render_args& args)
 {
   float aspect_ratio =
-    static_cast<float>(args.width) /
-    static_cast<float>(args.height);
+    static_cast<float>(args.framebuffer_width) /
+    static_cast<float>(args.framebuffer_height);
 
-  mat4 projection_matrix =
-    perspective(args.state.camera_fov(),	// camera FOV (Y axis)
-		aspect_ratio,			// display aspect ratio
-		0.1f,				// near clip (TODO)
-		100.0f);			// far clip (TODO)
+  glm::mat4 projection_matrix =
+    glm::perspective(args.state.camera_fov(),		// camera FOV (Y axis)
+		aspect_ratio,				// display aspect ratio
+		0.1f,					// near clip (TODO)
+		100.0f);				// far clip (TODO)
 
   return projection_matrix;
 }
 
-void renderer::set_matrix_uniform(const string& name, const mat4& matrix)
+void renderer::set_matrix_uniform(const std::string& name, const glm::mat4& matrix)
 {
-  glUniformMatrix4fv(m_program->uniform_location(name),		// location
-		     1,						// count
-		     GL_FALSE,					// transpose
-		     value_ptr(matrix));			// value
+  GLint location = m_program->uniform_location(name);
+  if (location != constants::OPENGL_INVALID_LOCATION)
+  {
+    glUniformMatrix4fv(location,			// location
+		       1,				// count
+		       GL_FALSE,			// transpose
+		       value_ptr(matrix));		// value
+  }
+  else
+  {
+    ogl_dbg_warning("Did not find uniform location for " + name);
+  }
 }

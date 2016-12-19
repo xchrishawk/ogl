@@ -1,25 +1,42 @@
 /**
- * state.hpp
- * Chris Vig (chris@invictus.so)
+ * @file	state.hpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
-#ifndef OGL_APP_STATE_HPP
-#define OGL_APP_STATE_HPP
+#pragma once
 
 /* -- Includes -- */
-
-#include <vector>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 #include "app/input.hpp"
-#include "app/object.hpp"
+#include "scene/scene.hpp"
 
 /* -- Types -- */
 
 namespace ogl
 {
+
+  /**
+   * Struct containing information required to run a loop of the state object.
+   */
+  class state_args
+  {
+  public:
+
+    state_args(const ogl::input& input, double abs_t, double delta_t)
+      : input(input),
+	abs_t(abs_t),
+	delta_t(delta_t)
+    { }
+
+    const ogl::input& input;
+    const double abs_t;
+    const double delta_t;
+
+  };
 
   /**
    * Class representing the current state of the application.
@@ -29,31 +46,36 @@ namespace ogl
   public:
 
     state();
-    ~state();
 
-    void update(float abs_t, float delta_t, const ogl::input& input);
+    /** Runs a loop of the state object. */
+    void run(const state_args& args);
 
-    glm::vec3 camera_pos() const { return m_camera_pos; }
-    glm::quat camera_rot() const { return m_camera_rot; }
+    /** Returns the position of the camera, in world space. */
+    glm::vec3 camera_position() const { return m_camera_position; }
+
+    /** Returns the rotation of the camera, in world space. */
+    glm::quat camera_rotation() const { return m_camera_rotation; }
+
+    /** Returns the field of view of the camera, in radians. */
     float camera_fov() const { return m_camera_fov; }
-    std::vector<ogl::object> objects() const { return m_objects; }
+
+    /** The scene which should be rendered. */
+    ogl::scene scene() const { return m_scene; }
 
   private:
 
-    glm::vec3 m_camera_pos;
-    glm::quat m_camera_rot;
+    glm::vec3 m_camera_position;
+    glm::quat m_camera_rotation;
     float m_camera_fov;
-    std::vector<ogl::object> m_objects;
+    ogl::scene m_scene;
 
     state(const state&) = delete;
     state& operator =(const state&) = delete;
 
-    void update_camera_pos(float delta_t, const ogl::input& input);
-    void update_camera_rot(float delta_t, const ogl::input& input);
-    void update_camera_fov(float delta_t, const ogl::input& input);
+    void update_camera_position(const state_args& args);
+    void update_camera_rotation(const state_args& args);
+    void update_camera_fov(const state_args& args);
 
   };
 
 }
-
-#endif /* OGL_APP_STATE_HPP */

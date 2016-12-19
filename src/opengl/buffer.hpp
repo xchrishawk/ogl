@@ -1,15 +1,17 @@
 /**
- * buffer.hpp
- * Chris Vig (chris@invictus.so)
+ * @file	buffer.hpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/17
  */
 
-#ifndef OGL_OPENGL_BUFFER_HPP
-#define OGL_OPENGL_BUFFER_HPP
+#pragma once
 
 /* -- Includes -- */
 
 #include <memory>
-#include "opengl/opengl.hpp"
+#include <vector>
+
+#include "opengl/api.hpp"
 
 /* -- Types -- */
 
@@ -17,14 +19,21 @@ namespace ogl
 {
 
   /**
-   * Class representing an OpenGL buffer.
+   * Abstract base class for types representing an OpenGL buffer.
    */
   class buffer
   {
   public:
 
+    /** Shared pointer to an `ogl::buffer` object. */
+    typedef std::shared_ptr<buffer> ptr;
+
+    /** Shared pointer to a constant `ogl::buffer` object. */
+    typedef std::shared_ptr<const buffer> const_ptr;
+
     virtual ~buffer();
 
+    /** Returns the internal OpenGL handle for this buffer. */
     GLuint handle() const { return m_handle; }
 
   protected:
@@ -44,15 +53,57 @@ namespace ogl
 
   /**
    * Class representing an immutable OpenGL buffer.
+   *
+   * This buffer is initialized with `glNamedBufferStorage()` as soon as it is
+   * created. There is currently no way to update the buffer's data after it has
+   * been created.
    */
   class immutable_buffer : public buffer
   {
   public:
 
+    /** Shared pointer to an `ogl::immutable_buffer` object. */
     typedef std::shared_ptr<immutable_buffer> ptr;
+
+    /** Shared pointer to a constant `ogl::immutable_buffer` object. */
     typedef std::shared_ptr<const immutable_buffer> const_ptr;
 
+    /**
+     * Creates a new immutable buffer from an existing data buffer.
+     *
+     * @param size
+     * The size of the buffer, in bytes.
+     *
+     * @param data
+     * A pointer to the data to load into the buffer.
+     *
+     * @param flags
+     * Bitfield of OpenGL flags for this buffer.
+     *
+     * @exception ogl::alloc_exception
+     * Thrown if a new buffer cannot be allocated.
+     */
     static ptr create(GLsizei size, const void* data, GLbitfield flags);
+
+    /**
+     * Creates a new immutable buffer from a `std::vector`.
+     *
+     * @param elements
+     * A vector of elements to include in the buffer.
+     *
+     * @param flags
+     * Bitfield of OpenGL flags for this buffer.
+     *
+     * @exception ogl::alloc_exception
+     * Thrown if a new buffer cannot be allocated.
+     */
+    template<typename T>
+    static ptr create(std::vector<T> elements, GLbitfield flags)
+    {
+      return create(elements.size() * sizeof(T),
+		    elements.data(),
+		    flags);
+    }
 
   private:
 
@@ -61,5 +112,3 @@ namespace ogl
   };
 
 }
-
-#endif /* OGL_OPENGL_BUFFER_HPP */

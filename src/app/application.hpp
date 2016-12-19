@@ -1,19 +1,19 @@
 /**
- * application.hpp
- * Chris Vig (chris@invictus.so)
+ * @file	application.hpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/16
  */
 
-#ifndef OGL_APP_APPLICATION_HPP
-#define OGL_APP_APPLICATION_HPP
+#pragma once
 
 /* -- Includes -- */
 
 #include "app/input.hpp"
 #include "app/renderer.hpp"
 #include "app/state.hpp"
-#include "opengl/glew.hpp"
-#include "opengl/glfw.hpp"
-#include "opengl/window.hpp"
+#include "glfw/glfw.hpp"
+#include "glfw/window.hpp"
+#include "opengl/opengl.hpp"
 
 /* -- Types -- */
 
@@ -21,40 +21,38 @@ namespace ogl
 {
 
   /**
-   * Main class for the OGL application.
+   * Main application class.
    */
   class application
   {
   public:
 
-    static application& instance();
-
+    application();
     ~application();
 
+    /** Runs the application's main loop. */
     void main();
-    float time() const;
 
   private:
 
-    ogl::glfw m_glfw;
-    ogl::window m_window;
-    ogl::glew m_glew;
-    ogl::input m_input;
-    ogl::state m_state;
-    ogl::renderer m_renderer;
+    static application* s_instance;
 
-    application();
-    application(const application& other) = delete;
-    application& operator =(const application& other) = delete;
+    glfw m_glfw;
+    window::ptr m_window;
+    opengl m_opengl;
+    input m_input;
+    state m_state;
+    renderer m_renderer;
 
-    void handle_app_input();
-    void handle_state(float abs_t, float delta_t);
-    void handle_render(float abs_t, float delta_t);
+    application(const application&) = delete;
+    application& operator =(const application&) = delete;
 
-    static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    void handle_input();
+    void handle_state(double abs_t, double delta_t);
+    void handle_render(double abs_t, double delta_t);
+
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
   };
 
 }
-
-#endif /* OGL_APP_APPLICATION_HPP */

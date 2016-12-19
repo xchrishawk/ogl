@@ -1,16 +1,16 @@
 /**
- * vertex.hpp
- * Chris Vig (chris@invictus.so)
+ * @file	vertex.hpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/17
  */
 
-#ifndef OGL_APP_VERTEX_HPP
-#define OGL_APP_VERTEX_HPP
+#pragma once
 
 /* -- Includes -- */
 
 #include <cstddef>
 
-#include "opengl/opengl.hpp"
+#include "opengl/api.hpp"
 #include "util/debug.hpp"
 
 /* -- Types -- */
@@ -90,5 +90,3 @@ namespace ogl
   };
 
 }
-
-#endif /* OGL_APP_VERTEX_HPP */

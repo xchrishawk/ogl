@@ -1,6 +1,7 @@
 /**
- * vertex_array.cpp
- * Chris Vig (chris@invictus.so)
+ * @file	vertex_array.cpp
+ * @author	Chris Vig (chris@invictus.so)
+ * @date	2016/12/17
  */
 
 /* -- Includes -- */
@@ -11,10 +12,10 @@
 #include "opengl/error.hpp"
 #include "opengl/vertex_array.hpp"
 #include "util/debug.hpp"
+#include "util/exceptions.hpp"
 
 /* -- Namespaces -- */
 
-using namespace std;
 using namespace ogl;
 
 /* -- Procedures -- */
@@ -24,7 +25,12 @@ vertex_array::ptr vertex_array::create()
   return vertex_array::ptr(new vertex_array());
 }
 
-void vertex_array::unactivate()
+void vertex_array::bind(const vertex_array::const_ptr& vao)
+{
+  glBindVertexArray(vao->m_handle);
+}
+
+void vertex_array::bind_none()
 {
   glBindVertexArray(0);
 }
@@ -37,11 +43,6 @@ vertex_array::vertex_array()
 vertex_array::~vertex_array()
 {
   glDeleteVertexArrays(1, &m_handle);
-}
-
-void vertex_array::activate() const
-{
-  glBindVertexArray(m_handle);
 }
 
 void vertex_array::vertex_buffer_format(GLuint binding_index,
@@ -67,10 +68,10 @@ void vertex_array::vertex_buffer_format(GLuint binding_index,
 			    attribute_index);		// attribindex
 }
 
-void vertex_array::activate_vertex_buffer(GLuint binding_index,
-					  immutable_buffer::const_ptr buffer,
-					  GLsizei stride,
-					  GLintptr offset)
+void vertex_array::bind_vertex_buffer(GLuint binding_index,
+				      const buffer::const_ptr& buffer,
+				      GLsizei stride,
+				      GLintptr offset)
 {
   glVertexArrayVertexBuffer(m_handle,			// vaobj
 			    binding_index,		// bindingindex
@@ -79,7 +80,7 @@ void vertex_array::activate_vertex_buffer(GLuint binding_index,
 			    stride);			// stride
 }
 
-void vertex_array::unactivate_vertex_buffer(GLuint binding_index)
+void vertex_array::unbind_vertex_buffer(GLuint binding_index)
 {
   glVertexArrayVertexBuffer(m_handle,			// vaobj
 			    binding_index,		// bindingindex
@@ -88,14 +89,16 @@ void vertex_array::unactivate_vertex_buffer(GLuint binding_index)
 			    0);				// stride
 }
 
-void vertex_array::activate_element_buffer(immutable_buffer::const_ptr buffer)
+void vertex_array::bind_index_buffer(const buffer::const_ptr& buffer)
 {
-  glVertexArrayElementBuffer(m_handle, buffer->handle());
+  glVertexArrayElementBuffer(m_handle,			// vaobj
+			     buffer->handle());		// buffer
 }
 
-void vertex_array::unactivate_element_buffer()
+void vertex_array::unbind_index_buffer()
 {
-  glVertexArrayElementBuffer(m_handle, 0);
+  glVertexArrayElementBuffer(m_handle,			// vaobj
+			     0);			// buffer
 }
 
 GLuint vertex_array::new_handle()
@@ -103,6 +106,6 @@ GLuint vertex_array::new_handle()
   GLuint handle = 0;
   glCreateVertexArrays(1, &handle);
   if (handle == 0)
-    opengl_throw_last_error("Failed to create vertex array.");
+    throw alloc_exception("Failed to create vertex array!");
   return handle;
 }
