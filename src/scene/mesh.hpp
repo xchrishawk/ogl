@@ -43,25 +43,33 @@ namespace ogl
      */
     mesh(GLenum type,
 	 const std::vector<ogl::vertex>& vertices,
-	 const std::vector<GLuint>& indices);
-
-    mesh(const mesh& other);
-    mesh& operator =(const mesh& other);
+	 const std::vector<GLuint>& indices)
+      : m_type(type),
+	m_vertex_count(vertices.size()),
+	m_vertex_buffer(immutable_buffer::create(vertices, 0)),
+	m_index_count(indices.size()),
+	m_index_buffer(immutable_buffer::create(indices, 0))
+    { }
 
     /** The type of mesh to draw (e.g., `GL_TRIANGLES`, `GL_TRIANGLE_FAN`, etc). */
-    GLenum type() const { return m_type; }
+    GLenum type() const
+    { return m_type; }
 
     /** The number of vertices in this mesh. */
-    GLsizei vertex_count() const { return m_vertex_count; }
+    GLsizei vertex_count() const
+    { return m_vertex_count; }
 
     /** The OpenGL buffer containing the vertices for this mesh. */
-    ogl::buffer::const_ptr vertex_buffer() const { return m_vertex_buffer; }
+    ogl::buffer::const_ptr vertex_buffer() const
+    { return m_vertex_buffer; }
 
     /** The number of draw indices in this mesh. */
-    GLsizei index_count() const { return m_index_count; }
+    GLsizei index_count() const
+    { return m_index_count; }
 
     /** The OpenGL buffer containing the draw indices for this mesh. */
-    ogl::buffer::const_ptr index_buffer() const { return m_index_buffer; }
+    ogl::buffer::const_ptr index_buffer() const
+    { return m_index_buffer; }
 
   private:
 

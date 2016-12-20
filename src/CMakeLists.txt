@@ -24,10 +24,6 @@ set(APP_EXECUTABLE_SOURCES
   opengl/program.cpp
   opengl/shader.cpp
   opengl/vertex_array.cpp
-  scene/component.cpp
-  scene/mesh.cpp
-  scene/object.cpp
-  scene/scene.cpp
   shaders/shader_manager.cpp
   util/debug.cpp)
 

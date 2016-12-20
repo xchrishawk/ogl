@@ -31,39 +31,54 @@ namespace ogl
   {
   public:
 
-    component();
-    component(const component& other);
-    component& operator =(const component& other);
+    /** Creates a new `component` with default configuration. */
+    component()
+      : m_meshes(),
+	m_position(),
+	m_rotation(),
+	m_scale(1.0),
+	m_color()
+    { }
 
     /** Returns the meshes for this component. */
-    std::vector<mesh> meshes() const { return m_meshes; }
+    std::vector<mesh> meshes() const
+    { return m_meshes; }
 
     /** Sets the meshes for this component. */
-    void set_meshes(const std::vector<mesh>& meshes) { m_meshes = meshes; }
+    void set_meshes(const std::vector<mesh>& meshes)
+    { m_meshes = meshes; }
 
     /** Returns the position of this component in object space. */
-    glm::vec3 position() const { return m_position; }
+    glm::vec3 position() const
+    { return m_position; }
 
     /** Sets the position of this component in object space. */
-    void set_position(const glm::vec3& position) { m_position = position; }
+    void set_position(const glm::vec3& position)
+    { m_position = position; }
 
     /** Returns the rotation of this component in object space. */
-    glm::quat rotation() const { return m_rotation; }
+    glm::quat rotation() const
+    { return m_rotation; }
 
     /** Sets the rotation of this component in object space. */
-    void set_rotation(const glm::quat& rotation) { m_rotation = rotation; }
+    void set_rotation(const glm::quat& rotation)
+    { m_rotation = rotation; }
 
     /** Returns the scaling of this component in object space. */
-    glm::vec3 scale() const { return m_scale; }
+    glm::vec3 scale() const
+    { return m_scale; }
 
     /** Sets the scale of this component in object space. */
-    void set_scale(const glm::vec3& scale) { m_scale = scale; }
+    void set_scale(const glm::vec3& scale)
+    { m_scale = scale; }
 
     /** Returns the innate color of this component. */
-    glm::vec4 color() const { return m_color; }
+    glm::vec4 color() const
+    { return m_color; }
 
     /** Sets the innate color of this component. */
-    void set_color(const glm::vec4& color) { m_color = color; }
+    void set_color(const glm::vec4& color)
+    { m_color = color; }
 
   private:
 

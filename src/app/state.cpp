@@ -46,19 +46,22 @@ state::state()
   ground_component.set_meshes({ object_factory::plane() });
   ground_component.set_scale({ 500.0f, 500.0f, 0.0f });
   ground_component.set_color({ 0.25f, 0.25f, 0.15f, 1.0f });
-  ogl::object ground_object({ ground_component });
+
+  ogl::object ground_object;
+  ground_object.set_components({ ground_component });
 
   ogl::component pyramid_component;
   pyramid_component.set_meshes({ object_factory::pyramid() });
   pyramid_component.set_color({ 0.75f, 0.75f, 0.75f, 1.0f });
-  ogl::object pyramid_object({ pyramid_component });
+
+  ogl::object pyramid_object;
+  pyramid_object.set_components({ pyramid_component });
 
   ogl::directional_light dir_light;
   dir_light.set_direction({ 1.0f, 0.5f, -0.25f });
   dir_light.set_light({ 1.0f, 1.0f, 1.0f });
 
   m_scene.set_objects({ ground_object, pyramid_object });
-  m_scene.set_ambient_light({ 0.1f, 0.1f, 0.1f });
   m_scene.set_directional_lights({ dir_light });
 }
 

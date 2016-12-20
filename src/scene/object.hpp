@@ -27,49 +27,45 @@ namespace ogl
   {
   public:
 
-    /**
-     * Creates a new object instance.
-     *
-     * @param components
-     * The components to include in this object.
-     *
-     * @param position
-     * The initial position of the object, in world space.
-     *
-     * @param rotation
-     * The initial rotation of the object, in world space.
-     *
-     * @param scale
-     * The initial scale of the object, in world space.
-     */
-    object(const std::vector<component>& components,
-	   const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
-	   const glm::quat& rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-	   const glm::vec3& scale = glm::vec3(1.0f, 1.0f, 1.0f));
-
-    object(const object& other);
-    object& operator =(const object& other);
+    /** Creates a new `object` with default configuration. */
+    object()
+      : m_components(),
+	m_position(),
+	m_rotation(),
+	m_scale(1.0)
+    { }
 
     /** Returns the components which make up this object. */
-    std::vector<component> components() const { return m_components; }
+    std::vector<component> components() const
+    { return m_components; }
+
+    /** Sets the components which make up this object. */
+    void set_components(const std::vector<component>& components)
+    { m_components = components; }
 
     /** Returns the position of this object in world space. */
-    glm::vec3 position() const { return m_position; }
+    glm::vec3 position() const
+    { return m_position; }
 
     /** Sets the position of this object in world space. */
-    void set_position(const glm::vec3& position) { m_position = position; }
+    void set_position(const glm::vec3& position)
+    { m_position = position; }
 
     /** Returns the rotation of this object in world space. */
-    glm::quat rotation() const { return m_rotation; }
+    glm::quat rotation() const
+    { return m_rotation; }
 
     /** Sets the rotation of this object in world space. */
-    void set_rotation(const glm::quat& rotation) { m_rotation = rotation; }
+    void set_rotation(const glm::quat& rotation)
+    { m_rotation = rotation; }
 
     /** Returns the scaling of this object in world space. */
-    glm::vec3 scale() const { return m_scale; }
+    glm::vec3 scale() const
+    { return m_scale; }
 
     /** Sets the scale of this object in world space. */
-    void set_scale(const glm::vec3& scale) { m_scale = scale; }
+    void set_scale(const glm::vec3& scale)
+    { m_scale = scale; }
 
   private:
 
