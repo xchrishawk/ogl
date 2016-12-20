@@ -82,23 +82,23 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
   vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
 			    program,
 			    "vertex_position",
-			    vertex_position::COUNT,
-			    offsetof(vertex, position));
+			    vertex::position_count,
+			    vertex::position_offset);
   vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
 			    program,
 			    "vertex_normal",
-			    vertex_normal::COUNT,
-			    offsetof(vertex, normal));
+			    vertex::normal_count,
+			    vertex::normal_offset);
   vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
 			    program,
 			    "vertex_color",
-			    vertex_color::COUNT,
-			    offsetof(vertex, color));
+			    vertex::color_count,
+			    vertex::color_offset);
   vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
 			    program,
 			    "vertex_texture",
-			    vertex_texture::COUNT,
-			    offsetof(vertex, texture));
+			    vertex::texture_count,
+			    vertex::texture_offset);
 
   return vao;
 }

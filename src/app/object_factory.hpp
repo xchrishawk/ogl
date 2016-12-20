@@ -8,6 +8,8 @@
 
 /* -- Includes -- */
 
+#include <glm/glm.hpp>
+
 #include "scene/component.hpp"
 #include "scene/mesh.hpp"
 #include "scene/object.hpp"
@@ -27,8 +29,8 @@ namespace ogl
 
     static mesh rgb_triangle_mesh();
     static mesh cmy_triangle_mesh();
-    static mesh plane(const vertex_color& color);
-    static mesh pyramid(const vertex_color& color);
+    static mesh plane(const glm::vec4& color);
+    static mesh pyramid(const glm::vec4& color);
 
   private:
 

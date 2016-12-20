@@ -6,6 +6,8 @@
 
 /* -- Includes -- */
 
+#include <glm/glm.hpp>
+
 #include "app/object_factory.hpp"
 #include "opengl/api.hpp"
 #include "scene/component.hpp"
@@ -21,15 +23,15 @@ using namespace ogl;
 namespace
 {
   // Colors
-  const vertex_color BLACK_COLOR 	= { 0.0f, 0.0f, 0.0f, 1.0f };
-  const vertex_color GREY_COLOR		= { 0.5f, 0.5f, 0.5f, 1.0f };
-  const vertex_color WHITE_COLOR	= { 1.0f, 1.0f, 1.0f, 1.0f };
-  const vertex_color RED_COLOR		= { 1.0f, 0.0f, 0.0f, 1.0f };
-  const vertex_color GREEN_COLOR	= { 0.0f, 1.0f, 0.0f, 1.0f };
-  const vertex_color BLUE_COLOR		= { 0.0f, 0.0f, 1.0f, 1.0f };
-  const vertex_color CYAN_COLOR		= { 0.0f, 1.0f, 1.0f, 1.0f };
-  const vertex_color MAGENTA_COLOR	= { 1.0f, 0.0f, 1.0f, 1.0f };
-  const vertex_color YELLOW_COLOR	= { 1.0f, 1.0f, 0.0f, 1.0f };
+  const glm::vec4 BLACK_COLOR 		= { 0.0f, 0.0f, 0.0f, 1.0f };
+  const glm::vec4 GREY_COLOR		= { 0.5f, 0.5f, 0.5f, 1.0f };
+  const glm::vec4 WHITE_COLOR		= { 1.0f, 1.0f, 1.0f, 1.0f };
+  const glm::vec4 RED_COLOR		= { 1.0f, 0.0f, 0.0f, 1.0f };
+  const glm::vec4 GREEN_COLOR		= { 0.0f, 1.0f, 0.0f, 1.0f };
+  const glm::vec4 BLUE_COLOR		= { 0.0f, 0.0f, 1.0f, 1.0f };
+  const glm::vec4 CYAN_COLOR		= { 0.0f, 1.0f, 1.0f, 1.0f };
+  const glm::vec4 MAGENTA_COLOR		= { 1.0f, 0.0f, 1.0f, 1.0f };
+  const glm::vec4 YELLOW_COLOR		= { 1.0f, 1.0f, 0.0f, 1.0f };
 }
 
 /* -- Procedures -- */
@@ -60,9 +62,9 @@ mesh object_factory::cmy_triangle_mesh()
   return mesh(GL_TRIANGLES, VERTICES, INDICES);
 }
 
-mesh object_factory::plane(const vertex_color& color)
+mesh object_factory::plane(const glm::vec4& color)
 {
-  static const vertex_normal NORMAL = { 0.0f, 0.0f, 1.0f };
+  static const glm::vec3 NORMAL = { 0.0f, 0.0f, 1.0f };
 
   std::vector<vertex> vertices =
   {
@@ -76,20 +78,20 @@ mesh object_factory::plane(const vertex_color& color)
   return mesh(GL_TRIANGLES, vertices, indices);
 }
 
-mesh object_factory::pyramid(const vertex_color& color)
+mesh object_factory::pyramid(const glm::vec4& color)
 {
-  static const vertex_position NE_CORNER = { 1.0f, 1.0f, 0.0f };
-  static const vertex_position SE_CORNER = { 1.0f, -1.0f, 0.0f };
-  static const vertex_position NW_CORNER = { -1.0f, 1.0f, 0.0f };
-  static const vertex_position SW_CORNER = { -1.0f, -1.0f, 0.0f };
-  static const vertex_position APEX = { 0.0f, 0.0f, 1.0f };
+  static const glm::vec3 NE_CORNER = { 1.0f, 1.0f, 0.0f };
+  static const glm::vec3 SE_CORNER = { 1.0f, -1.0f, 0.0f };
+  static const glm::vec3 NW_CORNER = { -1.0f, 1.0f, 0.0f };
+  static const glm::vec3 SW_CORNER = { -1.0f, -1.0f, 0.0f };
+  static const glm::vec3 APEX = { 0.0f, 0.0f, 1.0f };
 
   static const float SQRT2 = 0.707107;
 
-  static const vertex_normal S_NORMAL = { 0.0f, -SQRT2, SQRT2 };
-  static const vertex_normal N_NORMAL = { 0.0f, SQRT2, SQRT2 };
-  static const vertex_normal W_NORMAL = { -SQRT2, 0.0f, SQRT2 };
-  static const vertex_normal E_NORMAL = { SQRT2, 0.0f, SQRT2 };
+  static const glm::vec3 S_NORMAL = { 0.0f, -SQRT2, SQRT2 };
+  static const glm::vec3 N_NORMAL = { 0.0f, SQRT2, SQRT2 };
+  static const glm::vec3 W_NORMAL = { -SQRT2, 0.0f, SQRT2 };
+  static const glm::vec3 E_NORMAL = { SQRT2, 0.0f, SQRT2 };
 
   std::vector<vertex> vertices =
   {

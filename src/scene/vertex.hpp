@@ -8,7 +8,7 @@
 
 /* -- Includes -- */
 
-#include <cstddef>
+#include <glm/glm.hpp>
 
 #include "opengl/api.hpp"
 #include "util/debug.hpp"
@@ -19,74 +19,34 @@ namespace ogl
 {
 
   /**
-   * Struct representing the position of a vertex.
-   */
-  struct vertex_position
-  {
-
-    static const GLsizei COUNT = 3;
-
-    float px;	/* x position */
-    float py;	/* y position */
-    float pz;	/* z position */
-
-  };
-  ogl_static_assert(sizeof(vertex_position) == vertex_position::COUNT * sizeof(float), "Wrong struct size!");
-
-  /**
-   * Struct representing the normal of a vertex.
-   */
-  struct vertex_normal
-  {
-
-    static const GLsizei COUNT = 3;
-
-    float nx;	/* x component of normal */
-    float ny;	/* y component of normal */
-    float nz;	/* z component of normal */
-
-  };
-  ogl_static_assert(sizeof(vertex_normal) == vertex_normal::COUNT * sizeof(float), "Wrong struct size!");
-
-  /**
-   * Struct representing the color of a vertex.
-   */
-  struct vertex_color
-  {
-
-    static const GLsizei COUNT = 4;
-
-    float cr;	/* red component */
-    float cg;	/* green component */
-    float cb;	/* blue component */
-    float ca;	/* alpha component */
-
-  };
-  ogl_static_assert(sizeof(vertex_color) == vertex_color::COUNT * sizeof(float), "Wrong struct size!");
-
-  /**
-   * Struct representing the texture coordinates of a vertex.
-   */
-  struct vertex_texture
-  {
-
-    static const GLsizei COUNT = 2;
-
-    float tx;	/* texture x coordinate */
-    float ty;	/* texture y coordinate */
-
-  };
-  ogl_static_assert(sizeof(vertex_texture) == vertex_texture::COUNT * sizeof(float), "Wrong struct size!");
-
-  /**
    * Struct representing a vertex in a mesh.
    */
   struct vertex
   {
-    vertex_position position;
-    vertex_normal normal;
-    vertex_color color;
-    vertex_texture texture;
+  public:
+
+    static const GLsizei position_count = sizeof(glm::vec3) / sizeof(glm::vec3::value_type);
+    static const GLsizei normal_count = sizeof(glm::vec3) / sizeof(glm::vec3::value_type);
+    static const GLsizei color_count = sizeof(glm::vec4) / sizeof(glm::vec4::value_type);
+    static const GLsizei texture_count = sizeof(glm::vec2) / sizeof(glm::vec2::value_type);
+
+    // we cannot use offsetof() inside the struct definition, so we declare these
+    // manually here and statically verify them with asserts below
+    static const GLsizei position_offset = 0;
+    static const GLsizei normal_offset = 12;
+    static const GLsizei color_offset = 24;
+    static const GLsizei texture_offset = 40;
+
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec4 color;
+    glm::vec2 texture;
+
   };
+
+  ogl_static_assert(vertex::position_offset == offsetof(vertex, position), "Offset incorrect!");
+  ogl_static_assert(vertex::normal_offset == offsetof(vertex, normal), "Offset incorrect!");
+  ogl_static_assert(vertex::color_offset == offsetof(vertex, color), "Offset incorrect!");
+  ogl_static_assert(vertex::texture_offset == offsetof(vertex, texture), "Offset incorrect!");
 
 }
