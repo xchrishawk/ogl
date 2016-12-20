@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include <glm/glm.hpp>
 #include "scene/object.hpp"
 
 /* -- Types -- */
@@ -22,12 +23,7 @@ namespace ogl
   {
   public:
 
-    /** Creates a new, empty scene. */
     scene();
-
-    /** Creates a new scene with the specified object list. */
-    scene(const std::vector<object>& objects);
-
     scene(const scene& other);
     scene& operator =(const scene& other);
 
@@ -37,9 +33,16 @@ namespace ogl
     /** Sets the objects included in this scene. */
     void set_objects(const std::vector<object>& objects) { m_objects = objects; }
 
+    /** Gets the ambient light. */
+    glm::vec3 ambient_light() const { return m_ambient_light; }
+
+    /** Sets the ambient light. */
+    void set_ambient_light(const glm::vec3& light) { m_ambient_light = light; }
+
   private:
 
     std::vector<object> m_objects;
+    glm::vec3 m_ambient_light;
 
   };
 

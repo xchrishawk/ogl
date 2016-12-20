@@ -53,6 +53,7 @@ state::state()
   ogl::object pyramid_object({ pyramid_component });
 
   m_scene.set_objects({ ground_object, pyramid_object });
+  m_scene.set_ambient_light({ 0.1f, 0.1f, 0.1f });
 }
 
 void state::run(const state_args& args)

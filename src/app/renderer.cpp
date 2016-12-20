@@ -126,6 +126,7 @@ void renderer::draw_scene(const render_args& args)
   // set uniforms
   set_matrix_uniform("view_matrix", view_matrix(args));
   set_matrix_uniform("projection_matrix", projection_matrix(args));
+  set_vec3_uniform("ambient_light", args.state.scene().ambient_light());
 
   // draw each object
   for (const object& obj : args.state.scene().objects())
@@ -207,8 +208,19 @@ glm::mat4 renderer::projection_matrix(const render_args& args)
   return projection_matrix;
 }
 
+void renderer::set_vec3_uniform(const std::string& name, const glm::vec3& vector)
+{
+  // TODO: should probably be optimized
+  GLint location = m_program->uniform_location(name);
+  if (location != constants::OPENGL_INVALID_LOCATION)
+    glUniform3fv(location, 1, glm::value_ptr(vector));
+  else
+    ogl_dbg_warning("Did not find uniform location for " + name);
+}
+
 void renderer::set_vec4_uniform(const std::string& name, const glm::vec4& vector)
 {
+  // TODO: should probably be optimized
   GLint location = m_program->uniform_location(name);
   if (location != constants::OPENGL_INVALID_LOCATION)
     glUniform4fv(location, 1, glm::value_ptr(vector));
@@ -218,6 +230,7 @@ void renderer::set_vec4_uniform(const std::string& name, const glm::vec4& vector
 
 void renderer::set_matrix_uniform(const std::string& name, const glm::mat4& matrix)
 {
+  // TODO: should probably be optimized
   GLint location = m_program->uniform_location(name);
   if (location != constants::OPENGL_INVALID_LOCATION)
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
