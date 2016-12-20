@@ -16,13 +16,15 @@ using namespace ogl;
 
 scene::scene()
   : m_objects(),
-    m_ambient_light()
+    m_ambient_light(),
+    m_directional_lights()
 {
 }
 
 scene::scene(const scene& other)
   : m_objects(other.m_objects),
-    m_ambient_light(other.m_ambient_light)
+    m_ambient_light(other.m_ambient_light),
+    m_directional_lights(other.m_directional_lights)
 {
 }
 
@@ -30,6 +32,7 @@ scene& scene::operator =(const scene& other)
 {
   m_objects = other.m_objects;
   m_ambient_light = other.m_ambient_light;
+  m_directional_lights = other.m_directional_lights;
 
   return *this;
 }

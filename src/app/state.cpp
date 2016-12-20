@@ -9,6 +9,7 @@
 #include "app/input.hpp"
 #include "app/object_factory.hpp"
 #include "app/state.hpp"
+#include "scene/scene.hpp"
 #include "util/constants.hpp"
 #include "util/debug.hpp"
 
@@ -52,8 +53,13 @@ state::state()
   pyramid_component.set_color({ 0.75f, 0.75f, 0.75f, 1.0f });
   ogl::object pyramid_object({ pyramid_component });
 
+  ogl::directional_light dir_light;
+  dir_light.set_direction({ 1.0f, 0.5f, -0.25f });
+  dir_light.set_light({ 1.0f, 1.0f, 1.0f });
+
   m_scene.set_objects({ ground_object, pyramid_object });
   m_scene.set_ambient_light({ 0.1f, 0.1f, 0.1f });
+  m_scene.set_directional_lights({ dir_light });
 }
 
 void state::run(const state_args& args)
