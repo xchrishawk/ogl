@@ -11,6 +11,7 @@
 
 #include "opengl/error.hpp"
 #include "opengl/vertex_array.hpp"
+#include "util/constants.hpp"
 #include "util/debug.hpp"
 #include "util/exceptions.hpp"
 
@@ -46,13 +47,13 @@ vertex_array::~vertex_array()
 }
 
 void vertex_array::vertex_buffer_format(GLuint binding_index,
-					GLuint attribute_index,
+					GLuint attribute_location,
 					GLint size,
 					GLint relative_offset)
 {
   // set format of the attribute
   glVertexArrayAttribFormat(m_handle,			// vaobj
-			    attribute_index,		// attribindex
+			    attribute_location,		// attribindex
 			    size,			// size
 			    GL_FLOAT,			// type
 			    GL_FALSE,			// normalized
@@ -60,12 +61,25 @@ void vertex_array::vertex_buffer_format(GLuint binding_index,
 
   // associate the attribute with the buffer binding
   glVertexArrayAttribBinding(m_handle,			// vaobj
-			     attribute_index,		// attribindex
+			     attribute_location,	// attribindex
 			     binding_index);		// bindingindex
 
   // enable array access for the attribute
   glEnableVertexArrayAttrib(m_handle,			// vaobj
-			    attribute_index);		// attribindex
+			    attribute_location);	// attribindex
+}
+
+void vertex_array::vertex_buffer_format(GLuint binding_index,
+					const program::const_ptr& program,
+					const std::string& attribute_name,
+					GLint size,
+					GLint relative_offset)
+{
+  GLint attribute_location = program->attribute_location(attribute_name);
+  if (attribute_location != constants::OPENGL_INVALID_LOCATION)
+    vertex_buffer_format(binding_index, attribute_location, size, relative_offset);
+  else
+    ogl_dbg_warning("Did not find attribute location for " + attribute_name);
 }
 
 void vertex_array::bind_vertex_buffer(GLuint binding_index,

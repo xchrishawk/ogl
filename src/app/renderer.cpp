@@ -79,63 +79,26 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
 {
   vertex_array::ptr vao = vertex_array::create();
 
-  // FIXME: there should probably be a utility function to do this
-
-  // vertex position attribute
-  GLint position_attribute = program->attribute_location("vertex_position");
-  if (position_attribute != constants::OPENGL_INVALID_LOCATION)
-  {
-    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
-			      position_attribute,
-			      vertex_position::COUNT,
-			      offsetof(vertex, position));
-  }
-  else
-  {
-    ogl_dbg_warning("Did not find attribute location for vertex_position");
-  }
-
-  // vertex normal attribute
-  GLint normal_attribute = program->attribute_location("vertex_normal");
-  if (normal_attribute != constants::OPENGL_INVALID_LOCATION)
-  {
-    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
-			      normal_attribute,
-			      vertex_normal::COUNT,
-			      offsetof(vertex, color));
-  }
-  else
-  {
-    ogl_dbg_warning("Did not find attribute location for vertex_normal");
-  }
-
-  // vertex color attribute
-  GLint color_attribute = program->attribute_location("vertex_color");
-  if (color_attribute != constants::OPENGL_INVALID_LOCATION)
-  {
-    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
-			      color_attribute,
-			      vertex_color::COUNT,
-			      offsetof(vertex, color));
-  }
-  else
-  {
-    ogl_dbg_warning("Did not find attribute location for vertex_color");
-  }
-
-  // vertex texture coordinates attribute
-  GLint texture_attribute = program->attribute_location("vertex_texture");
-  if (texture_attribute != constants::OPENGL_INVALID_LOCATION)
-  {
-    vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
-			      texture_attribute,
-			      vertex_texture::COUNT,
-			      offsetof(vertex, texture));
-  }
-  else
-  {
-    ogl_dbg_warning("Did not find attribute location for vertex_texture");
-  }
+  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			    program,
+			    "vertex_position",
+			    vertex_position::COUNT,
+			    offsetof(vertex, position));
+  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			    program,
+			    "vertex_normal",
+			    vertex_normal::COUNT,
+			    offsetof(vertex, normal));
+  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			    program,
+			    "vertex_color",
+			    vertex_color::COUNT,
+			    offsetof(vertex, color));
+  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
+			    program,
+			    "vertex_texture",
+			    vertex_texture::COUNT,
+			    offsetof(vertex, texture));
 
   return vao;
 }

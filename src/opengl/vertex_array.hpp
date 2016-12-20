@@ -12,6 +12,7 @@
 
 #include "opengl/api.hpp"
 #include "opengl/buffer.hpp"
+#include "opengl/program.hpp"
 
 /* -- Types -- */
 
@@ -62,7 +63,7 @@ namespace ogl
      * @param binding_index
      * The index of the binding to which this format should be added.
      *
-     * @param attribute_index
+     * @param attribute_location
      * The location of the attribute to be bound using this format.
      *
      * @param size
@@ -73,7 +74,17 @@ namespace ogl
      * The offset into each vertex record of the values for this attribute.
      */
     void vertex_buffer_format(GLuint binding_index,
-			      GLuint attribute_index,
+			      GLuint attribute_location,
+			      GLint size,
+			      GLint relative_offset);
+
+    /**
+     * Same as `vertex_buffer_format(GLuint, GLuint, GLint, GLint)`, except that
+     * the attribute location is looked up by name from the specified program.
+     */
+    void vertex_buffer_format(GLuint binding_index,
+			      const program::const_ptr& program,
+			      const std::string& attribute_name,
 			      GLint size,
 			      GLint relative_offset);
 
