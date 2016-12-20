@@ -1,16 +1,16 @@
 #version 330 core
 
+uniform vec4 component_color;
+
 in VertexBlock
 {
   vec3 position;
   vec3 normal;
-  vec4 color;
-  vec2 texture;
 } invertex;
 
 out vec4 fragment_color;
 
 void main(void)
 {
-  fragment_color = invertex.color;
+  fragment_color = component_color;
 }

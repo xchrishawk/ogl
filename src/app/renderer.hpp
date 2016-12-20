@@ -83,6 +83,7 @@ namespace ogl
     glm::mat4 view_matrix(const render_args& args);
     glm::mat4 projection_matrix(const render_args& args);
 
+    void set_vec4_uniform(const std::string& name, const glm::vec4& vector);
     void set_matrix_uniform(const std::string& name, const glm::mat4& matrix);
 
   };

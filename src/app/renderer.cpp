@@ -89,16 +89,6 @@ vertex_array::ptr renderer::init_vao(const program::const_ptr& program)
 			    "vertex_normal",
 			    vertex::normal_count,
 			    vertex::normal_offset);
-  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
-			    program,
-			    "vertex_color",
-			    vertex::color_count,
-			    vertex::color_offset);
-  vao->vertex_buffer_format(VERTEX_BUFFER_BINDING,
-			    program,
-			    "vertex_texture",
-			    vertex::texture_count,
-			    vertex::texture_offset);
 
   return vao;
 }
@@ -151,8 +141,9 @@ void renderer::draw_object(const object& obj)
   // draw each component in object
   for (const component& comp : obj.components())
   {
-    // set matrix for this component
+    // set uniforms for this component
     set_matrix_uniform("model_matrix", model_matrix(obj, comp));
+    set_vec4_uniform("component_color", comp.color());
 
     // draw each mesh in the component
     for (const mesh& mesh : comp.meshes())
@@ -216,18 +207,20 @@ glm::mat4 renderer::projection_matrix(const render_args& args)
   return projection_matrix;
 }
 
+void renderer::set_vec4_uniform(const std::string& name, const glm::vec4& vector)
+{
+  GLint location = m_program->uniform_location(name);
+  if (location != constants::OPENGL_INVALID_LOCATION)
+    glUniform4fv(location, 1, glm::value_ptr(vector));
+  else
+    ogl_dbg_warning("Did not find uniform location for " + name);
+}
+
 void renderer::set_matrix_uniform(const std::string& name, const glm::mat4& matrix)
 {
   GLint location = m_program->uniform_location(name);
   if (location != constants::OPENGL_INVALID_LOCATION)
-  {
-    glUniformMatrix4fv(location,			// location
-		       1,				// count
-		       GL_FALSE,			// transpose
-		       value_ptr(matrix));		// value
-  }
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
   else
-  {
     ogl_dbg_warning("Did not find uniform location for " + name);
-  }
 }

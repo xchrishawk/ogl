@@ -31,31 +31,15 @@ namespace ogl
   {
   public:
 
-    /**
-     * Creates a new component.
-     *
-     * @parameter meshes
-     * The meshes to include in the component.
-     *
-     * @parameter position
-     * The initial position of the component, in model space.
-     *
-     * @parameter rotation
-     * The initial rotation of the component, in model space.
-     *
-     * @parameter scale
-     * The initial scale of the component, in model space.
-     */
-    component(const std::vector<mesh>& meshes,
-	      const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
-	      const glm::quat& rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-	      const glm::vec3& scale = glm::vec3(1.0f, 1.0f, 1.0f));
-
+    component();
     component(const component& other);
     component& operator =(const component& other);
 
     /** Returns the meshes for this component. */
     std::vector<mesh> meshes() const { return m_meshes; }
+
+    /** Sets the meshes for this component. */
+    void set_meshes(const std::vector<mesh>& meshes) { m_meshes = meshes; }
 
     /** Returns the position of this component in object space. */
     glm::vec3 position() const { return m_position; }
@@ -75,12 +59,19 @@ namespace ogl
     /** Sets the scale of this component in object space. */
     void set_scale(const glm::vec3& scale) { m_scale = scale; }
 
+    /** Returns the innate color of this component. */
+    glm::vec4 color() const { return m_color; }
+
+    /** Sets the innate color of this component. */
+    void set_color(const glm::vec4& color) { m_color = color; }
+
   private:
 
     std::vector<mesh> m_meshes;
     glm::vec3 m_position;
     glm::quat m_rotation;
     glm::vec3 m_scale;
+    glm::vec4 m_color;
 
   };
 

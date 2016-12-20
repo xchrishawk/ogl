@@ -18,67 +18,25 @@
 
 using namespace ogl;
 
-/* -- Constants -- */
-
-namespace
-{
-  // Colors
-  const glm::vec4 BLACK_COLOR 		= { 0.0f, 0.0f, 0.0f, 1.0f };
-  const glm::vec4 GREY_COLOR		= { 0.5f, 0.5f, 0.5f, 1.0f };
-  const glm::vec4 WHITE_COLOR		= { 1.0f, 1.0f, 1.0f, 1.0f };
-  const glm::vec4 RED_COLOR		= { 1.0f, 0.0f, 0.0f, 1.0f };
-  const glm::vec4 GREEN_COLOR		= { 0.0f, 1.0f, 0.0f, 1.0f };
-  const glm::vec4 BLUE_COLOR		= { 0.0f, 0.0f, 1.0f, 1.0f };
-  const glm::vec4 CYAN_COLOR		= { 0.0f, 1.0f, 1.0f, 1.0f };
-  const glm::vec4 MAGENTA_COLOR		= { 1.0f, 0.0f, 1.0f, 1.0f };
-  const glm::vec4 YELLOW_COLOR		= { 1.0f, 1.0f, 0.0f, 1.0f };
-}
-
 /* -- Procedures -- */
 
-mesh object_factory::rgb_triangle_mesh()
-{
-  static const std::vector<vertex> VERTICES =
-  {
-    { { 0.0f, 0.0f, 0.0f }, { }, RED_COLOR },
-    { { 1.0f, 0.0f, 0.0f }, { }, GREEN_COLOR },
-    { { 0.0f, 1.0f, 0.0f }, { }, BLUE_COLOR },
-  };
-  static const std::vector<GLuint> INDICES = { 0, 1, 2 };
-
-  return mesh(GL_TRIANGLES, VERTICES, INDICES);
-}
-
-mesh object_factory::cmy_triangle_mesh()
-{
-  static const std::vector<vertex> VERTICES =
-  {
-    { { 0.0f, 0.0f, 0.0f }, { }, CYAN_COLOR },
-    { { 1.0f, 0.0f, 0.0f }, { }, MAGENTA_COLOR },
-    { { 0.0f, 1.0f, 0.0f }, { }, YELLOW_COLOR },
-  };
-  static const std::vector<GLuint> INDICES = { 0, 1, 2 };
-
-  return mesh(GL_TRIANGLES, VERTICES, INDICES);
-}
-
-mesh object_factory::plane(const glm::vec4& color)
+mesh object_factory::plane()
 {
   static const glm::vec3 NORMAL = { 0.0f, 0.0f, 1.0f };
 
   std::vector<vertex> vertices =
   {
-    { { -1.0f, -1.0f, 0.0f }, NORMAL, color },	// 0
-    { { 1.0f, -1.0f, 0.0f }, NORMAL, color },	// 1
-    { { -1.0f, 1.0f, 0.0f }, NORMAL, color },	// 2
-    { { 1.0f, 1.0f, 0.0f }, NORMAL, color },	// 3
+    { { -1.0f, -1.0f, 0.0f }, NORMAL },	// 0
+    { { 1.0f, -1.0f, 0.0f }, NORMAL },	// 1
+    { { -1.0f, 1.0f, 0.0f }, NORMAL },	// 2
+    { { 1.0f, 1.0f, 0.0f }, NORMAL },	// 3
   };
   std::vector<GLuint> indices = { 0, 1, 2, 1, 3, 2 };
 
   return mesh(GL_TRIANGLES, vertices, indices);
 }
 
-mesh object_factory::pyramid(const glm::vec4& color)
+mesh object_factory::pyramid()
 {
   static const glm::vec3 NE_CORNER = { 1.0f, 1.0f, 0.0f };
   static const glm::vec3 SE_CORNER = { 1.0f, -1.0f, 0.0f };
@@ -96,24 +54,24 @@ mesh object_factory::pyramid(const glm::vec4& color)
   std::vector<vertex> vertices =
   {
     // south face
-    { SW_CORNER, S_NORMAL, color },
-    { SE_CORNER, S_NORMAL, color },
-    { APEX, S_NORMAL, color },
+    { SW_CORNER, S_NORMAL },
+    { SE_CORNER, S_NORMAL },
+    { APEX, S_NORMAL },
 
     // north face
-    { NE_CORNER, N_NORMAL, color },
-    { NW_CORNER, N_NORMAL, color },
-    { APEX, N_NORMAL, color },
+    { NE_CORNER, N_NORMAL },
+    { NW_CORNER, N_NORMAL },
+    { APEX, N_NORMAL },
 
     // west face
-    { NW_CORNER, W_NORMAL, color },
-    { SW_CORNER, W_NORMAL, color },
-    { APEX, W_NORMAL, color },
+    { NW_CORNER, W_NORMAL },
+    { SW_CORNER, W_NORMAL },
+    { APEX, W_NORMAL },
 
     // east face
-    { SE_CORNER, E_NORMAL, color },
-    { NE_CORNER, E_NORMAL, color },
-    { APEX, E_NORMAL, color },
+    { SE_CORNER, E_NORMAL },
+    { NE_CORNER, E_NORMAL },
+    { APEX, E_NORMAL },
   };
   std::vector<GLuint> indices =
   {

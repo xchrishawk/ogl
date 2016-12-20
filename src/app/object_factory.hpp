@@ -27,10 +27,8 @@ namespace ogl
   {
   public:
 
-    static mesh rgb_triangle_mesh();
-    static mesh cmy_triangle_mesh();
-    static mesh plane(const glm::vec4& color);
-    static mesh pyramid(const glm::vec4& color);
+    static mesh plane();
+    static mesh pyramid();
 
   private:
 

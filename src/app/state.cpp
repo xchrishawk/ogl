@@ -41,16 +41,17 @@ state::state()
     m_scene()
 {
   // TEMP
-  ogl::component ground_component({ object_factory::plane({ 0.25f, 0.25f, 0.25f, 1.0f }) },
-				  glm::vec3(),
-				  glm::quat(),
-				  glm::vec3(200.0f, 200.0f, 200.0f));
+  ogl::component ground_component;
+  ground_component.set_meshes({ object_factory::plane() });
+  ground_component.set_scale({ 500.0f, 500.0f, 0.0f });
+  ground_component.set_color({ 0.25f, 0.25f, 0.15f, 1.0f });
   ogl::object ground_object({ ground_component });
-  ogl::component pyramid_component({ object_factory::pyramid({ 0.5f, 0.5f, 0.5f, 1.0f }) },
-				   glm::vec3(),
-				   glm::quat(),
-				   glm::vec3(1.0f, 1.0f, 1.0f));
+
+  ogl::component pyramid_component;
+  pyramid_component.set_meshes({ object_factory::pyramid() });
+  pyramid_component.set_color({ 0.75f, 0.75f, 0.75f, 1.0f });
   ogl::object pyramid_object({ pyramid_component });
+
   m_scene.set_objects({ ground_object, pyramid_object });
 }
 

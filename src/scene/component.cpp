@@ -20,14 +20,12 @@ using namespace ogl;
 
 /* -- Procedures -- */
 
-component::component(const std::vector<mesh>& meshes,
-		     const glm::vec3& position,
-		     const glm::quat& rotation,
-		     const glm::vec3& scale)
-  : m_meshes(meshes),
-    m_position(position),
-    m_rotation(rotation),
-    m_scale(scale)
+component::component()
+  : m_meshes(),
+    m_position(),
+    m_rotation(),
+    m_scale(1.0),
+    m_color()
 {
 }
 
@@ -35,7 +33,8 @@ component::component(const component& other)
   : m_meshes(other.m_meshes),
     m_position(other.m_position),
     m_rotation(other.m_rotation),
-    m_scale(other.m_scale)
+    m_scale(other.m_scale),
+    m_color(other.m_color)
 {
 }
 
@@ -45,6 +44,7 @@ component& component::operator =(const component& other)
   m_position = other.m_position;
   m_rotation = other.m_rotation;
   m_scale = other.m_scale;
+  m_color = other.m_color;
 
   return *this;
 }
