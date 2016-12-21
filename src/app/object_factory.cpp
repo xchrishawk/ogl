@@ -36,6 +36,63 @@ mesh object_factory::plane()
   return mesh(GL_TRIANGLES, vertices, indices);
 }
 
+mesh object_factory::cube()
+{
+  static const float P = 0.5f;
+  static const float N = -P;
+  static const float Z = 0.0f;
+
+  static const std::vector<vertex> vertices =
+  {
+    // positive X face
+    { { P, N, N }, { P, Z, Z } },
+    { { P, P, N }, { P, Z, Z } },
+    { { P, P, P }, { P, Z, Z } },
+    { { P, N, P }, { P, Z, Z } },
+
+    // negative X face
+    { { N, N, N }, { N, Z, Z } },
+    { { N, N, P }, { N, Z, Z } },
+    { { N, P, P }, { N, Z, Z } },
+    { { N, P, N }, { N, Z, Z } },
+
+    // positive Y face
+    { { N, P, P }, { Z, P, Z } },
+    { { P, P, P }, { Z, P, Z } },
+    { { P, P, N }, { Z, P, Z } },
+    { { N, P, N }, { Z, P, Z } },
+
+    // negative Y face
+    { { N, N, P }, { Z, N, Z } },
+    { { N, N, N }, { Z, N, Z } },
+    { { P, N, N }, { Z, N, Z } },
+    { { P, N, P }, { Z, N, Z } },
+
+    // positive Z face
+    { { N, N, P }, { Z, Z, P } },
+    { { P, N, P }, { Z, Z, P } },
+    { { P, P, P }, { Z, Z, P } },
+    { { N, P, P }, { Z, Z, P } },
+
+    // negative Z face
+    { { N, N, N }, { Z, Z, N } },
+    { { N, P, N }, { Z, Z, N } },
+    { { P, P, N }, { Z, Z, N } },
+    { { P, N, N }, { Z, Z, N } },
+  };
+  static const std::vector<GLuint> indices =
+  {
+    0, 1, 2, 2, 3, 0, 		// positive X face
+    4, 5, 6, 6, 7, 4,		// negative X face
+    8, 9, 10, 10, 11, 8,	// positive Y face
+    12, 13, 14, 14, 15, 12,	// negative Y face
+    16, 17, 18, 18, 19, 16,	// positive Z face
+    20, 21, 22, 22, 23, 20,	// negative Z face
+  };
+
+  return mesh(GL_TRIANGLES, vertices, indices);
+}
+
 mesh object_factory::pyramid()
 {
   static const glm::vec3 NE_CORNER = { 1.0f, 1.0f, 0.0f };

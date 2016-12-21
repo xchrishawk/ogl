@@ -27,7 +27,18 @@ namespace ogl
   {
   public:
 
+    /**
+     * Returns a mesh for a square in the X-Y plane, centered at the origin, with
+     * dimensions of 1.0 x 1.0 x 0.0.
+     */
     static mesh plane();
+
+    /**
+     * Returns a mesh for a cube, centered at the origin, with dimensions of
+     * 1.0 x 1.0 x 1.0.
+     */
+    static mesh cube();
+
     static mesh pyramid();
 
   private:

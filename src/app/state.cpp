@@ -41,26 +41,60 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_scene()
 {
-  // TEMP
-  ogl::component ground_component;
-  ground_component.set_meshes({ object_factory::plane() });
-  ground_component.set_scale({ 500.0f, 500.0f, 0.0f });
-  ground_component.set_color({ 0.25f, 0.25f, 0.15f, 1.0f });
+  component cube_component_1;
+  cube_component_1.set_meshes({ object_factory::cube() });
+  cube_component_1.set_color({ 1.0f, 1.0f, 1.0f, 1.0f });
+  cube_component_1.set_scale({ 2.0f, 2.0f, 2.0f });
 
-  ogl::object ground_object;
-  ground_object.set_components({ ground_component });
+  component cube_component_2;
+  cube_component_2.set_meshes({ object_factory::cube() });
+  cube_component_2.set_color({ 1.0f, 0.0f, 0.0f, 1.0f });
+  cube_component_2.set_scale({ 0.5f, 0.5f, 0.5f });
+  cube_component_2.set_position({ 3.0f, 0.0f, 0.0f });
 
-  ogl::component pyramid_component;
-  pyramid_component.set_meshes({ object_factory::pyramid() });
-  pyramid_component.set_color({ 0.75f, 0.75f, 0.75f, 1.0f });
+  component cube_component_3;
+  cube_component_3.set_meshes({ object_factory::cube() });
+  cube_component_3.set_color({ 0.0f, 1.0f, 0.0f, 1.0f });
+  cube_component_3.set_scale({ 0.5f, 0.5f, 0.5f });
+  cube_component_3.set_position({ -3.0f, 0.0f, 0.0f });
 
-  ogl::object pyramid_object;
-  pyramid_object.set_components({ pyramid_component });
+  component cube_component_4;
+  cube_component_4.set_meshes({ object_factory::cube() });
+  cube_component_4.set_color({ 0.0f, 0.0f, 1.0f, 1.0f });
+  cube_component_4.set_scale({ 0.5f, 0.5f, 0.5f });
+  cube_component_4.set_position({ 0.0f, 0.0f, 3.0f });
 
-  m_scene.set_objects({ ground_object, pyramid_object });
+  component cube_component_5;
+  cube_component_5.set_meshes({ object_factory::cube() });
+  cube_component_5.set_color({ 0.0f, 1.0f, 1.0f, 1.0f });
+  cube_component_5.set_scale({ 0.5f, 0.5f, 0.5f });
+  cube_component_5.set_position({ 0.0f, 0.0f, -3.0f });
+
+  component cube_component_6;
+  cube_component_6.set_meshes({ object_factory::cube() });
+  cube_component_6.set_color({ 1.0f, 0.0f, 1.0f, 1.0f });
+  cube_component_6.set_scale({ 0.5f, 0.5f, 0.5f });
+  cube_component_6.set_position({ 0.0f, 3.0f, 0.0f });
+
+  component cube_component_7;
+  cube_component_7.set_meshes({ object_factory::cube() });
+  cube_component_7.set_color({ 1.0f, 1.0f, 0.0f, 1.0f });
+  cube_component_7.set_scale({ 0.5f, 0.5f, 0.5f });
+  cube_component_7.set_position({ 0.0f, -3.0f, 0.0f });
+
+  object cube_object;
+  cube_object.set_components({
+      cube_component_1,
+	cube_component_2,
+	cube_component_3,
+	cube_component_4,
+	cube_component_5,
+	cube_component_6,
+	cube_component_7 });
+
+  m_scene.set_objects({ cube_object });
   m_scene.set_ambient_light({ 0.1f, 0.1f, 0.1f });
   m_scene.set_directional_light({ 0.8f, 0.8f, 0.8f });
-  m_scene.set_directional_light_direction({ 2.0f, 1.0f, -1.0f });
 }
 
 void state::run(const state_args& args)
@@ -69,8 +103,7 @@ void state::run(const state_args& args)
   update_camera_rotation(args);
   update_camera_fov(args);
 
-  // TEMP
-  m_scene.set_directional_light_direction({ cos(args.abs_t / 5.0f), sin(args.abs_t / 5.0f), cos(args.abs_t / 10.0f) });
+  m_scene.set_directional_light_direction({ cos(args.abs_t), sin(args.abs_t), cos(args.abs_t / 2.0f) });
 }
 
 void state::update_camera_position(const state_args& args)
