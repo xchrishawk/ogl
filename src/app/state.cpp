@@ -58,6 +58,9 @@ state::state()
   pyramid_object.set_components({ pyramid_component });
 
   m_scene.set_objects({ ground_object, pyramid_object });
+  m_scene.set_ambient_light({ 0.1f, 0.1f, 0.1f });
+  m_scene.set_directional_light({ 0.8f, 0.8f, 0.8f });
+  m_scene.set_directional_light_direction({ 2.0f, 1.0f, -1.0f });
 }
 
 void state::run(const state_args& args)
@@ -65,6 +68,9 @@ void state::run(const state_args& args)
   update_camera_position(args);
   update_camera_rotation(args);
   update_camera_fov(args);
+
+  // TEMP
+  m_scene.set_directional_light_direction({ cos(args.abs_t / 5.0f), sin(args.abs_t / 5.0f), cos(args.abs_t / 10.0f) });
 }
 
 void state::update_camera_position(const state_args& args)

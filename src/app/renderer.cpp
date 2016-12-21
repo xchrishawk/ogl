@@ -127,6 +127,8 @@ void renderer::draw_scene(const render_args& args)
   set_matrix_uniform("view_matrix", view_matrix(args));
   set_matrix_uniform("projection_matrix", projection_matrix(args));
   set_vec3_uniform("ambient_light", args.state.scene().ambient_light());
+  set_vec3_uniform("directional_light", args.state.scene().directional_light());
+  set_vec3_uniform("directional_light_direction", args.state.scene().directional_light_direction());
 
   // draw each object
   for (const object& obj : args.state.scene().objects())
