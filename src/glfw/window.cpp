@@ -36,6 +36,7 @@ window::window(bool make_current,
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, constants::OPENGL_FORWARD_COMPAT);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, constants::OPENGL_CONTEXT_VERSION_MAJOR);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, constants::OPENGL_CONTEXT_VERSION_MINOR);
+  glfwWindowHint(GLFW_SAMPLES, constants::OPENGL_SAMPLES);
 
   m_handle = glfwCreateWindow(initial_width,		// width
 			      initial_height,		// height

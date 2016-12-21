@@ -42,7 +42,8 @@ namespace ogl
     const int OPENGL_FORWARD_COMPAT		= static_cast<int>(true);
     const int OPENGL_CONTEXT_VERSION_MAJOR	= 3;
     const int OPENGL_CONTEXT_VERSION_MINOR	= 3;
-    const int OPENGL_SWAP_INTERVAL		= 1;
+    const int OPENGL_SWAP_INTERVAL		= 1;	// frames to wait before swapping
+    const int OPENGL_SAMPLES			= 4;	// MSAA samples
 
     const GLint OPENGL_INVALID_LOCATION		= -1;
 
