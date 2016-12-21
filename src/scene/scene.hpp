@@ -9,8 +9,6 @@
 /* -- Includes -- */
 
 #include <glm/glm.hpp>
-
-#include "scene/directional_light.hpp"
 #include "scene/object.hpp"
 
 /* -- Types -- */
@@ -28,8 +26,7 @@ namespace ogl
     /** Creates a new `scene` with default configuration. */
     scene()
       : m_objects(),
-	m_ambient_light(1.0),
-	m_directional_lights()
+	m_ambient_light(1.0)
     { }
 
     /** Returns the objects included in this scene. */
@@ -53,19 +50,10 @@ namespace ogl
     void set_ambient_light(const glm::vec3& light)
     { m_ambient_light = light; }
 
-    /** Returns the directional lights in the scene. */
-    std::vector<directional_light> directional_lights() const
-    { return m_directional_lights; }
-
-    /** Sets the directional lights in the scene. */
-    void set_directional_lights(const std::vector<directional_light>& lights)
-    { m_directional_lights = lights; }
-
   private:
 
     std::vector<object> m_objects;
     glm::vec3 m_ambient_light;
-    std::vector<directional_light> m_directional_lights;
 
   };
 

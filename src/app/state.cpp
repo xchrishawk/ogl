@@ -57,12 +57,7 @@ state::state()
   ogl::object pyramid_object;
   pyramid_object.set_components({ pyramid_component });
 
-  ogl::directional_light dir_light;
-  dir_light.set_direction({ 1.0f, 0.5f, -0.25f });
-  dir_light.set_light({ 1.0f, 1.0f, 1.0f });
-
   m_scene.set_objects({ ground_object, pyramid_object });
-  m_scene.set_directional_lights({ dir_light });
 }
 
 void state::run(const state_args& args)
