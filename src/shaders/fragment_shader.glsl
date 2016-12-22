@@ -19,7 +19,7 @@ uniform vec3 directional_light_direction;
 
 in VertexBlock
 {
-  vec3 position;
+  vec4 position;
   vec3 normal;
 } invertex;
 

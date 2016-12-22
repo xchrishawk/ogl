@@ -14,14 +14,14 @@ uniform mat4 projection_matrix;
 
 /* -- Inputs -- */
 
-in vec3 vertex_position;
+in vec4 vertex_position;
 in vec3 vertex_normal;
 
 /* -- Outputs -- */
 
 out VertexBlock
 {
-  vec3 position;
+  vec4 position;
   vec3 normal;
 } outvertex;
 
@@ -29,7 +29,7 @@ out VertexBlock
 
 void main(void)
 {
-  gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertex_position, 1.0);
+  gl_Position = projection_matrix * view_matrix * model_matrix * vertex_position;
 
   outvertex.position = vertex_position;
   outvertex.normal = vertex_normal;
