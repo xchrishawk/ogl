@@ -42,7 +42,7 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_scene()
 {
-  wavefront_file cow("/home/chris/cessna.obj");
+  wavefront_file cow("/home/chris/cow-nonormals.obj");
 
   component component_1;
   component_1.set_meshes({ cow.to_mesh() });

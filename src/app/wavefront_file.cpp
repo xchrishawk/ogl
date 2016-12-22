@@ -38,7 +38,7 @@ const std::string wavefront_normal::prefix = "vn";
 const std::regex wavefront_normal::regex("^vn(" + FLOAT_REGEX_STRING + "{3})\\s*$");
 
 const std::string wavefront_face::prefix = "f";
-const std::regex wavefront_face::regex("^f((?:\\s+[0-9]+)+)$");
+const std::regex wavefront_face::regex("^f((?:\\s+[0-9]+){3,})$");
 
 /* -- Procedures -- */
 
@@ -95,6 +95,8 @@ wavefront_file::wavefront_file(const std::string& filename)
     int line_number = 0;
     std::string line;
 
+    // this is necessary because std::isspace is overloaded, so we can't just
+    // use it directly in the std::all_of algorithm below
     auto is_whitespace = [](char c) { return std::isspace(c); };
 
     try
@@ -152,32 +154,38 @@ mesh wavefront_file::to_mesh() const
   // loop through each face
   for (const auto& face : m_faces)
   {
-    // WF indices are 1-based
-    // NOTE: HAXX
+    // any face with fewer than 3 vertices should have been rejected by the
+    // constructor for wavefront_face
     ogl_dbg_assert(face.indices.size() >= 3);
-    auto v1_idx = face.indices[0] - 1;
-    auto v2_idx = face.indices[1] - 1;
-    auto v3_idx = face.indices[2] - 1;
 
-    // get references to vertices
-    vertex& v1 = mesh_vertices[v1_idx];
-    vertex& v2 = mesh_vertices[v2_idx];
-    vertex& v3 = mesh_vertices[v3_idx];
+    // face may be a polygon, so split it up into triangles
+    for (size_t last_idx = 2; last_idx < face.indices.size(); last_idx++)
+    {
+      // get vertex indices for this triangle
+      auto v1_idx = face.indices[0] - 1;
+      auto v2_idx = face.indices[last_idx - 1] - 1;
+      auto v3_idx = face.indices[last_idx] - 1;
 
-    // add normal to each vertex
-    glm::vec3 normal = cross(glm::vec3(v2.position - v1.position),
-			     glm::vec3(v3.position - v1.position));
-    v1.normal += normal;
-    v2.normal += normal;
-    v3.normal += normal;
+      // get references to vertices
+      vertex& v1 = mesh_vertices[v1_idx];
+      vertex& v2 = mesh_vertices[v2_idx];
+      vertex& v3 = mesh_vertices[v3_idx];
 
-    // add indices
-    mesh_indices.push_back(v1_idx);
-    mesh_indices.push_back(v2_idx);
-    mesh_indices.push_back(v3_idx);
+      // add normal to each vertex
+      glm::vec3 normal = cross(glm::vec3(v2.position - v1.position),
+			       glm::vec3(v3.position - v1.position));
+      v1.normal += normal;
+      v2.normal += normal;
+      v3.normal += normal;
+
+      // add indices
+      mesh_indices.push_back(v1_idx);
+      mesh_indices.push_back(v2_idx);
+      mesh_indices.push_back(v3_idx);
+    }
   }
 
-  // finally, normalize all normals
+  // final pass to normalize all normals
   for (auto& vertex : mesh_vertices)
     vertex.normal = normalize(vertex.normal);
 
