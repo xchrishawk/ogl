@@ -110,3 +110,11 @@ target_compile_definitions(${APP_EXECUTABLE_NAME} PUBLIC ${APP_EXECUTABLE_DEFINI
 target_include_directories(${APP_EXECUTABLE_NAME} PUBLIC ${APP_EXECUTABLE_INCLUDE_DIRECTORIES})
 target_compile_options(${APP_EXECUTABLE_NAME} PUBLIC ${APP_EXECUTABLE_COMPILE_OPTIONS})
 target_link_libraries(${APP_EXECUTABLE_NAME} PUBLIC ${APP_EXECUTABLE_LINK_LIBRARIES})
+
+# -- Run Target --
+
+# Custom target to run the app
+add_custom_target(run
+  ${APP_EXECUTABLE_NAME}
+  DEPENDS ${APP_EXECUTABLE_NAME}
+  COMMENT "Running application...")
