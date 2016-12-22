@@ -7,6 +7,7 @@
 /* -- Includes -- */
 
 #include <stdexcept>
+#include <string>
 
 #include "glfw/window.hpp"
 #include "util/constants.hpp"

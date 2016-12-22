@@ -39,7 +39,11 @@ namespace ogl
      */
     static mesh cube();
 
-    static mesh pyramid();
+    /**
+     * Returns a mesh for a smooth cone, centered at the origin, with radius of
+     * 1.0 and height of 1.0.
+     */
+    static mesh cone(int sides);
 
   private:
 

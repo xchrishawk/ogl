@@ -6,13 +6,18 @@
 
 /* -- Includes -- */
 
+#include <cmath>
+
 #include <glm/glm.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 #include "app/object_factory.hpp"
 #include "opengl/api.hpp"
 #include "scene/component.hpp"
 #include "scene/object.hpp"
 #include "scene/vertex.hpp"
+#include "util/constants.hpp"
+#include "util/debug.hpp"
 
 /* -- Namespaces -- */
 
@@ -93,50 +98,46 @@ mesh object_factory::cube()
   return mesh(GL_TRIANGLES, vertices, indices);
 }
 
-mesh object_factory::pyramid()
+mesh object_factory::cone(int sides)
 {
-  static const glm::vec3 NE_CORNER = { 1.0f, 1.0f, 0.0f };
-  static const glm::vec3 SE_CORNER = { 1.0f, -1.0f, 0.0f };
-  static const glm::vec3 NW_CORNER = { -1.0f, 1.0f, 0.0f };
-  static const glm::vec3 SW_CORNER = { -1.0f, -1.0f, 0.0f };
-  static const glm::vec3 APEX = { 0.0f, 0.0f, 1.0f };
+  ogl_dbg_assert(sides > 2);
 
-  static const float SQRT2 = 0.707107;
+  // arc angle that each side subtends
+  const float theta_per_side = (2.0f * M_PI) / sides;
 
-  static const glm::vec3 S_NORMAL = { 0.0f, -SQRT2, SQRT2 };
-  static const glm::vec3 N_NORMAL = { 0.0f, SQRT2, SQRT2 };
-  static const glm::vec3 W_NORMAL = { -SQRT2, 0.0f, SQRT2 };
-  static const glm::vec3 E_NORMAL = { SQRT2, 0.0f, SQRT2 };
+  // vectors to hold vertices and indices
+  std::vector<vertex> vertices;
+  vertices.reserve(sides * 3);
+  std::vector<GLuint> indices;
+  indices.reserve(sides * 3);
 
-  std::vector<vertex> vertices =
+  // current vertex index that we're working on
+  int vertex_index = 0;
+
+  for (int side = 0; side < sides; side++)
   {
-    // south face
-    { SW_CORNER, S_NORMAL },
-    { SE_CORNER, S_NORMAL },
-    { APEX, S_NORMAL },
+    // angles of vertices
+    float theta_v1 = side * theta_per_side;
+    float theta_v2 = (side + 1) * theta_per_side;
 
-    // north face
-    { NE_CORNER, N_NORMAL },
-    { NW_CORNER, N_NORMAL },
-    { APEX, N_NORMAL },
+    // first vertex
+    glm::vec3 v1 = rotateZ(constants::VEC3_UNIT_X, theta_v1);
+    glm::vec3 n1 = rotateZ(constants::VEC3_UNIT_X, theta_v1);
+    vertices.push_back({ v1, n1 });
+    indices.push_back(vertex_index++);
 
-    // west face
-    { NW_CORNER, W_NORMAL },
-    { SW_CORNER, W_NORMAL },
-    { APEX, W_NORMAL },
+    // second vertex
+    glm::vec3 v2 = rotateZ(constants::VEC3_UNIT_X, theta_v2);
+    glm::vec3 n2 = rotateZ(constants::VEC3_UNIT_X, theta_v2);
+    vertices.push_back({ v2, n2 });
+    indices.push_back(vertex_index++);
 
-    // east face
-    { SE_CORNER, E_NORMAL },
-    { NE_CORNER, E_NORMAL },
-    { APEX, E_NORMAL },
-  };
-  std::vector<GLuint> indices =
-  {
-    0, 1, 2, // south face
-    3, 4, 5, // north face
-    6, 7, 8, // west face
-    9, 10, 11, // east face
-  };
+    // third vertex
+    glm::vec3 v3 = constants::VEC3_UNIT_Z;
+    glm::vec3 n3 = constants::VEC3_UNIT_Z;
+    vertices.push_back({ v3, n3 });
+    indices.push_back(vertex_index++);
+  }
 
   return mesh(GL_TRIANGLES, vertices, indices);
 }

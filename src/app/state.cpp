@@ -42,7 +42,7 @@ state::state()
     m_scene()
 {
   component cube_component_1;
-  cube_component_1.set_meshes({ object_factory::cube() });
+  cube_component_1.set_meshes({ object_factory::cone(24) });
   cube_component_1.set_color({ 1.0f, 1.0f, 1.0f, 1.0f });
   cube_component_1.set_scale({ 2.0f, 2.0f, 2.0f });
 
@@ -103,7 +103,7 @@ void state::run(const state_args& args)
   update_camera_rotation(args);
   update_camera_fov(args);
 
-  m_scene.set_directional_light_direction({ cos(args.abs_t), sin(args.abs_t), cos(args.abs_t / 2.0f) });
+  m_scene.set_directional_light_direction({ cos(args.abs_t), sin(args.abs_t), 0.0f });
 }
 
 void state::update_camera_position(const state_args& args)

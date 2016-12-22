@@ -23,10 +23,10 @@ namespace ogl
     /* -- Physical Constants -- */
 
     /** Converts degrees to radians. */
-    const double DEG_TO_RAD			= (M_PI / 180.0);
+    const float DEG_TO_RAD			= (M_PI / 180.0);
 
     /** Converts radians to degrees. */
-    const double RAD_TO_DEG			= (180.0 / M_PI);
+    const float RAD_TO_DEG			= (180.0 / M_PI);
 
     /* -- Unit Vectors -- */
 
@@ -54,10 +54,10 @@ namespace ogl
     /* -- App Configuration -- */
 
     /** Target delta-T for updating app state, in seconds. */
-    const double TARGET_STATE_DELTA_T		= (1.0 / 60.0);
+    const float TARGET_STATE_DELTA_T		= (1.0 / 60.0);
 
     /** Target delta-T for rendering, in seconds. */
-    const double TARGET_RENDER_DELTA_T		= (1.0 / 60.0);
+    const float TARGET_RENDER_DELTA_T		= (1.0 / 60.0);
 
     /** Initial width of the app window. */
     const int WINDOW_INITIAL_WIDTH		= 800;
