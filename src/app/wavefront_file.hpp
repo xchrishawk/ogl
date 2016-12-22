@@ -22,27 +22,69 @@ namespace ogl
 {
 
   /**
-   * Struct representing a vertex in a Wavefront object file.
+   * Class representing a vertex (`v` line) in a Wavefront OBJ file.
    */
-  struct wavefront_vertex
+  class wavefront_vertex
   {
-    float x;
-    float y;
-    float z;
-    float w;
+  public:
 
+    /** The prefix for vertex lines. */
+    static const std::string prefix;
+
+    /** Creates a new instance from the specified line. */
+    wavefront_vertex(const std::string& line);
+
+    float x;	/**< The X position of the vertex. */
+    float y;	/**< The Y position of the vertex. */
+    float z;	/**< The Z position of the vertex. */
+    float w;	/**< The W position of the vertex. */
+
+    /** Returns this vertex as a `glm::vec4`. */
     glm::vec4 to_vec4() const { return glm::vec4(x, y, z, w); }
 
+  private:
+    static const std::regex regex;
   };
 
   /**
-   * Struct representing a face in a Wavefront object file.
+   * Class representing a vertex normal (`vn` line) in a Wavefront OBJ file.
    */
-  struct wavefront_face
+  class wavefront_normal
   {
-    int v1;
-    int v2;
-    int v3;
+  public:
+
+    /** The prefix for vertex normal lines. */
+    static const std::string prefix;
+
+    /** Creates a new instance from the specified line. */
+    wavefront_normal(const std::string& line);
+
+    float x;	/**< The X component of the normal. */
+    float y;	/**< The Y component of the normal. */
+    float z;	/**< The Z component of the normal. */
+
+  private:
+    static const std::regex regex;
+  };
+
+  /**
+   * Class representing a face in a Wavefront OBJ file.
+   */
+  class wavefront_face
+  {
+  public:
+
+    /** The prefix for face lines. */
+    static const std::string prefix;
+
+    /** Creates a new instance from the specified line. */
+    wavefront_face(const std::string& line);
+
+    /** The indices contained in the face. */
+    std::vector<int> indices;
+
+  private:
+    static const std::regex regex;
   };
 
   /**
@@ -60,39 +102,16 @@ namespace ogl
      */
     wavefront_file(const std::string& filename);
 
-    /** Converts this Wavefront file to a mesh. */
+    /** Converts this file to a mesh. */
     mesh to_mesh() const;
-
-    /** Returns the vertices contained in this Wavefront file. */
-    std::vector<wavefront_vertex> vertices() const
-    { return m_vertices; }
-
-    /** Returns the faces contained in this Wavefront file. */
-    std::vector<wavefront_face> faces() const
-    { return m_faces; }
 
   private:
 
-    static const std::regex comment_regex;
-    static const std::regex only_whitespace_regex;
-    static const std::regex v_regex;
-    static const std::regex vt_regex;
-    static const std::regex vn_regex;
-    static const std::regex f_regex;
-    static const std::regex g_regex;
-    static const std::regex s_regex;
-    static const std::regex mtllib_regex;
-    static const std::regex usemtl_regex;
-
-    static void parse_file(const std::string& filename,
-			   std::vector<wavefront_vertex>& vertices,
-			   std::vector<wavefront_face>& faces);
-    static std::regex vertex_regex(const std::string& type,
-				   int mandatory_floats,
-				   int optional_floats);
-
     std::vector<wavefront_vertex> m_vertices;
+    std::vector<wavefront_normal> m_normals;
     std::vector<wavefront_face> m_faces;
+
+    bool begins_with(const std::string& line, const std::string& prefix);
 
   };
 

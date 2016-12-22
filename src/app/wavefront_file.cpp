@@ -6,6 +6,8 @@
 
 /* -- Includes -- */
 
+#include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <regex>
 #include <sstream>
@@ -22,24 +24,117 @@
 
 using namespace ogl;
 
-/* -- Variables -- */
+/* -- Constants -- */
 
-const std::regex wavefront_file::comment_regex("#.*$");
-const std::regex wavefront_file::only_whitespace_regex("^\\s*$");
-const std::regex wavefront_file::v_regex = wavefront_file::vertex_regex("v", 3, 1);
-const std::regex wavefront_file::vt_regex = wavefront_file::vertex_regex("vt", 2, 1);
-const std::regex wavefront_file::vn_regex = wavefront_file::vertex_regex("vn", 3, 0);
-const std::regex wavefront_file::f_regex("^\\s*f\\s*([0-9]+)\\s*([0-9]+)\\s*([0-9]+)\\s*$");
-const std::regex wavefront_file::g_regex("^\\s*g\\s*(.*)$");
-const std::regex wavefront_file::s_regex("^\\s*s\\s*(.*)$");
-const std::regex wavefront_file::mtllib_regex("^\\s*mtllib\\s+(.+)$");
-const std::regex wavefront_file::usemtl_regex("^\\s*usemtl\\s+(.+)$");
+namespace
+{
+  const std::string FLOAT_REGEX_STRING = "(?:\\s+(?:[+-]?[0-9]+(?:\\.[0-9]+)?(?:[eE]-?[0-9]+)?))";
+}
+
+const std::string wavefront_vertex::prefix = "v";
+const std::regex wavefront_vertex::regex("^v(" + FLOAT_REGEX_STRING + "{3,4})\\s*$");
+
+const std::string wavefront_normal::prefix = "vn";
+const std::regex wavefront_normal::regex("^vn(" + FLOAT_REGEX_STRING + "{3})\\s*$");
+
+const std::string wavefront_face::prefix = "f";
+const std::regex wavefront_face::regex("^f((?:\\s+[0-9]+)+)$");
 
 /* -- Procedures -- */
 
+wavefront_vertex::wavefront_vertex(const std::string& line)
+{
+  std::smatch results;
+  if (!std::regex_match(line, results, wavefront_vertex::regex))
+    throw file_io_exception("Invalid vertex");
+
+  ogl_dbg_assert(results.size() == 2);
+  std::istringstream stream(results[1]);
+
+  stream >> x;
+  stream >> y;
+  stream >> z;
+  if (!(stream >> w))
+    w = 1.0f;
+}
+
+wavefront_normal::wavefront_normal(const std::string& line)
+{
+  std::smatch results;
+  if (!std::regex_match(line, results, wavefront_normal::regex))
+    throw file_io_exception("Invalid normal");
+
+  ogl_dbg_assert(results.size() == 2);
+  std::istringstream stream(results[1]);
+
+  stream >> x;
+  stream >> y;
+  stream >> z;
+}
+
+wavefront_face::wavefront_face(const std::string& line)
+{
+  std::smatch results;
+  if (!std::regex_match(line, results, wavefront_face::regex))
+    throw file_io_exception("Invalid face");
+
+  ogl_dbg_assert(results.size() == 2);
+  std::istringstream stream(results[1]);
+
+  int idx;
+  while ((stream >> idx))
+    indices.push_back(idx);
+}
+
 wavefront_file::wavefront_file(const std::string& filename)
 {
-  wavefront_file::parse_file(filename, m_vertices, m_faces);
+    std::fstream infile(filename);
+    if (!infile.is_open())
+      throw file_io_exception("Unable to open " + filename);
+
+    int line_number = 0;
+    std::string line;
+
+    auto is_whitespace = [](char c) { return std::isspace(c); };
+
+    try
+    {
+      while (std::getline(infile, line))
+      {
+	++line_number;
+
+	// drop \r from last character, if the file uses windows line endings
+	if (line[line.size() - 1] == '\r')
+	  line.pop_back();
+
+	// drop comments
+	line = line.substr(0, line.find("#"));
+
+	// skip entirely blank lines
+	if (line.size() == 0 || std::all_of(line.begin(), line.end(), is_whitespace))
+	  continue;
+
+	// check the line type and parse as needed
+	if (begins_with(line, wavefront_vertex::prefix))
+	  m_vertices.push_back(wavefront_vertex(line));
+	else if (begins_with(line, wavefront_normal::prefix))
+	  m_normals.push_back(wavefront_normal(line));
+	else if (begins_with(line, wavefront_face::prefix))
+	  m_faces.push_back(wavefront_face(line));
+	else
+	{
+	  // eventually we will throw here, but for now, just ignore since there's
+	  // so much stuff that we don't have implemented
+	  // throw file_io_exception("Unknown line format");
+	}
+      }
+    }
+    catch (const file_io_exception& ex)
+    {
+      std::ostringstream message;
+      message << "Unable to load " << filename << ". Line " << line_number << " is invalid: " << line;
+      throw file_io_exception(message.str());
+    }
 }
 
 mesh wavefront_file::to_mesh() const
@@ -58,9 +153,11 @@ mesh wavefront_file::to_mesh() const
   for (const auto& face : m_faces)
   {
     // WF indices are 1-based
-    auto v1_idx = face.v1 - 1;
-    auto v2_idx = face.v2 - 1;
-    auto v3_idx = face.v3 - 1;
+    // NOTE: HAXX
+    ogl_dbg_assert(face.indices.size() >= 3);
+    auto v1_idx = face.indices[0] - 1;
+    auto v2_idx = face.indices[1] - 1;
+    auto v3_idx = face.indices[2] - 1;
 
     // get references to vertices
     vertex& v1 = mesh_vertices[v1_idx];
@@ -88,138 +185,9 @@ mesh wavefront_file::to_mesh() const
   return mesh(GL_TRIANGLES, mesh_vertices, mesh_indices);
 }
 
-void wavefront_file::parse_file(const std::string& filename,
-				std::vector<wavefront_vertex>& vertices,
-				std::vector<wavefront_face>& faces)
+bool wavefront_file::begins_with(const std::string& line, const std::string& prefix)
 {
-    std::fstream infile(filename);
-    if (!infile.is_open())
-      throw file_io_exception("Unable to open " + filename);
-
-    int line_number = 0;
-    std::string line;
-    while (std::getline(infile, line))
-    {
-      line_number++;
-
-      // drop \r from last character, if the file uses windows line endings
-      if (line[line.size() - 1] == '\r')
-	line.pop_back();
-
-      // remove comments
-      line = std::regex_replace(line, wavefront_file::comment_regex, "");
-
-      // is the line nothing but whitespace?
-      if (std::regex_match(line, wavefront_file::only_whitespace_regex))
-	continue;
-
-      // check for vertices
-      std::smatch results;
-      if (std::regex_match(line, results, wavefront_file::v_regex))
-      {
-	static const auto X_INDEX = 1;
-	static const auto Y_INDEX = 6;
-	static const auto Z_INDEX = 11;
-	static const auto W_INDEX = 16;
-
-	auto x = std::stof(results[X_INDEX]);
-	auto y = std::stof(results[Y_INDEX]);
-	auto z = std::stof(results[Z_INDEX]);
-	auto w = 1.0f;
-	if (!results[W_INDEX].str().empty())
-	  w = std::stof(results[W_INDEX]);
-
-	vertices.push_back({ x, y, z, w });
-	continue;
-      }
-      else if (std::regex_match(line, results, wavefront_file::vt_regex))
-      {
-	// static const auto X_INDEX = 1;
-	// static const auto Y_INDEX = 6;
-	// static const auto Z_INDEX = 11;
-
-	// auto x = std::stof(results[X_INDEX]);
-	// auto y = std::stof(results[Y_INDEX]);
-	// auto z = 1.0f;
-	// if (!results[Z_INDEX].str().empty())
-	//   z = std::stof(results[Z_INDEX]);
-
-	//std::cout << "Found texture: " << x << " " << y << " " << z << std::endl;
-	continue;
-      }
-      else if (std::regex_match(line, results, wavefront_file::vn_regex))
-      {
-	// static const auto X_INDEX = 1;
-	// static const auto Y_INDEX = 6;
-	// static const auto Z_INDEX = 11;
-
-	// auto x = std::stof(results[X_INDEX]);
-	// auto y = std::stof(results[Y_INDEX]);
-	// auto z = std::stof(results[Z_INDEX]);
-
-	//std::cout << "Found vertex normal: " << x << " " << y << " " << z << std::endl;
-	continue;
-      }
-      else if (std::regex_match(line, results, wavefront_file::f_regex))
-      {
-	static const auto V1_INDEX = 1;
-	static const auto V2_INDEX = 2;
-	static const auto V3_INDEX = 3;
-
-	auto v1 = std::stoi(results[V1_INDEX]);
-	auto v2 = std::stoi(results[V2_INDEX]);
-	auto v3 = std::stoi(results[V3_INDEX]);
-
-	faces.push_back({ v1, v2, v3 });
-	continue;
-      }
-      else if (std::regex_match(line, results, wavefront_file::g_regex))
-      {
-	continue;
-      }
-      else if (std::regex_match(line, results, wavefront_file::s_regex))
-      {
-	continue;
-      }
-      else if (std::regex_match(line, results, wavefront_file::mtllib_regex))
-      {
-	continue;
-      }
-      else if (std::regex_match(line, results, wavefront_file::usemtl_regex))
-      {
-	continue;
-      }
-
-      // if we get to this point, the line is invalid
-      std::ostringstream error_msg;
-      error_msg << "Invalid line (line " << line_number << "): " << line;
-      throw file_io_exception(error_msg.str());
-    }
-}
-
-
-std::regex wavefront_file::vertex_regex(const std::string& type, int mandatory_args, int optional_args)
-{
-  static const std::string WHITESPACE_REGEX_STRING = "\\s*";
-  static const std::string FLOAT_REGEX_STRING = "(([\\+-]?)([0-9]+)(\\.[0-9]+)?([eE]-?[0-9]+)?)";
-
-  std::ostringstream regex_string;
-  regex_string << "^";				// beginning of string
-  regex_string << WHITESPACE_REGEX_STRING; 	// leading whitespace
-  regex_string << type;				// line type
-  regex_string << WHITESPACE_REGEX_STRING;
-  for (int idx = 0; idx < mandatory_args; idx++)
-  {
-    regex_string << FLOAT_REGEX_STRING;
-    regex_string << WHITESPACE_REGEX_STRING;
-  }
-  for (int idx = 0; idx < optional_args; idx++)
-  {
-    regex_string << FLOAT_REGEX_STRING;
-    regex_string << "?";
-    regex_string << WHITESPACE_REGEX_STRING;
-  }
-  regex_string << "$";				// end of string
-
-  return std::regex(regex_string.str());
+  return (line.size() > prefix.size() + 1 &&
+	  line.substr(0, prefix.size()) == prefix &&
+	  std::isspace(line[prefix.size()]));
 }
