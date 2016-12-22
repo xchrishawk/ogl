@@ -9,7 +9,7 @@
 #include "app/input.hpp"
 #include "app/object_factory.hpp"
 #include "app/state.hpp"
-#include "app/wavefront_parser.hpp"
+#include "app/wavefront_file.hpp"
 #include "scene/scene.hpp"
 #include "util/constants.hpp"
 #include "util/debug.hpp"
@@ -42,14 +42,10 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_scene()
 {
-  std::vector<vertex> vertices;
-  std::vector<GLuint> indices;
-  wavefront_parser parser;
-  parser.parse_file("/home/chris/cow-nonormals.obj", vertices, indices);
+  wavefront_file cow("/home/chris/cow-nonormals.obj");
 
-  mesh mesh_1 = mesh(GL_TRIANGLES, vertices, indices);
   component component_1;
-  component_1.set_meshes({ mesh_1 });
+  component_1.set_meshes({ cow.to_mesh() });
   component_1.set_color({ 1.0f, 1.0f, 1.0f, 1.0f });
 
   object obj;
