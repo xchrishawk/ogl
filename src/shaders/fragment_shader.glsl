@@ -8,6 +8,8 @@
 
 /* -- Uniforms -- */
 
+uniform mat4 model_matrix;
+
 uniform vec4 component_color;
 uniform vec3 ambient_light;
 uniform vec3 directional_light;
@@ -50,11 +52,14 @@ vec4 ambient()
 
 vec4 directional()
 {
+  // rotate normal to world space
+  vec4 normal = model_matrix * vec4(invertex.normal, 0.0);
+
   // we have to invert the direction because math
-  vec3 inverted_direction = -directional_light_direction;
+  vec4 inverted_direction = -1.0 * vec4(directional_light_direction, 1.0);
 
   // cos theta = Lnorm dot Nnorm
-  float cos_theta = dot(normalize(inverted_direction), normalize(invertex.normal));
+  float cos_theta = dot(normalize(inverted_direction), normalize(normal));
 
   // get rid of negatives
   cos_theta = clamp(cos_theta, 0.0, 1.0);

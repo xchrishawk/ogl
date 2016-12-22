@@ -41,58 +41,21 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_scene()
 {
-  component cube_component_1;
-  cube_component_1.set_meshes({ object_factory::cone(24) });
-  cube_component_1.set_color({ 1.0f, 1.0f, 1.0f, 1.0f });
-  cube_component_1.set_scale({ 2.0f, 2.0f, 2.0f });
+  component component_1;
+  component_1.set_meshes({ object_factory::cone(1000) });
+  component_1.set_color({ 1.0f, 1.0f, 1.0f, 1.0f });
+  component_1.set_scale({ 2.0f, 2.0f, 2.0f });
 
-  component cube_component_2;
-  cube_component_2.set_meshes({ object_factory::cube() });
-  cube_component_2.set_color({ 1.0f, 0.0f, 0.0f, 1.0f });
-  cube_component_2.set_scale({ 0.5f, 0.5f, 0.5f });
-  cube_component_2.set_position({ 3.0f, 0.0f, 0.0f });
+  component component_2;
+  component_2.set_meshes({ object_factory::cone(1000) });
+  component_2.set_color({ 1.0f, 1.0f, 1.0f, 1.0f });
+  component_2.set_scale({ 2.0f, 2.0f, 2.0f });
+  component_2.set_rotation(glm::rotate(glm::quat(), 180.0f * constants::DEG_TO_RAD, constants::VEC3_UNIT_X));
 
-  component cube_component_3;
-  cube_component_3.set_meshes({ object_factory::cube() });
-  cube_component_3.set_color({ 0.0f, 1.0f, 0.0f, 1.0f });
-  cube_component_3.set_scale({ 0.5f, 0.5f, 0.5f });
-  cube_component_3.set_position({ -3.0f, 0.0f, 0.0f });
+  object obj;
+  obj.set_components({ component_1, component_2 });
 
-  component cube_component_4;
-  cube_component_4.set_meshes({ object_factory::cube() });
-  cube_component_4.set_color({ 0.0f, 0.0f, 1.0f, 1.0f });
-  cube_component_4.set_scale({ 0.5f, 0.5f, 0.5f });
-  cube_component_4.set_position({ 0.0f, 0.0f, 3.0f });
-
-  component cube_component_5;
-  cube_component_5.set_meshes({ object_factory::cube() });
-  cube_component_5.set_color({ 0.0f, 1.0f, 1.0f, 1.0f });
-  cube_component_5.set_scale({ 0.5f, 0.5f, 0.5f });
-  cube_component_5.set_position({ 0.0f, 0.0f, -3.0f });
-
-  component cube_component_6;
-  cube_component_6.set_meshes({ object_factory::cube() });
-  cube_component_6.set_color({ 1.0f, 0.0f, 1.0f, 1.0f });
-  cube_component_6.set_scale({ 0.5f, 0.5f, 0.5f });
-  cube_component_6.set_position({ 0.0f, 3.0f, 0.0f });
-
-  component cube_component_7;
-  cube_component_7.set_meshes({ object_factory::cube() });
-  cube_component_7.set_color({ 1.0f, 1.0f, 0.0f, 1.0f });
-  cube_component_7.set_scale({ 0.5f, 0.5f, 0.5f });
-  cube_component_7.set_position({ 0.0f, -3.0f, 0.0f });
-
-  object cube_object;
-  cube_object.set_components({
-      cube_component_1,
-	cube_component_2,
-	cube_component_3,
-	cube_component_4,
-	cube_component_5,
-	cube_component_6,
-	cube_component_7 });
-
-  m_scene.set_objects({ cube_object });
+  m_scene.set_objects({ obj });
   m_scene.set_ambient_light({ 0.1f, 0.1f, 0.1f });
   m_scene.set_directional_light({ 0.8f, 0.8f, 0.8f });
 }
