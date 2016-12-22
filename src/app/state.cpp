@@ -9,6 +9,7 @@
 #include "app/input.hpp"
 #include "app/object_factory.hpp"
 #include "app/state.hpp"
+#include "app/wavefront_parser.hpp"
 #include "scene/scene.hpp"
 #include "util/constants.hpp"
 #include "util/debug.hpp"
@@ -41,6 +42,11 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_scene()
 {
+  std::vector<glm::vec4> vertices;
+  std::vector<GLuint> indices;
+  wavefront_parser parser;
+  parser.parse_file("/home/chris/teapot.obj", vertices, indices);
+
   component component_1;
   component_1.set_meshes({ object_factory::cone(1000) });
   component_1.set_color({ 1.0f, 1.0f, 1.0f, 1.0f });
