@@ -42,24 +42,18 @@ state::state()
     m_camera_fov(CAMERA_FOV_DEFAULT),
     m_scene()
 {
-  std::vector<glm::vec4> vertices;
+  std::vector<vertex> vertices;
   std::vector<GLuint> indices;
   wavefront_parser parser;
-  parser.parse_file("/home/chris/teapot.obj", vertices, indices);
+  parser.parse_file("/home/chris/cow-nonormals.obj", vertices, indices);
 
+  mesh mesh_1 = mesh(GL_TRIANGLES, vertices, indices);
   component component_1;
-  component_1.set_meshes({ object_factory::cone(1000) });
+  component_1.set_meshes({ mesh_1 });
   component_1.set_color({ 1.0f, 1.0f, 1.0f, 1.0f });
-  component_1.set_scale({ 2.0f, 2.0f, 2.0f });
-
-  component component_2;
-  component_2.set_meshes({ object_factory::cone(1000) });
-  component_2.set_color({ 1.0f, 1.0f, 1.0f, 1.0f });
-  component_2.set_scale({ 2.0f, 2.0f, 2.0f });
-  component_2.set_rotation(glm::rotate(glm::quat(), 180.0f * constants::DEG_TO_RAD, constants::VEC3_UNIT_X));
 
   object obj;
-  obj.set_components({ component_1, component_2 });
+  obj.set_components({ component_1 });
 
   m_scene.set_objects({ obj });
   m_scene.set_ambient_light({ 0.1f, 0.1f, 0.1f });
@@ -72,7 +66,7 @@ void state::run(const state_args& args)
   update_camera_rotation(args);
   update_camera_fov(args);
 
-  m_scene.set_directional_light_direction({ cos(args.abs_t), sin(args.abs_t), 0.0f });
+  m_scene.set_directional_light_direction({ cos(args.abs_t), 0.0f, sin(args.abs_t) });
 }
 
 void state::update_camera_position(const state_args& args)

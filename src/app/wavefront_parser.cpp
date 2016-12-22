@@ -31,8 +31,56 @@ const std::regex wavefront_parser::f_regex("^\\s*f\\s*([0-9]+)\\s*([0-9]+)\\s*([
 /* -- Procedures -- */
 
 void wavefront_parser::parse_file(const std::string& filename,
-				  std::vector<glm::vec4>& vertices,
+				  std::vector<vertex>& vertices,
 				  std::vector<GLuint>& indices)
+{
+  // parse data
+  std::vector<wavefront_vertex> wf_vertices;
+  std::vector<wavefront_face> wf_faces;
+  internal_parse_file(filename, wf_vertices, wf_faces);
+
+  // reserve the required space
+  vertices.reserve(wf_vertices.size());
+  indices.reserve(wf_faces.size() * 3);
+
+  // initialize vertex vector
+  for (const auto& wf_vertex : wf_vertices)
+    vertices.push_back({ wf_vertex.to_vec4(), glm::vec3() });
+
+  // loop through each face
+  for (const auto& face : wf_faces)
+  {
+    // WF indices are 1-based
+    auto v1_idx = face.v1 - 1;
+    auto v2_idx = face.v2 - 1;
+    auto v3_idx = face.v3 - 1;
+
+    // get references to vertices
+    vertex& v1 = vertices[v1_idx];
+    vertex& v2 = vertices[v2_idx];
+    vertex& v3 = vertices[v3_idx];
+
+    // add normal to each vertex
+    glm::vec3 normal = cross(glm::vec3(v2.position - v1.position),
+			     glm::vec3(v3.position - v1.position));
+    v1.normal += normal;
+    v2.normal += normal;
+    v3.normal += normal;
+
+    // add indices
+    indices.push_back(v1_idx);
+    indices.push_back(v2_idx);
+    indices.push_back(v3_idx);
+  }
+
+  // finally, normalize all normals
+  for (auto& vertex : vertices)
+    vertex.normal = normalize(vertex.normal);
+}
+
+void wavefront_parser::internal_parse_file(const std::string& filename,
+					   std::vector<wavefront_vertex>& vertices,
+					   std::vector<wavefront_face>& faces)
 {
     std::fstream infile(filename);
     if (!infile.is_open())
@@ -67,7 +115,7 @@ void wavefront_parser::parse_file(const std::string& filename,
 	if (!results[W_INDEX].str().empty())
 	  w = std::stof(results[W_INDEX]);
 
-	vertices.push_back(glm::vec4(x, y, z, w));
+	vertices.push_back({ x, y, z, w });
 	continue;
       }
       else if (std::regex_match(line, results, wavefront_parser::vt_regex))
@@ -108,9 +156,7 @@ void wavefront_parser::parse_file(const std::string& filename,
 	auto v2 = std::stoi(results[V2_INDEX]);
 	auto v3 = std::stoi(results[V3_INDEX]);
 
-	indices.push_back(v1);
-	indices.push_back(v2);
-	indices.push_back(v3);
+	faces.push_back({ v1, v2, v3 });
 	continue;
       }
 
