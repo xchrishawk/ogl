@@ -9,6 +9,8 @@
 /* -- Includes -- */
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+
 #include "scene/object.hpp"
 
 /* -- Types -- */
@@ -25,11 +27,38 @@ namespace ogl
 
     /** Creates a new `scene` with default configuration. */
     scene()
-      : m_objects(),
+      : m_camera_position(),
+	m_camera_rotation(),
+	m_camera_fov(),
+	m_objects(),
 	m_ambient_light(1.0),
 	m_directional_light(),
 	m_directional_light_direction()
     { }
+
+    /** Returns the position of the camera, in world coordinates. */
+    glm::vec3 camera_position() const
+    { return m_camera_position; }
+
+    /** Sets the position of the camera, in world coordinates. */
+    void set_camera_position(const glm::vec3& position)
+    { m_camera_position = position; }
+
+    /** Returns the rotation of the camera, in world coordinates. */
+    glm::quat camera_rotation() const
+    { return m_camera_rotation; }
+
+    /** Sets the rotation of the camera, in world coordinates. */
+    void set_camera_rotation(const glm::quat& rotation)
+    { m_camera_rotation = rotation; }
+
+    /** Returns the field of view of the camera, in radians. */
+    float camera_fov() const
+    { return m_camera_fov; }
+
+    /** Sets the field of view of the camera, in radians. */
+    void set_camera_fov(float fov)
+    { m_camera_fov = fov; }
 
     /** Returns the objects included in this scene. */
     std::vector<object> objects() const
@@ -75,7 +104,12 @@ namespace ogl
 
   private:
 
+    glm::vec3 m_camera_position;
+    glm::quat m_camera_rotation;
+    float m_camera_fov;
+
     std::vector<object> m_objects;
+
     glm::vec3 m_ambient_light;
     glm::vec3 m_directional_light;
     glm::vec3 m_directional_light_direction;
