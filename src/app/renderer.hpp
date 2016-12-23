@@ -12,6 +12,7 @@
 
 #include "opengl/program.hpp"
 #include "opengl/vertex_array.hpp"
+#include "scene/scene.hpp"
 #include "scene/object.hpp"
 
 /* -- Types -- */
@@ -26,16 +27,19 @@ namespace ogl
   {
   public:
 
-    render_args(double abs_t,
+    render_args(const ogl::scene& scene,
+		double abs_t,
 		double delta_t,
 		int framebuffer_width,
 		int framebuffer_height)
-      : abs_t(abs_t),
+      : scene(scene),
+	abs_t(abs_t),
 	delta_t(delta_t),
 	framebuffer_width(framebuffer_width),
 	framebuffer_height(framebuffer_height)
     { }
 
+    const ogl::scene& scene;
     const double abs_t;
     const double delta_t;
     const int framebuffer_width;

@@ -16,6 +16,11 @@ using namespace ogl;
 
 /* -- Procedures -- */
 
+state_manager::state_manager()
+  : m_scene()
+{
+}
+
 void state_manager::run(const state_loop_args& args)
 {
 

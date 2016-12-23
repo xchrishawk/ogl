@@ -123,15 +123,15 @@ void renderer::draw_scene(const render_args& args)
   vertex_array::bind(m_vao);
 
   // set uniforms
-//  set_matrix_uniform("view_matrix", view_matrix(args));
-//  set_matrix_uniform("projection_matrix", projection_matrix(args));
-//  set_vec3_uniform("ambient_light", args.state.scene().ambient_light());
-//  set_vec3_uniform("directional_light", args.state.scene().directional_light());
-//  set_vec3_uniform("directional_light_direction", args.state.scene().directional_light_direction());
+  set_matrix_uniform("view_matrix", view_matrix(args));
+  set_matrix_uniform("projection_matrix", projection_matrix(args));
+  set_vec3_uniform("ambient_light", args.scene.ambient_light());
+  set_vec3_uniform("directional_light", args.scene.directional_light());
+  set_vec3_uniform("directional_light_direction", args.scene.directional_light_direction());
 
   // draw each object
-//  for (const object& obj : args.state.scene().objects())
-//    draw_object(obj);
+  for (const object& obj : args.scene.objects())
+    draw_object(obj);
 
   // clean up
   vertex_array::bind_none();
@@ -187,8 +187,8 @@ glm::mat4 renderer::model_matrix(const object& object, const component& componen
 glm::mat4 renderer::view_matrix(const render_args& args)
 {
   glm::mat4 view_matrix;
-//    glm::translate(args.state.camera_position()) *	// translation (done second)
-//    glm::mat4_cast(args.state.camera_rotation());	// rotation (done first)
+    glm::translate(args.scene.camera_position()) *	// translation (done second)
+    glm::mat4_cast(args.scene.camera_rotation());	// rotation (done first)
   view_matrix = glm::inverse(view_matrix);		// invert origin->camera into camera->origin
 
   return view_matrix;
@@ -196,15 +196,15 @@ glm::mat4 renderer::view_matrix(const render_args& args)
 
 glm::mat4 renderer::projection_matrix(const render_args& args)
 {
-//  float aspect_ratio =
-//    static_cast<float>(args.framebuffer_width) /
-//    static_cast<float>(args.framebuffer_height);
+  float aspect_ratio =
+    static_cast<float>(args.framebuffer_width) /
+    static_cast<float>(args.framebuffer_height);
 
   glm::mat4 projection_matrix;
-//    glm::perspective(args.state.camera_fov(),		// camera FOV (Y axis)
-//		aspect_ratio,				// display aspect ratio
-//		0.1f,					// near clip (TODO)
-//		100.0f);				// far clip (TODO)
+    glm::perspective(args.scene.camera_fov(),		// camera FOV (Y axis)
+		aspect_ratio,				// display aspect ratio
+		0.1f,					// near clip (TODO)
+		100.0f);				// far clip (TODO)
 
   return projection_matrix;
 }

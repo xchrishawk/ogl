@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include "app/input_manager.hpp"
+#include "scene/scene.hpp"
 
 /* -- Types -- */
 
@@ -47,6 +48,8 @@ namespace ogl
   {
   public:
 
+    state_manager();
+
     /**
      * Runs an iteration of the state loop.
      *
@@ -57,6 +60,17 @@ namespace ogl
 
     /** Event handler for the `input_key_observer` interface. */
     void input_key_pressed(input_key input);
+
+    /** Returns the scene that should be rendered. */
+    ogl::scene scene() const
+    { return m_scene; }
+
+  private:
+
+    ogl::scene m_scene;
+
+    state_manager(const state_manager&) = delete;
+    state_manager& operator =(const state_manager&) = delete;
 
   };
 

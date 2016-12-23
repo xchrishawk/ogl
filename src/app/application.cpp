@@ -126,7 +126,7 @@ void application::handle_render(double abs_t, double delta_t)
   m_window->framebuffer_size(&fb_width, &fb_height);
 
   // create arguments with required data
-  render_args args(abs_t, delta_t, fb_width, fb_height);
+  render_args args(m_state_manager.scene(), abs_t, delta_t, fb_width, fb_height);
 
   // render and swap buffers
   m_renderer.render(args);
