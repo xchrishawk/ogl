@@ -26,3 +26,22 @@
   #error Unrecognized or unsupported platform!
 
 #endif
+
+/* -- Procedures -- */
+
+namespace ogl
+{
+
+  /**
+   * Converts a `GLint` to a `bool`.
+   *
+   * @note
+   * The argument is assumed to contain either `GL_FALSE` or `GL_TRUE`.
+   */
+  inline bool GLint_to_bool(GLint value)
+  {
+    // assume true for any value not equal to GL_FALSE
+    return (value != GL_FALSE);
+  }
+
+}

@@ -33,6 +33,30 @@ namespace ogl
 
     virtual ~buffer();
 
+    /** Maps the entire buffer to memory. */
+    void* map(GLenum access);
+
+    /** Maps a portion of the buffer to memory. */
+    void* map_range(GLintptr offset, GLsizei lenth, GLbitfield access);
+
+    /** Updates a portion of the buffer's data. */
+    void sub_data(GLintptr offset, GLsizei size, const void* data);
+
+    /** Returns `true` if this is an immutable buffer. */
+    bool is_immutable() const;
+
+    /** Returns `true` if this buffer is currently mapped. */
+    bool is_mapped() const;
+
+    /** Returns the number of bytes currently mapped from this buffer. */
+    GLint64 map_length() const;
+
+    /** Returns the offset of the region currently mapped from this buffer. */
+    GLint64 map_offset() const;
+
+    /** Returns the current size of the buffer, in bytes. */
+    GLint size() const;
+
     /** Returns the internal OpenGL handle for this buffer. */
     GLuint handle() const { return m_handle; }
 
@@ -55,8 +79,8 @@ namespace ogl
    * Class representing an immutable OpenGL buffer.
    *
    * This buffer is initialized with `glNamedBufferStorage()` as soon as it is
-   * created. There is currently no way to update the buffer's data after it has
-   * been created.
+   * created. The buffer is "immutable" in the sense that its location and size
+   * cannot be changed. However, its data contents may be changed.
    */
   class immutable_buffer : public buffer
   {
@@ -75,7 +99,8 @@ namespace ogl
      * The size of the buffer, in bytes.
      *
      * @param data
-     * A pointer to the data to load into the buffer.
+     * A pointer to the data to load into the buffer, or `NULL` to leave the
+     * initial contents of the buffer unspecified.
      *
      * @param flags
      * Bitfield of OpenGL flags for this buffer.

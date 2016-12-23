@@ -30,6 +30,56 @@ buffer::~buffer()
   glDeleteBuffers(1, &m_handle);
 }
 
+void* buffer::map(GLenum access)
+{
+  return glMapNamedBuffer(m_handle, access);
+}
+
+void* buffer::map_range(GLintptr offset, GLsizei length, GLbitfield access)
+{
+  return glMapNamedBufferRange(m_handle, offset, length, access);
+}
+
+void buffer::sub_data(GLintptr offset, GLsizei size, const void* data)
+{
+  glNamedBufferSubData(m_handle, offset, size, data);
+}
+
+bool buffer::is_immutable() const
+{
+  GLint immutable = 0;
+  glGetNamedBufferParameteriv(m_handle, GL_BUFFER_IMMUTABLE_STORAGE, &immutable);
+  return GLint_to_bool(immutable);
+}
+
+bool buffer::is_mapped() const
+{
+  GLint mapped = 0;
+  glGetNamedBufferParameteriv(m_handle, GL_BUFFER_MAPPED, &mapped);
+  return GLint_to_bool(mapped);
+}
+
+GLint64 buffer::map_length() const
+{
+  GLint64 map_length = 0;
+  glGetNamedBufferParameteri64v(m_handle, GL_BUFFER_MAP_LENGTH, &map_length);
+  return map_length;
+}
+
+GLint64 buffer::map_offset() const
+{
+  GLint64 map_offset = 0;
+  glGetNamedBufferParameteri64v(m_handle, GL_BUFFER_MAP_OFFSET, &map_offset);
+  return map_offset;
+}
+
+GLint buffer::size() const
+{
+  GLint size = 0;
+  glGetNamedBufferParameteriv(m_handle, GL_BUFFER_SIZE, &size);
+  return size;
+}
+
 GLuint buffer::new_handle()
 {
   GLuint handle = 0;
