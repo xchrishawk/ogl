@@ -10,8 +10,6 @@
 #include <iostream>
 
 #include "app/input.hpp"
-#include "glfw/glfw.hpp"
-#include "glfw/window.hpp"
 #include "opengl/api.hpp"
 #include "util/debug.hpp"
 
@@ -21,14 +19,10 @@ using namespace ogl;
 
 /* -- Procedures -- */
 
-input::input(window::const_ptr window)
-  : m_window(window)
+input::input()
 {
 }
 
 void input::key_pressed(int key, int scancode, int action, int mods)
 {
-  // we don't do anything with repeat actions
-  if (action == GLFW_REPEAT)
-    return;
 }

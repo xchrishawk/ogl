@@ -38,7 +38,7 @@ application::application()
 			    constants::WINDOW_INITIAL_HEIGHT,
 			    constants::WINDOW_TITLE)),
     m_opengl(),
-    m_input(m_window),
+    m_input(),
     m_state(),
     m_renderer()
 {

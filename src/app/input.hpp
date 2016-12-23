@@ -8,8 +8,6 @@
 
 /* -- Includes -- */
 
-#include "glfw/glfw.hpp"
-#include "glfw/window.hpp"
 #include "opengl/api.hpp"
 
 /* -- Types -- */
@@ -27,13 +25,11 @@ namespace ogl
   {
   public:
 
-    input(window::const_ptr window);
+    input();
 
   private:
 
     friend class ogl::application;
-
-    const window::const_ptr m_window;
 
     input(const input& other) = delete;
     input& operator =(const input& other) = delete;

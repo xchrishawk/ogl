@@ -77,11 +77,6 @@ void window::set_key_callback(GLFWkeyfun callback)
   glfwSetKeyCallback(m_handle, callback);
 }
 
-bool window::get_key(int key) const
-{
-  return glfwGetKey(m_handle, key);
-}
-
 void window::make_context_current()
 {
   glfwMakeContextCurrent(m_handle);
