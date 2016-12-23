@@ -6,6 +6,10 @@
 
 #pragma once
 
+/* -- Includes -- */
+
+#include <string>
+
 /* -- Types -- */
 
 namespace ogl

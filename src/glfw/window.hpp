@@ -47,6 +47,9 @@ namespace ogl
     /** Sets the keypress callback for this window. */
     void set_key_callback(GLFWkeyfun callback);
 
+    /** Gets the state of the specified key. */
+    bool get_key(int key) const;
+
     /** Makes this window the current OpenGL context. */
     void make_context_current();
 
