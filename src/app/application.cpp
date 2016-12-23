@@ -10,6 +10,7 @@
 #include <stdexcept>
 
 #include "app/application.hpp"
+#include "app/input_manager.hpp"
 #include "app/renderer.hpp"
 #include "glfw/glfw.hpp"
 #include "glfw/window.hpp"
@@ -36,6 +37,7 @@ application::application()
 			    constants::WINDOW_INITIAL_HEIGHT,
 			    constants::WINDOW_TITLE)),
     m_opengl(),
+    m_input_manager(),
     m_renderer()
 {
   if (application::s_instance)
@@ -123,4 +125,6 @@ void application::handle_render(double abs_t, double delta_t)
 
 void application::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+  if (application::s_instance)
+    application::s_instance->m_input_manager.handle_keypress(key, scancode, action, mods);
 }

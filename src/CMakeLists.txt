@@ -12,6 +12,7 @@ set(APP_EXECUTABLE_NAME ${CMAKE_PROJECT_NAME})
 set(APP_EXECUTABLE_SOURCES
   main.cpp
   app/application.cpp
+  app/input_manager.cpp
   app/object_factory.cpp
   app/renderer.cpp
   app/wavefront_file.cpp
