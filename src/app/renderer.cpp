@@ -186,7 +186,7 @@ glm::mat4 renderer::model_matrix(const object& object, const component& componen
 
 glm::mat4 renderer::view_matrix(const render_args& args)
 {
-  glm::mat4 view_matrix;
+  glm::mat4 view_matrix =
     glm::translate(args.scene.camera_position()) *	// translation (done second)
     glm::mat4_cast(args.scene.camera_rotation());	// rotation (done first)
   view_matrix = glm::inverse(view_matrix);		// invert origin->camera into camera->origin
@@ -200,7 +200,7 @@ glm::mat4 renderer::projection_matrix(const render_args& args)
     static_cast<float>(args.framebuffer_width) /
     static_cast<float>(args.framebuffer_height);
 
-  glm::mat4 projection_matrix;
+  glm::mat4 projection_matrix =
     glm::perspective(args.scene.camera_fov(),		// camera FOV (Y axis)
 		aspect_ratio,				// display aspect ratio
 		0.1f,					// near clip (TODO)

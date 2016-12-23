@@ -27,7 +27,7 @@ namespace ogl
   {
   public:
 
-    render_args(const ogl::scene& scene,
+    render_args(const ogl::scene scene,
 		double abs_t,
 		double delta_t,
 		int framebuffer_width,
@@ -39,7 +39,7 @@ namespace ogl
 	framebuffer_height(framebuffer_height)
     { }
 
-    const ogl::scene& scene;
+    const ogl::scene scene;
     const double abs_t;
     const double delta_t;
     const int framebuffer_width;
