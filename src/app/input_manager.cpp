@@ -35,7 +35,7 @@ void input_manager::handle_key(int key, int scancode, int action, int mods)
     handle_key_release(key, mods);
 }
 
-bool input_manager::input_key_state(input_key input)
+bool input_manager::input_key_state(input_key input) const
 {
   ogl_dbg_assert(input_key_valid(input));
   return m_input_keys[input];
@@ -84,6 +84,12 @@ void input_manager::handle_key_release(int key, int mods)
     m_input_keys[input] = false;
 }
 
+void input_manager::notify_input_key(input_key key)
+{
+  for (auto observer : m_input_key_observers)
+    observer->input_key_pressed(key);
+}
+
 input_key input_manager::input_key_for_key(int key, int mods)
 {
   if (key == GLFW_KEY_ESCAPE)
@@ -103,12 +109,6 @@ bool input_manager::should_notify_input_key(input_key key)
   default:
     return false;
   }
-}
-
-void input_manager::notify_input_key(input_key key)
-{
-  for (auto observer : m_input_key_observers)
-    observer->input_key_pressed(key);
 }
 
 bool input_manager::input_key_valid(input_key key)

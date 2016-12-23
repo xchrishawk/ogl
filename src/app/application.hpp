@@ -10,6 +10,7 @@
 
 #include "app/input_manager.hpp"
 #include "app/renderer.hpp"
+#include "app/state_manager.hpp"
 #include "glfw/glfw.hpp"
 #include "glfw/window.hpp"
 #include "opengl/opengl.hpp"
@@ -22,7 +23,7 @@ namespace ogl
   /**
    * Main application class.
    */
-  class application : public input_key_observer
+  class application : public ogl::input_key_observer
   {
   public:
 
@@ -39,11 +40,12 @@ namespace ogl
 
     static application* s_instance;
 
-    glfw m_glfw;
-    window::ptr m_window;
-    opengl m_opengl;
-    input_manager m_input_manager;
-    renderer m_renderer;
+    ogl::glfw m_glfw;
+    ogl::window::ptr m_window;
+    ogl::opengl m_opengl;
+    ogl::input_manager m_input_manager;
+    ogl::state_manager m_state_manager;
+    ogl::renderer m_renderer;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;

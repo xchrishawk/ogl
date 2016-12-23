@@ -38,6 +38,7 @@ application::application()
 			    constants::WINDOW_TITLE)),
     m_opengl(),
     m_input_manager(),
+    m_state_manager(),
     m_renderer()
 {
   if (application::s_instance)
@@ -48,7 +49,9 @@ application::application()
 
   m_glfw.set_swap_interval(constants::OPENGL_SWAP_INTERVAL);
   m_window->set_key_callback(application::key_callback);
+
   m_input_manager.add_input_key_observer(this);
+  m_input_manager.add_input_key_observer(&m_state_manager);
 
   application::s_instance = this;
   ogl_dbg_status("Application initialized successfully.");
@@ -57,6 +60,7 @@ application::application()
 application::~application()
 {
   m_input_manager.remove_input_key_observer(this);
+  m_input_manager.remove_input_key_observer(&m_state_manager);
 
   application::s_instance = nullptr;
   ogl_dbg_status("Application shutting down...");
@@ -64,8 +68,8 @@ application::~application()
 
 void application::main()
 {
-  double last_state_t = m_glfw.time();
-  double last_render_t = m_glfw.time();
+  auto last_state_t = m_glfw.time();
+  auto last_render_t = m_glfw.time();
 
   while (!m_window->should_close())
   {
@@ -73,10 +77,10 @@ void application::main()
     handle_input();
 
     // get timing info
-    double abs_t = m_glfw.time();
+    auto abs_t = m_glfw.time();
 
     // handle state updates
-    double state_delta_t = abs_t - last_state_t;
+    auto state_delta_t = abs_t - last_state_t;
     if (state_delta_t >= constants::TARGET_STATE_DELTA_T)
     {
       handle_state(abs_t, state_delta_t);
@@ -84,7 +88,7 @@ void application::main()
     }
 
     // handle rendering
-    double render_delta_t = abs_t - last_render_t;
+    auto render_delta_t = abs_t - last_render_t;
     if (render_delta_t >= constants::TARGET_RENDER_DELTA_T)
     {
       handle_render(abs_t, render_delta_t);
@@ -118,7 +122,7 @@ void application::handle_state(double abs_t, double delta_t)
 void application::handle_render(double abs_t, double delta_t)
 {
   // get dimensions of framebuffer
-  int fb_width = 0, fb_height = 0;
+  auto fb_width = 0, fb_height = 0;
   m_window->framebuffer_size(&fb_width, &fb_height);
 
   // create arguments with required data
@@ -131,7 +135,7 @@ void application::handle_render(double abs_t, double delta_t)
 #if defined(OGL_DEBUG)
 
   // if this is a debug build, check for errors
-  GLenum error = ogl::opengl_last_error();
+  auto error = ogl::opengl_last_error();
   if (error != GL_NO_ERROR)
     ogl_dbg_warning("OpenGL error detected in run loop!", opengl_error_string(error));
 

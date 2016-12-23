@@ -61,7 +61,7 @@ namespace ogl
     void handle_key(int key, int scancode, int action, int mods);
 
     /** Returns `true` if the specified key is in an active state. */
-    bool input_key_state(input_key input);
+    bool input_key_state(input_key input) const;
 
     /** Adds an input key observer. */
     void add_input_key_observer(input_key_observer* observer);
@@ -76,10 +76,11 @@ namespace ogl
 
     void handle_key_press(int key, int mods);
     void handle_key_release(int key, int mods);
-    input_key input_key_for_key(int key, int mods);
-    bool should_notify_input_key(input_key key);
     void notify_input_key(input_key key);
-    bool input_key_valid(input_key key);
+
+    static input_key input_key_for_key(int key, int mods);
+    static bool should_notify_input_key(input_key key);
+    static bool input_key_valid(input_key key);
 
   };
 

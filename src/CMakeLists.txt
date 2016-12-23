@@ -15,6 +15,7 @@ set(APP_EXECUTABLE_SOURCES
   app/input_manager.cpp
   app/object_factory.cpp
   app/renderer.cpp
+  app/state_manager.cpp
   app/wavefront_file.cpp
   glfw/glfw.cpp
   glfw/window.cpp
