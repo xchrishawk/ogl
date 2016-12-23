@@ -10,7 +10,6 @@
 
 #include <glm/glm.hpp>
 
-#include "app/state.hpp"
 #include "opengl/program.hpp"
 #include "opengl/vertex_array.hpp"
 #include "scene/object.hpp"
@@ -27,19 +26,16 @@ namespace ogl
   {
   public:
 
-    render_args(const ogl::state& state,
-		double abs_t,
+    render_args(double abs_t,
 		double delta_t,
 		int framebuffer_width,
 		int framebuffer_height)
-      : state(state),
-	abs_t(abs_t),
+      : abs_t(abs_t),
 	delta_t(delta_t),
 	framebuffer_width(framebuffer_width),
 	framebuffer_height(framebuffer_height)
     { }
 
-    const ogl::state& state;
     const double abs_t;
     const double delta_t;
     const int framebuffer_width;

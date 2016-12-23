@@ -8,9 +8,7 @@
 
 /* -- Includes -- */
 
-#include "app/input.hpp"
 #include "app/renderer.hpp"
-#include "app/state.hpp"
 #include "glfw/glfw.hpp"
 #include "glfw/window.hpp"
 #include "opengl/opengl.hpp"
@@ -40,8 +38,6 @@ namespace ogl
     glfw m_glfw;
     window::ptr m_window;
     opengl m_opengl;
-    input m_input;
-    state m_state;
     renderer m_renderer;
 
     application(const application&) = delete;

@@ -10,9 +10,7 @@
 #include <stdexcept>
 
 #include "app/application.hpp"
-#include "app/input.hpp"
 #include "app/renderer.hpp"
-#include "app/state.hpp"
 #include "glfw/glfw.hpp"
 #include "glfw/window.hpp"
 #include "opengl/api.hpp"
@@ -38,8 +36,6 @@ application::application()
 			    constants::WINDOW_INITIAL_HEIGHT,
 			    constants::WINDOW_TITLE)),
     m_opengl(),
-    m_input(),
-    m_state(),
     m_renderer()
 {
   if (application::s_instance)
@@ -94,21 +90,12 @@ void application::main()
 
 void application::handle_input()
 {
-  // // poll GLFW events
-  // m_glfw.poll_events();
-
-  // // set the window close flag if the user selects to exit
-  // if (m_input.input_active(INPUT_KEY_EXIT_APPLICATION))
-  //   m_window->set_should_close(true);
+  // poll GLFW events
+  m_glfw.poll_events();
 }
 
 void application::handle_state(double abs_t, double delta_t)
 {
-  // create arguments with required data
-  state_args args(m_input, abs_t, delta_t);
-
-  // update state
-  m_state.run(args);
 }
 
 void application::handle_render(double abs_t, double delta_t)
@@ -118,7 +105,7 @@ void application::handle_render(double abs_t, double delta_t)
   m_window->framebuffer_size(&fb_width, &fb_height);
 
   // create arguments with required data
-  render_args args(m_state, abs_t, delta_t, fb_width, fb_height);
+  render_args args(abs_t, delta_t, fb_width, fb_height);
 
   // render and swap buffers
   m_renderer.render(args);
@@ -136,7 +123,4 @@ void application::handle_render(double abs_t, double delta_t)
 
 void application::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-  // this gets farmed out to the input object
-  if (s_instance)
-    s_instance->m_input.key_pressed(key, scancode, action, mods);
 }
