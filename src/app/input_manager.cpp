@@ -99,6 +99,9 @@ input_key input_manager::input_key_for_key(int key, int mods)
     switch (key)
     {
     case GLFW_KEY_ESCAPE:     	return INPUT_KEY_APPLICATION_EXIT;
+    case GLFW_KEY_F1:		return INPUT_KEY_CONTROL_MODE_CAMERA;
+    case GLFW_KEY_F2:		return INPUT_KEY_CONTROL_MODE_OBJECT;
+    case GLFW_KEY_TAB:		return INPUT_KEY_CONTROL_OBJECT_CYCLE;
     case GLFW_KEY_X:		return INPUT_KEY_CAMERA_RESET;
     case GLFW_KEY_W:	 	return INPUT_KEY_TRANSLATE_FORWARD;
     case GLFW_KEY_S:      	return INPUT_KEY_TRANSLATE_BACKWARD;
@@ -135,6 +138,9 @@ bool input_manager::should_notify_input_key(input_key key)
   switch (key)
   {
   case INPUT_KEY_APPLICATION_EXIT:
+  case INPUT_KEY_CONTROL_MODE_CAMERA:
+  case INPUT_KEY_CONTROL_MODE_OBJECT:
+  case INPUT_KEY_CONTROL_OBJECT_CYCLE:
   case INPUT_KEY_CAMERA_RESET:
     return true;
 

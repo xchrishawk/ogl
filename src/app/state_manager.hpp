@@ -17,6 +17,15 @@ namespace ogl
 {
 
   /**
+   * Enumeration of things that keyboard inputs may control.
+   */
+  enum control_mode
+  {
+    CONTROL_MODE_CAMERA,		/**< User is controlling the camera. */
+    CONTROL_MODE_OBJECT,		/**< User is controlling an object. */
+  };
+
+  /**
    * Class containing information required to run a loop of the state manager.
    */
   class state_loop_args
@@ -68,6 +77,8 @@ namespace ogl
 
   private:
 
+    ogl::control_mode m_control_mode;
+    int m_control_object_index;
     ogl::scene m_scene;
 
     state_manager(const state_manager&) = delete;
@@ -78,6 +89,22 @@ namespace ogl
     void update_camera_position(const state_loop_args& args);
     void update_camera_rotation(const state_loop_args& args);
     void update_camera_fov(const state_loop_args& args);
+
+    void update_object(const state_loop_args& args);
+    void update_object_position(const state_loop_args& args, ogl::object& obj);
+    void update_object_rotation(const state_loop_args& args, ogl::object& obj);
+    void update_object_scale(const state_loop_args& args, ogl::object& obj);
+
+    glm::vec3 translate(const glm::vec3& position,
+			const glm::quat& rotation,
+			float rate,
+			const state_loop_args& args);
+    glm::quat rotate(const glm::quat& quat,
+		     float rate,
+		     const state_loop_args& args);
+    glm::vec3 scale(const glm::vec3& scale,
+		    float rate,
+		    const state_loop_args& args);
 
   };
 

@@ -102,6 +102,10 @@ namespace ogl
     void set_directional_light_direction(const glm::vec3& direction)
     { m_directional_light_direction = direction; }
 
+    /** Returns the number of objects in the scene as an `int`. */
+    int object_count() const
+    { return static_cast<int>(m_objects.size()); }
+
   private:
 
     glm::vec3 m_camera_position;
