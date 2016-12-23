@@ -126,5 +126,5 @@ void application::handle_render(double abs_t, double delta_t)
 void application::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
   if (application::s_instance)
-    application::s_instance->m_input_manager.handle_keypress(key, scancode, action, mods);
+    application::s_instance->m_input_manager.handle_key(key, scancode, action, mods);
 }
