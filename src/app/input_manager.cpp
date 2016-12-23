@@ -56,7 +56,7 @@ void input_manager::remove_input_key_observer(input_key_observer* observer)
 void input_manager::handle_key_press(int key, int mods)
 {
   // make sure this is a valid keypress, and get the corresponding input
-  input_key input = input_key_for_key(key, mods);
+  auto input = input_key_for_key(key, mods);
   if (input == INPUT_KEY_INVALID)
     return;
 
@@ -107,7 +107,7 @@ bool input_manager::should_notify_input_key(input_key key)
 
 void input_manager::notify_input_key(input_key key)
 {
-  for (input_key_observer* observer : m_input_key_observers)
+  for (auto observer : m_input_key_observers)
     observer->input_key_pressed(key);
 }
 
