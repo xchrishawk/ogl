@@ -92,10 +92,42 @@ void input_manager::notify_input_key(input_key key)
 
 input_key input_manager::input_key_for_key(int key, int mods)
 {
-  if (key == GLFW_KEY_ESCAPE)
-    return INPUT_KEY_APPLICATION_EXIT;
-  else
+  switch (mods)
+  {
+  case 0:
+    // no mods
+    switch (key)
+    {
+    case GLFW_KEY_ESCAPE:     	return INPUT_KEY_APPLICATION_EXIT;
+    case GLFW_KEY_X:		return INPUT_KEY_CAMERA_RESET;
+    case GLFW_KEY_W:	 	return INPUT_KEY_TRANSLATE_FORWARD;
+    case GLFW_KEY_S:      	return INPUT_KEY_TRANSLATE_BACKWARD;
+    case GLFW_KEY_D:      	return INPUT_KEY_TRANSLATE_RIGHT;
+    case GLFW_KEY_A:      	return INPUT_KEY_TRANSLATE_LEFT;
+    case GLFW_KEY_R:      	return INPUT_KEY_TRANSLATE_UP;
+    case GLFW_KEY_F:      	return INPUT_KEY_TRANSLATE_DOWN;
+    case GLFW_KEY_C:		return INPUT_KEY_SCALE_UP;
+    case GLFW_KEY_Z:		return INPUT_KEY_SCALE_DOWN;
+    default:      		return INPUT_KEY_INVALID;
+    }
+
+  case GLFW_MOD_SHIFT:
+    // shift key active
+    switch (key)
+    {
+    case GLFW_KEY_W:		return INPUT_KEY_ROTATE_PITCH_DOWN;
+    case GLFW_KEY_S:		return INPUT_KEY_ROTATE_PITCH_UP;
+    case GLFW_KEY_D:		return INPUT_KEY_ROTATE_YAW_RIGHT;
+    case GLFW_KEY_A:		return INPUT_KEY_ROTATE_YAW_LEFT;
+    case GLFW_KEY_E:		return INPUT_KEY_ROTATE_ROLL_RIGHT;
+    case GLFW_KEY_Q:		return INPUT_KEY_ROTATE_ROLL_LEFT;
+    default:			return INPUT_KEY_INVALID;
+    }
+
+  default:
+    // unknown mod
     return INPUT_KEY_INVALID;
+  }
 }
 
 bool input_manager::should_notify_input_key(input_key key)

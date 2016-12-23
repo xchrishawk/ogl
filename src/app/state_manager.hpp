@@ -21,6 +21,7 @@ namespace ogl
    */
   class state_loop_args
   {
+  public:
 
     state_loop_args(const ogl::input_manager& input_manager,
 		    double abs_t,
@@ -71,6 +72,12 @@ namespace ogl
 
     state_manager(const state_manager&) = delete;
     state_manager& operator =(const state_manager&) = delete;
+
+    void default_camera();
+    void update_camera(const state_loop_args& args);
+    void update_camera_position(const state_loop_args& args);
+    void update_camera_rotation(const state_loop_args& args);
+    void update_camera_fov(const state_loop_args& args);
 
   };
 

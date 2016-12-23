@@ -117,6 +117,8 @@ void application::handle_input()
 
 void application::handle_state(double abs_t, double delta_t)
 {
+  state_loop_args args(m_input_manager, abs_t, delta_t);
+  m_state_manager.run(args);
 }
 
 void application::handle_render(double abs_t, double delta_t)
