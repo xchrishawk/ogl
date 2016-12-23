@@ -25,6 +25,22 @@ using namespace ogl;
 
 /* -- Procedures -- */
 
+mesh object_factory::origin()
+{
+  static const std::vector<vertex> vertices =
+  {
+    { { -1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { { 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { { 0.0f, -1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+    { { 0.0f, 0.0f, -1.0f }, { 0.0f, 0.0f, 0.0f } },
+    { { 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f } },
+  };
+  static const std::vector<GLuint> indices = { 0, 1, 2, 3, 4, 5 };
+
+  return mesh(GL_LINES, vertices, indices);
+}
+
 mesh object_factory::plane()
 {
   static const glm::vec3 NORMAL = { 0.0f, 0.0f, 1.0f };

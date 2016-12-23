@@ -28,6 +28,11 @@ namespace ogl
   public:
 
     /**
+     * Returns a mesh for a 3-dimensional origin crosshair.
+     */
+    static mesh origin();
+
+    /**
      * Returns a mesh for a square in the X-Y plane, centered at the origin, with
      * dimensions of 1.0 x 1.0 x 0.0.
      */
