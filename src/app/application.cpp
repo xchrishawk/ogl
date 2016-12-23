@@ -94,12 +94,12 @@ void application::main()
 
 void application::handle_input()
 {
-  // poll GLFW events
-  m_glfw.poll_events();
+  // // poll GLFW events
+  // m_glfw.poll_events();
 
-  // set the window close flag if the user selects to exit
-  if (m_input.input_active(INPUT_KEY_EXIT_APPLICATION))
-    m_window->set_should_close(true);
+  // // set the window close flag if the user selects to exit
+  // if (m_input.input_active(INPUT_KEY_EXIT_APPLICATION))
+  //   m_window->set_should_close(true);
 }
 
 void application::handle_state(double abs_t, double delta_t)

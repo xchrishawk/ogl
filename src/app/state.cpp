@@ -67,86 +67,86 @@ void state::run(const state_args& args)
 
 void state::update_camera_position(const state_args& args)
 {
-  // reset
-  if (args.input.input_active(INPUT_KEY_CAMERA_RESET))
-  {
-    m_camera_rotation = CAMERA_ROTATION_DEFAULT;
-    return;
-  }
+  // // reset
+  // if (args.input.input_active(INPUT_KEY_CAMERA_RESET))
+  // {
+  //   m_camera_rotation = CAMERA_ROTATION_DEFAULT;
+  //   return;
+  // }
 
-  const float POSITIVE_RATE = CAMERA_ROTATION_PER_SEC * args.delta_t;
-  const float NEGATIVE_RATE = -POSITIVE_RATE;
+  // const float POSITIVE_RATE = CAMERA_ROTATION_PER_SEC * args.delta_t;
+  // const float NEGATIVE_RATE = -POSITIVE_RATE;
 
-  // pitch
-  if (args.input.input_active(INPUT_KEY_CAMERA_PITCH_UP))
-    m_camera_rotation = rotate(m_camera_rotation, POSITIVE_RATE, constants::VEC3_UNIT_X);
-  if (args.input.input_active(INPUT_KEY_CAMERA_PITCH_DOWN))
-    m_camera_rotation = rotate(m_camera_rotation, NEGATIVE_RATE, constants::VEC3_UNIT_X);
+  // // pitch
+  // if (args.input.input_active(INPUT_KEY_CAMERA_PITCH_UP))
+  //   m_camera_rotation = rotate(m_camera_rotation, POSITIVE_RATE, constants::VEC3_UNIT_X);
+  // if (args.input.input_active(INPUT_KEY_CAMERA_PITCH_DOWN))
+  //   m_camera_rotation = rotate(m_camera_rotation, NEGATIVE_RATE, constants::VEC3_UNIT_X);
 
-  // roll
-  if (args.input.input_active(INPUT_KEY_CAMERA_YAW_RIGHT))
-    m_camera_rotation = rotate(m_camera_rotation, NEGATIVE_RATE, constants::VEC3_UNIT_Y);
-  if (args.input.input_active(INPUT_KEY_CAMERA_YAW_LEFT))
-    m_camera_rotation = rotate(m_camera_rotation, POSITIVE_RATE, constants::VEC3_UNIT_Y);
+  // // roll
+  // if (args.input.input_active(INPUT_KEY_CAMERA_YAW_RIGHT))
+  //   m_camera_rotation = rotate(m_camera_rotation, NEGATIVE_RATE, constants::VEC3_UNIT_Y);
+  // if (args.input.input_active(INPUT_KEY_CAMERA_YAW_LEFT))
+  //   m_camera_rotation = rotate(m_camera_rotation, POSITIVE_RATE, constants::VEC3_UNIT_Y);
 
-  // yaw
-  if (args.input.input_active(INPUT_KEY_CAMERA_ROLL_RIGHT))
-    m_camera_rotation = rotate(m_camera_rotation, NEGATIVE_RATE, constants::VEC3_UNIT_Z);
-  if (args.input.input_active(INPUT_KEY_CAMERA_ROLL_LEFT))
-    m_camera_rotation = rotate(m_camera_rotation, POSITIVE_RATE, constants::VEC3_UNIT_Z);
+  // // yaw
+  // if (args.input.input_active(INPUT_KEY_CAMERA_ROLL_RIGHT))
+  //   m_camera_rotation = rotate(m_camera_rotation, NEGATIVE_RATE, constants::VEC3_UNIT_Z);
+  // if (args.input.input_active(INPUT_KEY_CAMERA_ROLL_LEFT))
+  //   m_camera_rotation = rotate(m_camera_rotation, POSITIVE_RATE, constants::VEC3_UNIT_Z);
 }
 
 void state::update_camera_rotation(const state_args& args)
 {
-  // reset
-  if (args.input.input_active(INPUT_KEY_CAMERA_RESET))
-  {
-    m_camera_position = CAMERA_POSITION_DEFAULT;
-    return;
-  }
+  // // reset
+  // if (args.input.input_active(INPUT_KEY_CAMERA_RESET))
+  // {
+  //   m_camera_position = CAMERA_POSITION_DEFAULT;
+  //   return;
+  // }
 
-  const float RATE = CAMERA_POSITION_PER_SEC * args.delta_t;
-  glm::vec3 translation;
+  // const float RATE = CAMERA_POSITION_PER_SEC * args.delta_t;
+  // glm::vec3 translation;
 
-  // right/left
-  if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_RIGHT))
-    translation.x += RATE;
-  if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_LEFT))
-    translation.x -= RATE;
+  // // right/left
+  // if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_RIGHT))
+  //   translation.x += RATE;
+  // if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_LEFT))
+  //   translation.x -= RATE;
 
-  // up/down
-  if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_UP))
-    translation.y += RATE;
-  if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_DOWN))
-    translation.y -= RATE;
+  // // up/down
+  // if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_UP))
+  //   translation.y += RATE;
+  // if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_DOWN))
+  //   translation.y -= RATE;
 
-  // forward/backward
-  if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_FORWARD))
-    translation.z -= RATE;
-  if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_BACKWARD))
-    translation.z += RATE;
+  // // forward/backward
+  // if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_FORWARD))
+  //   translation.z -= RATE;
+  // if (args.input.input_active(INPUT_KEY_CAMERA_TRANSLATE_BACKWARD))
+  //   translation.z += RATE;
 
-  // rotate to our local reference frame and add to position
-  m_camera_position += mat3_cast(m_camera_rotation) * translation;
+  // // rotate to our local reference frame and add to position
+  // m_camera_position += mat3_cast(m_camera_rotation) * translation;
 }
 
 void state::update_camera_fov(const state_args& args)
 {
-  // reset
-  if (args.input.input_active(INPUT_KEY_CAMERA_RESET))
-  {
-    m_camera_fov = CAMERA_FOV_DEFAULT;
-    return;
-  }
+  // // reset
+  // if (args.input.input_active(INPUT_KEY_CAMERA_RESET))
+  // {
+  //   m_camera_fov = CAMERA_FOV_DEFAULT;
+  //   return;
+  // }
 
-  const float RATE = CAMERA_FOV_PER_SEC * args.delta_t;
-  if (args.input.input_active(INPUT_KEY_CAMERA_FOV_INCREASE))
-    m_camera_fov += RATE;
-  if (args.input.input_active(INPUT_KEY_CAMERA_FOV_DECREASE))
-    m_camera_fov -= RATE;
+  // const float RATE = CAMERA_FOV_PER_SEC * args.delta_t;
+  // if (args.input.input_active(INPUT_KEY_CAMERA_FOV_INCREASE))
+  //   m_camera_fov += RATE;
+  // if (args.input.input_active(INPUT_KEY_CAMERA_FOV_DECREASE))
+  //   m_camera_fov -= RATE;
 
-  if (m_camera_fov < CAMERA_FOV_MINIMUM)
-    m_camera_fov = CAMERA_FOV_MINIMUM;
-  if (m_camera_fov > CAMERA_FOV_MAXIMUM)
-    m_camera_fov = CAMERA_FOV_MAXIMUM;
+  // if (m_camera_fov < CAMERA_FOV_MINIMUM)
+  //   m_camera_fov = CAMERA_FOV_MINIMUM;
+  // if (m_camera_fov > CAMERA_FOV_MAXIMUM)
+  //   m_camera_fov = CAMERA_FOV_MAXIMUM;
 }
