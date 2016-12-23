@@ -48,6 +48,7 @@ application::application()
 
   m_glfw.set_swap_interval(constants::OPENGL_SWAP_INTERVAL);
   m_window->set_key_callback(application::key_callback);
+  m_input_manager.add_input_key_observer(this);
 
   application::s_instance = this;
   ogl_dbg_status("Application initialized successfully.");
@@ -55,6 +56,8 @@ application::application()
 
 application::~application()
 {
+  m_input_manager.remove_input_key_observer(this);
+
   application::s_instance = nullptr;
   ogl_dbg_status("Application shutting down...");
 }
@@ -90,9 +93,21 @@ void application::main()
   }
 }
 
+void application::input_key_pressed(input_key input)
+{
+  switch (input)
+  {
+  case INPUT_KEY_APPLICATION_EXIT:
+    m_window->set_should_close(true);
+    break;
+
+  default:
+    break;
+  }
+}
+
 void application::handle_input()
 {
-  // poll GLFW events
   m_glfw.poll_events();
 }
 

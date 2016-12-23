@@ -22,7 +22,7 @@ namespace ogl
   /**
    * Main application class.
    */
-  class application
+  class application : public input_key_observer
   {
   public:
 
@@ -31,6 +31,9 @@ namespace ogl
 
     /** Runs the application's main loop. */
     void main();
+
+    /** Method for `input_key_observer`. */
+    void input_key_pressed(input_key input);
 
   private:
 

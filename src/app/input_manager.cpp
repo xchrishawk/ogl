@@ -6,7 +6,9 @@
 
 /* -- Includes -- */
 
+#include <algorithm>
 #include <iostream>
+#include <vector>
 
 #include <GLFW/glfw3.h>
 
@@ -20,7 +22,8 @@ using namespace ogl;
 /* -- Procedures -- */
 
 input_manager::input_manager()
-  : m_input_keys { false }
+  : m_input_keys { false },
+    m_input_key_observers()
 {
 }
 
@@ -30,6 +33,24 @@ void input_manager::handle_key(int key, int scancode, int action, int mods)
     handle_key_press(key, mods);
   else if (action == GLFW_RELEASE)
     handle_key_release(key, mods);
+}
+
+bool input_manager::input_key_state(input_key input)
+{
+  ogl_dbg_assert(input_key_valid(input));
+  return m_input_keys[input];
+}
+
+void input_manager::add_input_key_observer(input_key_observer* observer)
+{
+  m_input_key_observers.push_back(observer);
+}
+
+void input_manager::remove_input_key_observer(input_key_observer* observer)
+{
+  auto it = std::find(m_input_key_observers.begin(), m_input_key_observers.end(), observer);
+  if (it != m_input_key_observers.end())
+    m_input_key_observers.erase(it);
 }
 
 void input_manager::handle_key_press(int key, int mods)
@@ -86,7 +107,8 @@ bool input_manager::should_notify_input_key(input_key key)
 
 void input_manager::notify_input_key(input_key key)
 {
-  // TODO
+  for (input_key_observer* observer : m_input_key_observers)
+    observer->input_key_pressed(key);
 }
 
 bool input_manager::input_key_valid(input_key key)
