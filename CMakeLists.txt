@@ -57,3 +57,11 @@ endif()
 # -- Subdirectories --
 
 add_subdirectory(src)
+
+# -- Run Target --
+
+# Custom target to run the app
+add_custom_target(run
+  ${APP_EXECUTABLE_NAME}
+  DEPENDS ${APP_EXECUTABLE_NAME}
+  COMMENT "Running application...")
