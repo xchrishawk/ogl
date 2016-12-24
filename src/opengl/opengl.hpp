@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include <memory>
+#include <string>
 
 /* -- Types -- */
 
@@ -29,6 +30,20 @@ namespace ogl
     typedef std::shared_ptr<const opengl> const_ptr;
 
     virtual ~opengl() { }
+
+    /* -- Platform Information -- */
+
+    /** Returns the `GL_VERSION` string for the OpenGL implementation. */
+    virtual std::string version() const = 0;
+
+    /** Returns the `GL_SHADING_LANGUAGE_VERSION` string for the OpenGL implementation. */
+    virtual std::string glsl_version() const = 0;
+
+    /** Returns the `GL_VENDOR` string for the OpenGL implementation. */
+    virtual std::string vendor() const = 0;
+
+    /** Returns the `GL_RENDERER` string for the OpenGL implementation. */
+    virtual std::string renderer() const = 0;
 
   protected:
 

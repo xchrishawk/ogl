@@ -44,7 +44,7 @@ glfw_interface::glfw_interface()
     throw std::runtime_error("Failed to initialize GLFW.");
 
   glfw_interface::s_instance = this;
-  ogl_dbg_status("GLFW initialized.", "Version:\t" + version());
+  ogl_dbg_status("GLFW initialized.", "API Version:\t\t" + version());
 }
 
 glfw_interface::~glfw_interface()

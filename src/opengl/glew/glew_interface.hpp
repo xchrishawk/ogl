@@ -29,7 +29,16 @@ namespace ogl
 
       ~glew_interface();
 
+      /* -- opengl -- */
+
+      virtual std::string version() const;
+      virtual std::string glsl_version() const;
+      virtual std::string vendor() const;
+      virtual std::string renderer() const;
+
     private:
+
+      static glew_interface* s_instance;
 
       glew_interface();
 
