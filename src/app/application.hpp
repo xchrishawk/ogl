@@ -17,14 +17,32 @@ namespace ogl
 {
 
   /**
+   * Struct containing information needed to construct an `application` instance.
+   */
+  struct application_args
+  {
+    ogl::window_manager::ptr window_manager;	/**< The window manager interface. */
+    ogl::window::ptr window;			/**< The main application window. */
+  };
+
+  /**
    * Main class for the OGL application.
    */
   class application
   {
   public:
 
-    application(const window_manager::ptr& window_manager,
-		const window::ptr& window);
+    /**
+     * Creates a new application instance.
+     *
+     * @note
+     * Only a single instance of this type may be created at a single time. If
+     * multiple instances are created, the program will fail.
+     *
+     * @param args
+     * Struct containing arguments used to create the instance.
+     */
+    application(const application_args& args);
 
     ~application();
 

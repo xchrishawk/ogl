@@ -19,16 +19,21 @@
 
 using namespace ogl;
 
+/* -- Procedure Prototypes -- */
+
+namespace
+{
+  application_args application_args_glfw();
+}
+
 /* -- Procedures -- */
 
 int main(int argc, char** argv)
 {
   try
   {
-    window_manager::ptr window_manager = glfw::glfw_interface::create();
-    window::ptr window = glfw::glfw_window::create();
-
-    application app(window_manager, window);
+    auto args = application_args_glfw();
+    application app(args);
     app.main();
     return 0;
   }
@@ -37,4 +42,26 @@ int main(int argc, char** argv)
     ogl_dbg_assert_fail("Uncaught exception!", ex.what());
     return 1;
   }
+}
+
+namespace
+{
+
+  application_args application_args_glfw()
+  {
+    application_args args;
+
+    // window manager is GLFW
+    args.window_manager = glfw::glfw_interface::create();
+
+    // window is a GLFW window
+    glfw::glfw_window_args window_args;
+    window_args.title = "OGL";
+    window_args.width = 1024;
+    window_args.height = 768;
+    args.window = glfw::glfw_window::create(window_args);
+
+    return args;
+  }
+
 }

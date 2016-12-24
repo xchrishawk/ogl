@@ -19,14 +19,29 @@ namespace ogl
   {
 
     /**
+     * Struct containing arguments used to create a GLFW window.
+     */
+    struct glfw_window_args
+    {
+      std::string title;		/**< The window's initial title. */
+      int width;			/**< The window's initial width. */
+      int height;			/**< The window's initial height. */
+    };
+
+    /**
      * Class representing a GLFW window.
      */
     class glfw_window : public window
     {
     public:
 
-      /** Creates a shared pointer to a new `glfw_window` instance. */
-      static ogl::window::ptr create();
+      /**
+       * Creates a shared pointer to a new `glfw_window` instance.
+       *
+       * @param args
+       * A struct containing the information required to create the window.
+       */
+      static ogl::window::ptr create(const glfw_window_args& args);
 
       ~glfw_window();
 
@@ -34,7 +49,7 @@ namespace ogl
 
       GLFWwindow* m_handle;
 
-      glfw_window();
+      glfw_window(const glfw_window_args& args);
 
     };
 
