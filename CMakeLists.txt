@@ -1,0 +1,59 @@
+#
+# CMakeLists.txt
+# Chris Vig (chris@invictus.so)
+#
+
+# -- Project Configuration --
+
+cmake_minimum_required(VERSION 3.4)
+project(ogl)
+
+# CMake packages
+find_package(PkgConfig)
+
+# Output directories
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+# Toolchain configuration
+set(CMAKE_CXX_FLAGS		"-std=gnu++1z")
+set(CMAKE_CXX_FLAGS_DEBUG	"-g -Wall -Wpedantic")
+set(CMAKE_CXX_FLAGS_RELEASE	"-O3 -s -Wall -Wpedantic")
+
+# -- Platform-Specific Configuration --
+
+if (UNIX AND NOT APPLE)
+
+  # Define macro for Linux
+  add_definitions(-DOGL_LINUX)
+
+elseif (APPLE)
+
+  # Define macro for MacOS
+  add_definitions(-DOGL_MACOS)
+
+else()
+
+  # Unknown platform, can't continue
+  message(FATAL_ERROR "Unrecognized or unsupported platform!")
+
+endif()
+
+# -- Build Type-Specific Configuration --
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+
+  # Define debug macro
+  add_definitions(-DOGL_DEBUG)
+
+elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
+
+  # Define release macro
+  add_definitions(-DOGL_RELEASE)
+
+endif()
+
+# -- Subdirectories --
+
+add_subdirectory(src)
