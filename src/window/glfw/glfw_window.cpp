@@ -26,11 +26,11 @@ glfw_window::glfw_window(const glfw_window_args& args)
   : window(),
     m_handle(nullptr)
 {
-  m_handle = glfwCreateWindow(1024,		// initial width (TEMP)
-			      768,		// initial height (TEMP)
-			      "OGL",		// initial title (TEMP)
-			      NULL,		// monitor
-			      NULL);		// share
+  m_handle = glfwCreateWindow(args.width,		// width
+			      args.height,		// height
+			      args.title.c_str(),	// title
+			      NULL,			// monitor
+			      NULL);			// share
   if (!m_handle)
     throw std::runtime_error("Failed to create GLFW window.");
 
@@ -42,6 +42,21 @@ glfw_window::~glfw_window()
   glfwDestroyWindow(m_handle);
   m_handle = nullptr;
   ogl_dbg_status("GLFW window destroyed.");
+}
+
+bool glfw_window::is_current_context() const
+{
+  return (glfwGetCurrentContext() == m_handle);
+}
+
+void glfw_window::make_current_context()
+{
+  glfwMakeContextCurrent(m_handle);
+}
+
+void glfw_window::swap_buffers()
+{
+  glfwSwapBuffers(m_handle);
 }
 
 bool glfw_window::should_close() const

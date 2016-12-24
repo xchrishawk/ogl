@@ -31,6 +31,15 @@ namespace ogl
 
     virtual ~window() { }
 
+    /** Returns `true` if this window is the current OpenGL context. */
+    virtual bool is_current_context() const = 0;
+
+    /** Makes this window the current OpenGL context. */
+    virtual void make_current_context() = 0;
+
+    /** Swaps this window's buffer with the back buffer. */
+    virtual void swap_buffers() = 0;
+
     /** Returns `true` if the user has requested that the window close. */
     virtual bool should_close() const = 0;
 

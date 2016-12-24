@@ -47,6 +47,9 @@ namespace ogl
 
       /* -- window -- */
 
+      virtual bool is_current_context() const;
+      virtual void make_current_context();
+      virtual void swap_buffers();
       virtual bool should_close() const;
       virtual void set_should_close(bool should_close);
       virtual std::string title() const;
