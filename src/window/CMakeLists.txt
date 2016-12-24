@@ -1,0 +1,25 @@
+#
+# CMakeLists.txt
+# Chris Vig (chris@invictus.so)
+#
+
+# -- Project Configuration --
+
+# Library name
+set(WINDOW_LIBRARY_NAME oglwindow)
+set(WINDOW_LIBRARY_NAME ${WINDOW_LIBRARY_NAME} PARENT_SCOPE)
+
+# Library source code
+set(WINDOW_LIBRARY_SOURCES
+  glfw/glfw_interface.cpp)
+
+# Initial configuration
+string(TOUPPER ${WINDOW_LIBRARY_NAME} WINDOW_LIBRARY_NAME_UPPER)
+list(APPEND WINDOW_LIBRARY_COMPILE_DEFINITIONS -DOGL_LIB${WINDOW_LIBRARY_NAME_UPPER})
+
+# -- Target Definition --
+
+add_library(${WINDOW_LIBRARY_NAME} STATIC
+  ${WINDOW_LIBRARY_SOURCES})
+target_compile_definitions(${WINDOW_LIBRARY_NAME}
+  PRIVATE ${WINDOW_LIBRARY_COMPILE_DEFINITIONS})

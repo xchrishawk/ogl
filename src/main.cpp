@@ -10,6 +10,12 @@
 
 #include "app/application.hpp"
 #include "util/debug.hpp"
+#include "window/window_manager.hpp"
+#include "window/glfw/glfw_interface.hpp"
+
+/* -- Namespaces -- */
+
+using namespace ogl;
 
 /* -- Procedures -- */
 
@@ -17,7 +23,9 @@ int main(int argc, char** argv)
 {
   try
   {
-    ogl::application app;
+    window_manager::ptr window_manager = glfw::glfw_interface::create();
+
+    application app(window_manager);
     app.main();
     return 0;
   }
