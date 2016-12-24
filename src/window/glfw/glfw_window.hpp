@@ -46,7 +46,7 @@ namespace ogl
 
       ~glfw_window();
 
-      /* -- window -- */
+      /* -- ogl::window Interface Implementation -- */
 
       virtual bool is_current_context() const;
       virtual void make_current_context();
@@ -58,7 +58,7 @@ namespace ogl
 
     private:
 
-      static std::map<GLFWwindow*, glfw_window*> s_lookup;
+      static std::map<const GLFWwindow*, const glfw_window*> s_lookup;
 
       static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 

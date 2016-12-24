@@ -72,7 +72,7 @@ namespace ogl
     { }
 
     /** Notifies key press observers that a key was pressed. */
-    void notify_key(ogl::window_key key);
+    void notify_key(ogl::window_key key, ogl::window_key_action action) const;
 
   private:
 

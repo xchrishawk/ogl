@@ -25,6 +25,27 @@ namespace ogl
   enum class window_key : int
   {
     invalid,
+    escape,
+    digit_0,
+    digit_1,
+    digit_2,
+    digit_3,
+    digit_4,
+    digit_5,
+    digit_6,
+    digit_7,
+    digit_8,
+    digit_9,
+  };
+
+  /**
+   * Enumeration of key actions which may be sent from a window.
+   */
+  enum class window_key_action : int
+  {
+    invalid,		/**< Invalid action type. */
+    press,		/**< The key was pressed. */
+    release,		/**< The key was release. */
   };
 
   /**
@@ -43,7 +64,9 @@ namespace ogl
      * @param key
      * The key which was pressed.
      */
-    virtual void window_key_pressed(const ogl::window* window, window_key key) = 0;
+    virtual void window_key_pressed(const ogl::window* window,
+				    ogl::window_key key,
+				    ogl::window_key_action action) = 0;
 
   };
 
@@ -57,10 +80,14 @@ namespace ogl
   public:
 
     /** Prints a debug message when a key is pressed. */
-    virtual void window_key_pressed(const ogl::window* window, window_key key)
+    virtual void window_key_pressed(const ogl::window* window,
+				    ogl::window_key key,
+				    ogl::window_key_action action)
     {
       std::ostringstream message;
-      message << "Key received from " << window << ": " << static_cast<int>(key);
+      message << "Key received from " << window
+	      << ": " << static_cast<int>(key)
+	      << " (action " << static_cast<int>(action) << ")";
       ogl_dbg_status(message.str());
     }
 

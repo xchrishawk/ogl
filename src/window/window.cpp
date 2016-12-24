@@ -30,8 +30,8 @@ void window::remove_key_observer(window_key_observer* observer) const
     m_key_observers.end());
 }
 
-void window::notify_key(window_key key)
+void window::notify_key(window_key key, window_key_action action) const
 {
   for (auto& observer : m_key_observers)
-    observer->window_key_pressed(this, key);
+    observer->window_key_pressed(this, key, action);
 }
