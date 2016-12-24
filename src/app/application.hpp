@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include "opengl/opengl.hpp"
 #include "window/window.hpp"
 #include "window/window_manager.hpp"
 
@@ -23,6 +24,7 @@ namespace ogl
   {
     ogl::window_manager::ptr window_manager;	/**< The window manager interface. */
     ogl::window::ptr window;			/**< The main application window. */
+    ogl::opengl::ptr opengl;			/**< The OpenGL interface. */
   };
 
   /**
@@ -53,8 +55,9 @@ namespace ogl
 
     static application* s_instance;
 
-    const window_manager::ptr m_window_manager;
-    const window::ptr m_window;
+    const ogl::window_manager::ptr m_window_manager;
+    const ogl::window::ptr m_window;
+    const ogl::opengl::ptr m_opengl;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;

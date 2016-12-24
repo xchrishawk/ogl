@@ -9,6 +9,8 @@
 #include <exception>
 
 #include "app/application.hpp"
+#include "opengl/opengl.hpp"
+#include "opengl/glew/glew_interface.hpp"
 #include "util/debug.hpp"
 #include "window/window.hpp"
 #include "window/window_manager.hpp"
@@ -23,6 +25,7 @@ using namespace ogl;
 
 namespace
 {
+  /** Create application args using GLFW and GLEW. */
   application_args application_args_glfw();
 }
 
@@ -60,6 +63,10 @@ namespace
     window_args.width = 1024;
     window_args.height = 768;
     args.window = glfw::glfw_window::create(window_args);
+    args.window->make_current_context();
+
+    // OpenGL uses GLEW
+    args.opengl = glew::glew_interface::create();
 
     return args;
   }

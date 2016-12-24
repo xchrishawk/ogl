@@ -6,6 +6,10 @@
 
 #pragma once
 
+/* -- Includes -- */
+
+#include <memory>
+
 /* -- Types -- */
 
 namespace ogl
@@ -16,6 +20,24 @@ namespace ogl
    */
   class opengl
   {
+  public:
+
+    /** Shared pointer to an `opengl` instance. */
+    typedef std::shared_ptr<opengl> ptr;
+
+    /** Shared pointer to a `const opengl` instance. */
+    typedef std::shared_ptr<const opengl> const_ptr;
+
+    virtual ~opengl() { }
+
+  protected:
+
+    opengl() { }
+
+  private:
+
+    opengl(const opengl&) = delete;
+    opengl& operator =(const opengl&) = delete;
 
   };
 

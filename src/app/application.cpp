@@ -8,6 +8,10 @@
 
 #include <stdexcept>
 
+// <TEMP>
+#include <GL/glew.h>
+// </TEMP>
+
 #include "app/application.hpp"
 #include "util/debug.hpp"
 
@@ -23,7 +27,8 @@ application* application::s_instance = nullptr;
 
 application::application(const application_args& args)
   : m_window_manager(args.window_manager),
-    m_window(args.window)
+    m_window(args.window),
+    m_opengl(args.opengl)
 {
   if (application::s_instance)
   {
@@ -47,6 +52,12 @@ void application::main()
   while (!m_window->should_close())
   {
     m_window_manager->poll_events();
-//    m_window->swap_buffers();
+
+    // <TEMP>
+    glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    // </TEMP>
+
+    m_window->swap_buffers();
   }
 }
