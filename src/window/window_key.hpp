@@ -6,6 +6,11 @@
 
 #pragma once
 
+/* -- Includes -- */
+
+#include <sstream>
+#include "util/debug.hpp"
+
 /* -- Types -- */
 
 namespace ogl
@@ -14,9 +19,12 @@ namespace ogl
   // Forward declaration
   class window;
 
+  /**
+   * Enumeration of key press events which may be sent from a window.
+   */
   enum class window_key : int
   {
-
+    invalid,
   };
 
   /**
@@ -38,5 +46,26 @@ namespace ogl
     virtual void window_key_pressed(const ogl::window* window, window_key key) = 0;
 
   };
+
+#if defined(OGL_DEBUG)
+
+  /**
+   * Simple test implementation of `window_key_observer`.
+   */
+  class window_key_debugger final : public window_key_observer
+  {
+  public:
+
+    /** Prints a debug message when a key is pressed. */
+    virtual void window_key_pressed(const ogl::window* window, window_key key)
+    {
+      std::ostringstream message;
+      message << "Key received from " << window << ": " << static_cast<int>(key);
+      ogl_dbg_status(message.str());
+    }
+
+  };
+
+#endif /* defined(OGL_DEBUG) */
 
 }

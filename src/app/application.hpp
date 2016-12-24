@@ -10,6 +10,7 @@
 
 #include "opengl/opengl.hpp"
 #include "window/window.hpp"
+#include "window/window_key.hpp"
 #include "window/window_manager.hpp"
 
 /* -- Types -- */

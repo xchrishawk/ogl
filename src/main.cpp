@@ -37,7 +37,16 @@ int main(int argc, char** argv)
 {
   try
   {
+    // <TEMP>
+    window_key_debugger key_debugger;
+    // </TEMP>
+
     auto args = application_args_glfw();
+
+    // <TEMP>
+    args.window->add_key_observer(&key_debugger);
+    // </TEMP>
+
     application app(args);
     app.main();
     return 0;

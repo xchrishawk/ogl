@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include <map>
 #include <GLFW/glfw3.h>
 #include "window/window.hpp"
 
@@ -56,6 +57,10 @@ namespace ogl
       virtual void set_title(const std::string& title);
 
     private:
+
+      static std::map<GLFWwindow*, glfw_window*> s_lookup;
+
+      static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
       GLFWwindow* m_handle;
       std::string m_title;
