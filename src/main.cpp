@@ -55,24 +55,32 @@ namespace
   {
     application_args args;
 
-    // window manager is GLFW
-    args.window_manager = glfw::glfw_interface::create();
+    // arguments for GLFW interface
+    glfw::glfw_interface_args glfw_interface_args;
+    glfw_interface_args.opengl_profile			= GLFW_OPENGL_CORE_PROFILE;
+    glfw_interface_args.opengl_forward_compat		= GL_TRUE;
+    glfw_interface_args.opengl_context_version_major	= 3;
+    glfw_interface_args.opengl_context_version_minor	= 3;
+    glfw_interface_args.opengl_msaa_samples		= 4;
 
-    // window is a GLFW window
-    glfw::glfw_window_args window_args;
-    window_args.title 				= "OGL";
-    window_args.width 				= 1024;
-    window_args.height 				= 768;
-    window_args.opengl_profile			= GLFW_OPENGL_CORE_PROFILE;
-    window_args.opengl_forward_compat		= GL_TRUE;
-    window_args.opengl_context_version_major	= 3;
-    window_args.opengl_context_version_minor	= 3;
-    window_args.opengl_msaa_samples		= 4;
-    args.window = glfw::glfw_window::create(window_args);
-    args.window->make_current_context();
+    // create GLFW interface
+    glfw::glfw_interface::ptr glfw_interface = glfw::glfw_interface::create(glfw_interface_args);
+    args.window_manager = glfw_interface;
 
-    // OpenGL uses GLEW
-    args.opengl = glew::glew_interface::create();
+    // arguments for GLFW window
+    glfw::glfw_window_args glfw_window_args;
+    glfw_window_args.title 				= "OGL";
+    glfw_window_args.width 				= 1024;
+    glfw_window_args.height 				= 768;
+
+    // create GLFW window
+    glfw::glfw_window::ptr glfw_window = glfw::glfw_window::create(glfw_window_args);
+    glfw_window->make_current_context();
+    args.window = glfw_window;
+
+    // create OpenGL/GLEW interface
+    glew::glew_interface::ptr glew_interface = glew::glew_interface::create();
+    args.opengl = glew_interface;
 
     return args;
   }

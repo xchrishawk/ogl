@@ -25,12 +25,12 @@ glfw_interface* glfw_interface::s_instance = nullptr;
 
 /* -- Procedures -- */
 
-ogl::window_manager::ptr glfw_interface::create()
+ogl::window_manager::ptr glfw_interface::create(const glfw_interface_args& args)
 {
-  return ogl::window_manager::ptr(new glfw_interface());
+  return ogl::window_manager::ptr(new glfw_interface(args));
 }
 
-glfw_interface::glfw_interface()
+glfw_interface::glfw_interface(const glfw_interface_args& args)
   : window_manager()
 {
   if (glfw_interface::s_instance)
@@ -42,6 +42,12 @@ glfw_interface::glfw_interface()
   glfwSetErrorCallback(glfw_interface::error_callback);
   if (!glfwInit())
     throw std::runtime_error("Failed to initialize GLFW.");
+
+  glfwWindowHint(GLFW_OPENGL_PROFILE, args.opengl_profile);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, args.opengl_forward_compat);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, args.opengl_context_version_major);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, args.opengl_context_version_minor);
+  glfwWindowHint(GLFW_SAMPLES, args.opengl_msaa_samples);
 
   glfw_interface::s_instance = this;
   ogl_dbg_status("GLFW initialized.", "API Version:\t\t" + version());

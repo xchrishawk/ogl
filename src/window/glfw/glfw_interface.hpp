@@ -21,6 +21,18 @@ namespace ogl
   {
 
     /**
+     * Struct containing arguments required to create a `glfw_interface` instance.
+     */
+    struct glfw_interface_args final
+    {
+      int opengl_profile;			/**< OpenGL profile version. */
+      int opengl_forward_compat;		/**< Should use forward compatibility API? */
+      int opengl_context_version_major;		/**< OpenGL context major version. */
+      int opengl_context_version_minor;		/**< OpenGL conetxt minor version. */
+      int opengl_msaa_samples;			/**< MSAA samples to use. */
+    };
+
+    /**
      * Interface class wrapping the GLFW library.
      */
     class glfw_interface final : public window_manager
@@ -28,7 +40,7 @@ namespace ogl
     public:
 
       /** Creates a new GLFW interface instance. */
-      static ogl::window_manager::ptr create();
+      static ogl::window_manager::ptr create(const glfw_interface_args& args);
 
       ~glfw_interface();
 
@@ -46,7 +58,7 @@ namespace ogl
 
       static void error_callback(int error, const char* description);
 
-      glfw_interface();
+      glfw_interface(const glfw_interface_args& args);
 
     };
 

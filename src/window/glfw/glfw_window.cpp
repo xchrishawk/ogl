@@ -26,12 +26,6 @@ glfw_window::glfw_window(const glfw_window_args& args)
   : window(),
     m_handle(nullptr)
 {
-  glfwWindowHint(GLFW_OPENGL_PROFILE, args.opengl_profile);
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, args.opengl_forward_compat);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, args.opengl_context_version_major);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, args.opengl_context_version_minor);
-  glfwWindowHint(GLFW_SAMPLES, args.opengl_msaa_samples);
-
   m_handle = glfwCreateWindow(args.width,		// width
 			      args.height,		// height
 			      args.title.c_str(),	// title
