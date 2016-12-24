@@ -6,23 +6,14 @@
 
 /* -- Includes -- */
 
-#include <iostream>
+#include "util/debug.hpp"
 
 /* -- Procedures -- */
 
 int main(int argc, char** argv)
 {
-#if defined(OGL_LINUX)
-  std::cout << "Hello Linux!" << std::endl;
-#elif defined(OGL_MACOS)
-  std::cout << "Hello MacOS!" << std::endl;
-#endif
-
-#if defined(OGL_DEBUG)
-  std::cout << "Hello Debug!" << std::endl;
-#elif defined(OGL_RELEASE)
-  std::cout << "Hello Release!" << std::endl;
-#endif
-
+  ogl_dbg_status("Hello world!");
+  ogl_dbg_assert(1 == 1);
+  ogl_dbg_assert_fail("Barf");
   return 0;
 }
