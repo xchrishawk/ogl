@@ -86,14 +86,14 @@
   while (false)
 
 /** Unconditionally fails an assert. */
-#define ogl_dbg_assert_fail(message)						\
+#define ogl_dbg_assert_fail(...)						\
   do										\
   {										\
     ogl::error_stream() << ogl::debug_message("ogl_assert FAILED",		\
 					      __PRETTY_FUNCTION__,		\
 					      __FILE__,				\
 					      __LINE__,				\
-					      { message })			\
+					      { __VA_ARGS__ })			\
 			<< std::endl;						\
     ogl::breakpoint();								\
     ogl::fail();								\
@@ -109,7 +109,7 @@
 #define ogl_dbg_warning(...)
 #define ogl_dbg_error(...)
 #define ogl_dbg_assert(cond)
-#define ogl_dbg_assert_fail(message)
+#define ogl_dbg_assert_fail(...)
 
 #endif
 

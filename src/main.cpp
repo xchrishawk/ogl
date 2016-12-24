@@ -6,14 +6,24 @@
 
 /* -- Includes -- */
 
+#include <exception>
+
+#include "app/application.hpp"
 #include "util/debug.hpp"
 
 /* -- Procedures -- */
 
 int main(int argc, char** argv)
 {
-  ogl_dbg_status("Hello world!");
-  ogl_dbg_assert(1 == 1);
-  ogl_dbg_assert_fail("Barf");
-  return 0;
+  try
+  {
+    ogl::application app;
+    app.main();
+    return 0;
+  }
+  catch (const std::exception& ex)
+  {
+    ogl_dbg_assert_fail("Uncaught exception!", ex.what());
+    return 1;
+  }
 }

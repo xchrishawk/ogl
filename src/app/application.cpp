@@ -6,4 +6,40 @@
 
 /* -- Includes -- */
 
-#include "application.hpp"
+#include <stdexcept>
+
+#include "app/application.hpp"
+#include "util/debug.hpp"
+
+/* -- Namespaces -- */
+
+using namespace ogl;
+
+/* -- Variables -- */
+
+application* application::s_instance = nullptr;
+
+/* -- Procedures -- */
+
+application::application()
+{
+  if (application::s_instance)
+  {
+    ogl_dbg_error("Attempted to initialize application while it is already initialized!");
+    ogl::fail();
+  }
+
+  application::s_instance = this;
+  ogl_dbg_status("Application launched successfully.");
+}
+
+application::~application()
+{
+  application::s_instance = nullptr;
+  ogl_dbg_status("Terminating application...");
+}
+
+void application::main()
+{
+  ogl_dbg_status("Running application...");
+}

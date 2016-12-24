@@ -16,6 +16,20 @@ namespace ogl
    */
   class application
   {
+  public:
+
+    application();
+    ~application();
+
+    /** Runs the main loop for the application. */
+    void main();
+
+  private:
+
+    static application* s_instance;
+
+    application(const application&) = delete;
+    application& operator =(const application&) = delete;
 
   };
 
