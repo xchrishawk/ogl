@@ -10,6 +10,9 @@
 
 #include <memory>
 #include <string>
+#include <vector>
+
+#include "window/window_key.hpp"
 
 /* -- Types -- */
 
@@ -17,7 +20,7 @@ namespace ogl
 {
 
   /**
-   * Abstract interface for types representing a window.
+   * Abstract base class for types representing a window.
    */
   class window
   {
@@ -30,6 +33,8 @@ namespace ogl
     typedef std::shared_ptr<const window> const_ptr;
 
     virtual ~window() { }
+
+    /* -- Abstract Interface -- */
 
     /** Returns `true` if this window is the current OpenGL context. */
     virtual bool is_current_context() const = 0;
@@ -52,11 +57,26 @@ namespace ogl
     /** Sets the title of the window. */
     virtual void set_title(const std::string& title) = 0;
 
+    /* -- Concrete Functions -- */
+
+    /** Adds an observer for key presses on this window. */
+    void add_key_observer(ogl::window_key_observer* observer) const;
+
+    /** Removes an observer for key presses on this window. */
+    void remove_key_observer(ogl::window_key_observer* observer) const;
+
   protected:
 
-    window() { }
+    window()
+      : m_key_observers()
+    { }
+
+    /** Notifies key press observers that a key was pressed. */
+    void notify_key(ogl::window_key key);
 
   private:
+
+    mutable std::vector<ogl::window_key_observer*> m_key_observers;
 
     window(const window&) = delete;
     window& operator =(const window&) = delete;
