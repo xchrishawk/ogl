@@ -6,7 +6,7 @@
 # -- Project Configuration --
 
 # Library name
-set(UTIL_LIBRARY_NAME util)
+set(UTIL_LIBRARY_NAME oglutil)
 set(UTIL_LIBRARY_NAME ${UTIL_LIBRARY_NAME} PARENT_SCOPE)
 
 # Library source code
@@ -14,7 +14,8 @@ set(UTIL_LIBRARY_SOURCES
   debug.cpp)
 
 # Initial configuration
-list(APPEND UTIL_LIBRARY_COMPILE_DEFINITIONS -DOGL_LIBUTIL)
+string(TOUPPER ${UTIL_LIBRARY_NAME} UTIL_LIBRARY_NAME_UPPER)
+list(APPEND UTIL_LIBRARY_COMPILE_DEFINITIONS -DOGL_LIB${UTIL_LIBRARY_NAME_UPPER})
 
 # -- Target Definition --
 

@@ -10,6 +10,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # -- Subdirectories --
 
+add_subdirectory(app)
 add_subdirectory(util)
 
 # -- Project Configuration --
@@ -24,6 +25,7 @@ set(APP_EXECUTABLE_SOURCES
 
 # Initial configuration
 list(APPEND APP_EXECUTABLE_COMPILE_DEFINITIONS -DOGL_APP)
+list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${APP_LIBRARY_NAME})
 list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${UTIL_LIBRARY_NAME})
 
 # -- Target Definition --
