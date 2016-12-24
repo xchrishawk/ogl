@@ -47,6 +47,6 @@ void application::main()
   while (!m_window->should_close())
   {
     m_window_manager->poll_events();
-    m_window->swap_buffers();
+//    m_window->swap_buffers();
   }
 }
