@@ -21,8 +21,10 @@ application* application::s_instance = nullptr;
 
 /* -- Procedures -- */
 
-application::application(const window_manager::ptr& window_manager)
-  : m_window_manager(window_manager)
+application::application(const window_manager::ptr& window_manager,
+			 const window::ptr& window)
+  : m_window_manager(window_manager),
+    m_window(window)
 {
   if (application::s_instance)
   {

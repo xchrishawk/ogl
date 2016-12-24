@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include "window/window.hpp"
 #include "window/window_manager.hpp"
 
 /* -- Types -- */
@@ -22,7 +23,9 @@ namespace ogl
   {
   public:
 
-    application(const window_manager::ptr& window_manager);
+    application(const window_manager::ptr& window_manager,
+		const window::ptr& window);
+
     ~application();
 
     /** Runs the main loop for the application. */
@@ -33,6 +36,7 @@ namespace ogl
     static application* s_instance;
 
     const window_manager::ptr m_window_manager;
+    const window::ptr m_window;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;

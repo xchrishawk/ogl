@@ -11,7 +11,8 @@ set(WINDOW_LIBRARY_NAME ${WINDOW_LIBRARY_NAME} PARENT_SCOPE)
 
 # Library source code
 set(WINDOW_LIBRARY_SOURCES
-  glfw/glfw_interface.cpp)
+  glfw/glfw_interface.cpp
+  glfw/glfw_window.cpp)
 
 # Initial configuration
 string(TOUPPER ${WINDOW_LIBRARY_NAME} WINDOW_LIBRARY_NAME_UPPER)

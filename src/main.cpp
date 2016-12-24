@@ -10,8 +10,10 @@
 
 #include "app/application.hpp"
 #include "util/debug.hpp"
+#include "window/window.hpp"
 #include "window/window_manager.hpp"
 #include "window/glfw/glfw_interface.hpp"
+#include "window/glfw/glfw_window.hpp"
 
 /* -- Namespaces -- */
 
@@ -24,8 +26,9 @@ int main(int argc, char** argv)
   try
   {
     window_manager::ptr window_manager = glfw::glfw_interface::create();
+    window::ptr window = glfw::glfw_window::create();
 
-    application app(window_manager);
+    application app(window_manager, window);
     app.main();
     return 0;
   }
