@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include <memory>
+#include <string>
 
 /* -- Types -- */
 
@@ -29,6 +30,18 @@ namespace ogl
     typedef std::shared_ptr<const window> const_ptr;
 
     virtual ~window() { }
+
+    /** Returns `true` if the user has requested that the window close. */
+    virtual bool should_close() const = 0;
+
+    /** Sets the "should close" flag. */
+    virtual void set_should_close(bool should_close) = 0;
+
+    /** Returns the title of the window. */
+    virtual std::string title() const = 0;
+
+    /** Sets the title of the window. */
+    virtual void set_title(const std::string& title) = 0;
 
   protected:
 

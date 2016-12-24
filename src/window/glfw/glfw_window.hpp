@@ -31,7 +31,7 @@ namespace ogl
     /**
      * Class representing a GLFW window.
      */
-    class glfw_window : public window
+    class glfw_window final : public window
     {
     public:
 
@@ -45,9 +45,17 @@ namespace ogl
 
       ~glfw_window();
 
+      /* -- window -- */
+
+      virtual bool should_close() const;
+      virtual void set_should_close(bool should_close);
+      virtual std::string title() const;
+      virtual void set_title(const std::string& title);
+
     private:
 
       GLFWwindow* m_handle;
+      std::string m_title;
 
       glfw_window(const glfw_window_args& args);
 
