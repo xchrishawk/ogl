@@ -8,6 +8,8 @@
 
 #include <exception>
 
+#include <GLFW/glfw3.h>
+
 #include "app/application.hpp"
 #include "opengl/opengl.hpp"
 #include "opengl/glew/glew_interface.hpp"
@@ -49,7 +51,6 @@ int main(int argc, char** argv)
 
 namespace
 {
-
   application_args application_args_glfw()
   {
     application_args args;
@@ -59,9 +60,14 @@ namespace
 
     // window is a GLFW window
     glfw::glfw_window_args window_args;
-    window_args.title = "OGL";
-    window_args.width = 1024;
-    window_args.height = 768;
+    window_args.title 				= "OGL";
+    window_args.width 				= 1024;
+    window_args.height 				= 768;
+    window_args.opengl_profile			= GLFW_OPENGL_CORE_PROFILE;
+    window_args.opengl_forward_compat		= GL_TRUE;
+    window_args.opengl_context_version_major	= 3;
+    window_args.opengl_context_version_minor	= 3;
+    window_args.opengl_msaa_samples		= 4;
     args.window = glfw::glfw_window::create(window_args);
     args.window->make_current_context();
 
@@ -70,5 +76,4 @@ namespace
 
     return args;
   }
-
 }

@@ -23,9 +23,14 @@ namespace ogl
      */
     struct glfw_window_args
     {
-      std::string title;		/**< The window's initial title. */
-      int width;			/**< The window's initial width. */
-      int height;			/**< The window's initial height. */
+      std::string title;			/**< The window's initial title. */
+      int width;				/**< The window's initial width. */
+      int height;				/**< The window's initial height. */
+      int opengl_profile;			/**< OpenGL profile version. */
+      int opengl_forward_compat;		/**< Should use forward compatibility API? */
+      int opengl_context_version_major;		/**< OpenGL context major version. */
+      int opengl_context_version_minor;		/**< OpenGL conetxt minor version. */
+      int opengl_msaa_samples;			/**< MSAA samples to use. */
     };
 
     /**
