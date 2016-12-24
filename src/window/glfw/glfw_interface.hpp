@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include <string>
 #include "window/window_manager.hpp"
 
 /* -- Types -- */
@@ -29,7 +30,20 @@ namespace ogl
 
       ~glfw_interface();
 
+      /** Returns the GLFW version string. */
+      std::string version() const;
+
+      /** Returns the current elapsed time, in seconds. */
+      double time() const;
+
+      /** Polls for events. */
+      void poll_events() const;
+
     private:
+
+      static glfw_interface* s_instance;
+
+      static void error_callback(int error, const char* description);
 
       glfw_interface();
 
