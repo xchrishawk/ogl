@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 
 #include "app/application.hpp"
+#include "app/input_manager.hpp"
 #include "opengl/opengl.hpp"
 #include "opengl/glew/glew_interface.hpp"
 #include "util/debug.hpp"
@@ -37,16 +38,7 @@ int main(int argc, char** argv)
 {
   try
   {
-    // <TEMP>
-    window_key_debugger key_debugger;
-    // </TEMP>
-
     auto args = application_args_glfw();
-
-    // <TEMP>
-    args.window->add_key_observer(&key_debugger);
-    // </TEMP>
-
     application app(args);
     app.main();
     return 0;
@@ -90,6 +82,10 @@ namespace
     // create OpenGL/GLEW interface
     glew::glew_interface::ptr glew_interface = glew::glew_interface::create();
     args.opengl = glew_interface;
+
+    // create input manager
+    input_manager::ptr input_manager = input_manager::create();
+    args.input_manager = input_manager;
 
     return args;
   }

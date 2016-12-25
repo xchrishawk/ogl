@@ -28,7 +28,8 @@ application* application::s_instance = nullptr;
 application::application(const application_args& args)
   : m_window_manager(args.window_manager),
     m_window(args.window),
-    m_opengl(args.opengl)
+    m_opengl(args.opengl),
+    m_input_manager(args.input_manager)
 {
   if (application::s_instance)
   {
@@ -36,12 +37,18 @@ application::application(const application_args& args)
     ogl::fail();
   }
 
+  // register input manager as observer of window
+  m_window->add_key_observer(m_input_manager.get());
+
   application::s_instance = this;
   ogl_dbg_status("Application launched successfully.");
 }
 
 application::~application()
 {
+  // clean up input registration
+  m_window->remove_key_observer(m_input_manager.get());
+
   application::s_instance = nullptr;
   ogl_dbg_status("Terminating application...");
 }

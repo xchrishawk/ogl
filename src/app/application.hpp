@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include "app/input_manager.hpp"
 #include "opengl/opengl.hpp"
 #include "window/window.hpp"
 #include "window/window_key.hpp"
@@ -26,6 +27,7 @@ namespace ogl
     ogl::window_manager::ptr window_manager;	/**< The window manager interface. */
     ogl::window::ptr window;			/**< The main application window. */
     ogl::opengl::ptr opengl;			/**< The OpenGL interface. */
+    ogl::input_manager::ptr input_manager;	/**< The input manager. */
   };
 
   /**
@@ -59,6 +61,7 @@ namespace ogl
     const ogl::window_manager::ptr m_window_manager;
     const ogl::window::ptr m_window;
     const ogl::opengl::ptr m_opengl;
+    const ogl::input_manager::ptr m_input_manager;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;
