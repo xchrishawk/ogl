@@ -46,8 +46,38 @@ void input_manager::window_key_pressed(const ogl::window* window,
 				       ogl::window_key key,
 				       ogl::window_key_action action)
 {
-  // TEMP
-  notify_input_key_activated(input_key::application_exit);
+  input_key the_input_key = window_key_to_input_key(key);
+  if (the_input_key == input_key::invalid)
+    return;
+
+  int index = static_cast<int>(the_input_key);
+
+  switch (action)
+  {
+  case window_key_action::press:
+    m_key_active[index] = true;
+    notify_input_key_activated(the_input_key);
+    break;
+
+  case window_key_action::release:
+    m_key_active[index] = false;
+    notify_input_key_deactivated(the_input_key);
+
+  default:
+    ogl_dbg_assert_fail("Unknown key action type!");
+    return;
+  }
+}
+
+input_key input_manager::window_key_to_input_key(window_key key)
+{
+  switch (key)
+  {
+  case window_key::escape:
+    return input_key::application_exit;
+  default:
+    return input_key::invalid;
+  }
 }
 
 void input_manager::notify_input_key_activated(input_key key) const

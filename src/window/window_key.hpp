@@ -38,6 +38,9 @@ namespace ogl
     digit_9,
   };
 
+  /** The number of `window_key` enum members. */
+  const int WINDOW_KEY_COUNT = static_cast<int>(window_key::digit_9) + 1;
+
   /**
    * Enumeration of key actions which may be sent from a window.
    */

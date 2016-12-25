@@ -28,6 +28,9 @@ namespace ogl
     application_exit,
   };
 
+  /** The number of `input_key` enum members. */
+  const int INPUT_KEY_COUNT = static_cast<int>(input_key::application_exit) + 1;
+
   /**
    * Abstract interface for classes observing inputs from the `input_manager` class.
    */
@@ -74,11 +77,13 @@ namespace ogl
   private:
 
     mutable std::vector<input_observer*> m_observers;
+    bool m_key_active[ogl::INPUT_KEY_COUNT];
 
     input_manager();
     input_manager(const input_manager&) = delete;
     input_manager operator =(const input_manager&) = delete;
 
+    ogl::input_key window_key_to_input_key(ogl::window_key key);
     void notify_input_key_activated(ogl::input_key key) const;
     void notify_input_key_deactivated(ogl::input_key key) const;
 
