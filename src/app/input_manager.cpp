@@ -63,6 +63,13 @@ void input_manager::remove_observer(input_observer* observer) const
     m_observers.end());
 }
 
+bool input_manager::command_active(input_command command) const
+{
+  const auto index = static_cast<size_t>(command);
+  ogl_dbg_assert(index < m_command_active.size());
+  return m_command_active[index];
+}
+
 void input_manager::default_command_map()
 {
   set_command(
@@ -73,27 +80,28 @@ void input_manager::default_command_map()
 
 input_command input_manager::command(window_key key, window_key_modifier mod) const
 {
-  size_t index = static_cast<size_t>(key);
+  const auto index = static_cast<size_t>(key);
   ogl_dbg_assert(index < m_command_map.size());
   return m_command_map[index].command(mod);
 }
 
 void input_manager::set_command(window_key key, window_key_modifier mod, input_command command)
 {
-  size_t index = static_cast<size_t>(key);
+  const auto index = static_cast<size_t>(key);
   ogl_dbg_assert(index < m_command_map.size());
   m_command_map[index].set_command(mod, command);
 }
 
 void input_manager::window_key_pressed(const ogl::window* window,
 				       ogl::window_key key,
+				       ogl::window_key_modifier mod,
 				       ogl::window_key_action action)
 {
-  input_command command = this->command(key, window_key_modifier::none);
+  const auto command = this->command(key, mod);
   if (command == input_command::invalid)
     return;
 
-  int index = static_cast<int>(command);
+  const auto index = static_cast<size_t>(command);
 
   switch (action)
   {

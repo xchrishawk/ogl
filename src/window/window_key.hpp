@@ -44,6 +44,7 @@ namespace ogl
    */
   enum class window_key_modifier : int
   {
+    invalid,			/**< Invalid or unknown modifier. */
     none,			/**< No input modifier is active. */
     shift,			/**< The shift modifier is active. */
     control,			/**< The control modifier is active. */
@@ -82,11 +83,18 @@ namespace ogl
      * @param window
      * The window on which the key was pressed.
      *
+     * @param mod
+     * The keyboard modifiers which are active, if any.
+     *
      * @param key
      * The key which was pressed.
+     *
+     * @param action
+     * The key action which took place.
      */
     virtual void window_key_pressed(const ogl::window* window,
 				    ogl::window_key key,
+				    ogl::window_key_modifier mod,
 				    ogl::window_key_action action) = 0;
 
   };
@@ -103,11 +111,13 @@ namespace ogl
     /** Prints a debug message when a key is pressed. */
     virtual void window_key_pressed(const ogl::window* window,
 				    ogl::window_key key,
+				    ogl::window_key_modifier mod,
 				    ogl::window_key_action action)
     {
       std::ostringstream message;
       message << "Key received from " << window
 	      << ": " << static_cast<int>(key)
+	      << " mod " << static_cast<int>(mod)
 	      << " (action " << static_cast<int>(action) << ")";
       ogl_dbg_status(message.str());
     }

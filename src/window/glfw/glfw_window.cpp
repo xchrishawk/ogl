@@ -34,6 +34,9 @@ namespace
   /** Converts a GLFW key enum to a `window_key` enum. */
   ogl::window_key glfw_to_window_key(int key);
 
+  /** Converts a GLFW modifier enum to a `window_key_modifier` enum. */
+  ogl::window_key_modifier glfw_to_window_key_modifier(int mods);
+
   /** Converts a GLFW action enum to a `window_key_action` enum. */
   ogl::window_key_action glfw_to_window_key_action(int action);
 }
@@ -129,17 +132,22 @@ void glfw_window::key_callback(GLFWwindow* window, int key, int scancode, int ac
   if (it != s_lookup.end())
   {
     // convert key
-    ogl::window_key ogl_key = glfw_to_window_key(key);
+    const auto ogl_key = glfw_to_window_key(key);
     if (ogl_key == ogl::window_key::invalid)
       return;
 
+    // convert modifier
+    const auto ogl_mod = glfw_to_window_key_modifier(mods);
+    if (ogl_mod == ogl::window_key_modifier::invalid)
+      return;
+
     // convert action
-    ogl::window_key_action ogl_action = glfw_to_window_key_action(action);
+    const auto ogl_action = glfw_to_window_key_action(action);
     if (ogl_action == ogl::window_key_action::invalid)
       return;
 
     // notify observers
-    it->second->notify_key(ogl_key, ogl_action);
+    it->second->notify_key(ogl_key, ogl_mod, ogl_action);
   }
   else
     ogl_dbg_assert_fail("Received key notification from an unrecognized window!");
@@ -155,11 +163,11 @@ namespace
     if (key == GLFW_KEY_UNKNOWN)
       return ogl::window_key::invalid;
 
-    static const int GLFW_KEY_COUNT = GLFW_KEY_LAST + 1;
+    static const auto GLFW_KEY_COUNT = GLFW_KEY_LAST + 1;
     ogl_dbg_assert(key >= 0 && key < GLFW_KEY_COUNT);
 
     // lazy initialization of keymap
-    static bool initialized = false;
+    static auto initialized = false;
     static ogl::window_key keymap[GLFW_KEY_COUNT] = { ogl::window_key::invalid };
     if (!initialized)
     {
@@ -177,6 +185,27 @@ namespace
     }
 
     return keymap[key];
+  }
+
+  ogl::window_key_modifier glfw_to_window_key_modifier(int mods)
+  {
+    switch (mods)
+    {
+    case 0:
+      return ogl::window_key_modifier::none;
+    case GLFW_MOD_SHIFT:
+      return ogl::window_key_modifier::shift;
+    case GLFW_MOD_CONTROL:
+      return ogl::window_key_modifier::control;
+    case GLFW_MOD_ALT:
+      return ogl::window_key_modifier::alt;
+    case GLFW_MOD_SUPER:
+      return ogl::window_key_modifier::super;
+    default:
+      // currently we don't support more than one modifier active at a time.
+      // yes, I know this is lame.
+      return ogl::window_key_modifier::invalid;
+    }
   }
 
   ogl::window_key_action glfw_to_window_key_action(int action)

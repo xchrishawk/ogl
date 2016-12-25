@@ -45,10 +45,10 @@ namespace ogl
   {
   public:
 
-    /** Notifies the observer that an input key was activated. */
+    /** Notifies the observer that an input command was activated. */
     virtual void command_activated(ogl::input_command key) { }
 
-    /** Notifies the observer that an input key was deactivated. */
+    /** Notifies the observer that an input command was deactivated. */
     virtual void command_deactivated(ogl::input_command key) { }
 
   };
@@ -65,6 +65,7 @@ namespace ogl
     /** Mapping expressed as a struct. */
     struct
     {
+      ogl::input_command invalid;	/**< Not used. */
       ogl::input_command none;		/**< Command when no modifier is pressed. */
       ogl::input_command shift;		/**< Command when shift modifier is pressed. */
       ogl::input_command control;	/**< Command when control modifier is pressed. */
@@ -79,6 +80,11 @@ namespace ogl
     void set_command(ogl::window_key_modifier mod, ogl::input_command command);
 
   };
+
+  // sanity check
+  ogl_static_assert(
+    sizeof(ogl::input_command_map) == sizeof(ogl::input_command) * ogl::enum_count<ogl::window_key_modifier>(),
+    "Invalid struct size!");
 
   /**
    * Class responsible for collecting and distributing inputs to the application.
@@ -97,10 +103,13 @@ namespace ogl
     static input_manager::ptr create();
 
     /** Adds an `input_observer` to the observer list. */
-    void add_observer(input_observer* observer) const;
+    void add_observer(ogl::input_observer* observer) const;
 
     /** Removes an `input_observer` from the observer list. */
-    void remove_observer(input_observer* observer) const;
+    void remove_observer(ogl::input_observer* observer) const;
+
+    /** Returns `true` if the specified command is active. */
+    bool command_active(ogl::input_command command) const;
 
     /** Sets the default command map. */
     void default_command_map();
@@ -115,13 +124,14 @@ namespace ogl
 
     virtual void window_key_pressed(const ogl::window* window,
 				    ogl::window_key key,
+				    ogl::window_key_modifier mod,
 				    ogl::window_key_action action);
 
   private:
 
     std::vector<ogl::input_command_map> m_command_map;
     std::vector<bool> m_command_active;
-    mutable std::vector<input_observer*> m_observers;
+    mutable std::vector<ogl::input_observer*> m_observers;
 
     input_manager();
     input_manager(const input_manager&) = delete;
