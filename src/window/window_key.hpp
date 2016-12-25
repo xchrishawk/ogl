@@ -11,7 +11,7 @@
 #include <sstream>
 #include "util/debug.hpp"
 
-/* -- Types -- */
+/* -- Constants -- */
 
 namespace ogl
 {
@@ -36,10 +36,21 @@ namespace ogl
     digit_7,
     digit_8,
     digit_9,
+    count,
   };
 
-  /** The number of `window_key` enum members. */
-  const int WINDOW_KEY_COUNT = static_cast<int>(window_key::digit_9) + 1;
+  /**
+   * Enumeration of modifier keys.
+   */
+  enum class window_key_modifier : int
+  {
+    none,			/**< No input modifier is active. */
+    shift,			/**< The shift modifier is active. */
+    control,			/**< The control modifier is active. */
+    alt,			/**< The alt modifier is active. */
+    super,			/**< The super modifier is active. */
+    count,			/**< Count of modifiers. */
+  };
 
   /**
    * Enumeration of key actions which may be sent from a window.
@@ -50,6 +61,13 @@ namespace ogl
     press,		/**< The key was pressed. */
     release,		/**< The key was release. */
   };
+
+}
+
+/* -- Types -- */
+
+namespace ogl
+{
 
   /**
    * Abstract interface for classes which can observe key events from a window.

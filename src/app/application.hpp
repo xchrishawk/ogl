@@ -56,8 +56,8 @@ namespace ogl
 
     /* -- `input_observer` Interface Implementation -- */
 
-    virtual void input_command_activated(ogl::input_command key);
-    virtual void input_command_deactivated(ogl::input_command key);
+    virtual void command_activated(ogl::input_command key);
+    virtual void command_deactivated(ogl::input_command key);
 
   private:
 

@@ -11,10 +11,12 @@
 #include <memory>
 #include <vector>
 
+#include "util/debug.hpp"
+#include "util/misc.hpp"
 #include "window/window.hpp"
 #include "window/window_key.hpp"
 
-/* -- Types -- */
+/* -- Constants -- */
 
 namespace ogl
 {
@@ -26,10 +28,15 @@ namespace ogl
   {
     invalid,
     application_exit,
+    count,
   };
 
-  /** The number of `input_command` enum members. */
-  const int INPUT_COMMAND_COUNT = static_cast<int>(input_command::application_exit) + 1;
+}
+
+/* -- Types -- */
+
+namespace ogl
+{
 
   /**
    * Abstract interface for classes observing inputs from the `input_manager` class.
@@ -39,10 +46,37 @@ namespace ogl
   public:
 
     /** Notifies the observer that an input key was activated. */
-    virtual void input_command_activated(ogl::input_command key) { }
+    virtual void command_activated(ogl::input_command key) { }
 
     /** Notifies the observer that an input key was deactivated. */
-    virtual void input_command_deactivated(ogl::input_command key) { }
+    virtual void command_deactivated(ogl::input_command key) { }
+
+  };
+
+  /**
+   * Struct containing key mappings for a particular key.
+   */
+  union input_command_map
+  {
+
+    /** Mapping expressed as an array. */
+    ogl::input_command map[ogl::enum_count<window_key_modifier>()];
+
+    /** Mapping expressed as a struct. */
+    struct
+    {
+      ogl::input_command none;		/**< Command when no modifier is pressed. */
+      ogl::input_command shift;		/**< Command when shift modifier is pressed. */
+      ogl::input_command control;	/**< Command when control modifier is pressed. */
+      ogl::input_command alt;		/**< Command when alt modifier is pressed. */
+      ogl::input_command super;		/**< Command when super modifier is pressed. */
+    } mods;
+
+    /** Returns the input command for the specified modifier. */
+    ogl::input_command command(ogl::window_key_modifier mod) const;
+
+    /** Sets the input command for the specified modifier. */
+    void set_command(ogl::window_key_modifier mod, ogl::input_command command);
 
   };
 
@@ -68,6 +102,15 @@ namespace ogl
     /** Removes an `input_observer` from the observer list. */
     void remove_observer(input_observer* observer) const;
 
+    /** Sets the default command map. */
+    void default_command_map();
+
+    /** Gets the `input_command` associated with the specified key press. */
+    ogl::input_command command(ogl::window_key key, ogl::window_key_modifier mod) const;
+
+    /** Sets the `input_command` associated with the specified key press. */
+    void set_command(ogl::window_key key, ogl::window_key_modifier mod, ogl::input_command command);
+
     /* -- `window_key_observer` Interface Implementation -- */
 
     virtual void window_key_pressed(const ogl::window* window,
@@ -76,16 +119,16 @@ namespace ogl
 
   private:
 
+    std::vector<ogl::input_command_map> m_command_map;
+    std::vector<bool> m_command_active;
     mutable std::vector<input_observer*> m_observers;
-    bool m_key_active[ogl::INPUT_COMMAND_COUNT];
 
     input_manager();
     input_manager(const input_manager&) = delete;
     input_manager operator =(const input_manager&) = delete;
 
-    ogl::input_command window_key_to_input_command(ogl::window_key key);
-    void notify_input_command_activated(ogl::input_command key) const;
-    void notify_input_command_deactivated(ogl::input_command key) const;
+    void notify_command_activated(ogl::input_command key) const;
+    void notify_command_deactivated(ogl::input_command key) const;
 
   };
 

@@ -12,6 +12,7 @@
 
 #include "app/input_manager.hpp"
 #include "util/debug.hpp"
+#include "util/misc.hpp"
 #include "window/window.hpp"
 #include "window/window_key.hpp"
 
@@ -21,47 +22,89 @@ using namespace ogl;
 
 /* -- Procedures -- */
 
+input_command input_command_map::command(window_key_modifier mod) const
+{
+  const auto index = static_cast<size_t>(mod);
+  ogl_dbg_assert(index < sizeof(map));
+  return map[index];
+}
+
+void input_command_map::set_command(window_key_modifier mod, input_command command)
+{
+  const auto index = static_cast<size_t>(mod);
+  ogl_dbg_assert(index < sizeof(map));
+  map[index] = command;
+}
+
 input_manager::ptr input_manager::create()
 {
   return input_manager::ptr(new input_manager());
 }
 
 input_manager::input_manager()
+  : m_command_map(enum_count<window_key>(), { input_command::invalid }),
+    m_command_active(enum_count<input_command>(), false),
+    m_observers()
 {
+  default_command_map();
 }
 
 void input_manager::add_observer(input_observer* observer) const
 {
+  ogl_dbg_assert(observer != nullptr);
   m_observers.push_back(observer);
 }
 
 void input_manager::remove_observer(input_observer* observer) const
 {
+  ogl_dbg_assert(observer != nullptr);
   m_observers.erase(
     std::remove(m_observers.begin(), m_observers.end(), observer),
     m_observers.end());
+}
+
+void input_manager::default_command_map()
+{
+  set_command(
+    window_key::escape,
+    window_key_modifier::none,
+    input_command::application_exit);
+}
+
+input_command input_manager::command(window_key key, window_key_modifier mod) const
+{
+  size_t index = static_cast<size_t>(key);
+  ogl_dbg_assert(index < m_command_map.size());
+  return m_command_map[index].command(mod);
+}
+
+void input_manager::set_command(window_key key, window_key_modifier mod, input_command command)
+{
+  size_t index = static_cast<size_t>(key);
+  ogl_dbg_assert(index < m_command_map.size());
+  m_command_map[index].set_command(mod, command);
 }
 
 void input_manager::window_key_pressed(const ogl::window* window,
 				       ogl::window_key key,
 				       ogl::window_key_action action)
 {
-  input_command the_input_command = window_key_to_input_command(key);
-  if (the_input_command == input_command::invalid)
+  input_command command = this->command(key, window_key_modifier::none);
+  if (command == input_command::invalid)
     return;
 
-  int index = static_cast<int>(the_input_command);
+  int index = static_cast<int>(command);
 
   switch (action)
   {
   case window_key_action::press:
-    m_key_active[index] = true;
-    notify_input_command_activated(the_input_command);
+    m_command_active[index] = true;
+    notify_command_activated(command);
     break;
 
   case window_key_action::release:
-    m_key_active[index] = false;
-    notify_input_command_deactivated(the_input_command);
+    m_command_active[index] = false;
+    notify_command_deactivated(command);
     break;
 
   default:
@@ -70,25 +113,14 @@ void input_manager::window_key_pressed(const ogl::window* window,
   }
 }
 
-input_command input_manager::window_key_to_input_command(window_key key)
-{
-  switch (key)
-  {
-  case window_key::escape:
-    return input_command::application_exit;
-  default:
-    return input_command::invalid;
-  }
-}
-
-void input_manager::notify_input_command_activated(input_command key) const
+void input_manager::notify_command_activated(input_command key) const
 {
   for (input_observer* observer : m_observers)
-    observer->input_command_activated(key);
+    observer->command_activated(key);
 }
 
-void input_manager::notify_input_command_deactivated(input_command key) const
+void input_manager::notify_command_deactivated(input_command key) const
 {
   for (input_observer* observer : m_observers)
-    observer->input_command_deactivated(key);
+    observer->command_deactivated(key);
 }

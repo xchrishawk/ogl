@@ -71,7 +71,7 @@ void application::main()
   }
 }
 
-void application::input_command_activated(input_command key)
+void application::command_activated(input_command key)
 {
   switch (key)
   {
@@ -85,7 +85,7 @@ void application::input_command_activated(input_command key)
   }
 }
 
-void application::input_command_deactivated(input_command key)
+void application::command_deactivated(input_command key)
 {
   // no-op
 }
