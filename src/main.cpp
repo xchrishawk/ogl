@@ -32,8 +32,17 @@ using namespace ogl;
 
 namespace
 {
-  /** Create application args using GLFW and GLEW. */
-  application_args application_args_glfw();
+  /** Configures the application args to use GLFW. */
+  void args_init_glfw(application_args& args);
+
+  /** Configures the application args to use GLEW. */
+  void args_init_glew(application_args& args);
+
+  /** Configures the application args input manager. */
+  void args_init_input_manager(application_args& args);
+
+  /** Configures the application args to use the trivial state/render managers. */
+  void args_init_state_render_trivial(application_args& args);
 }
 
 /* -- Procedures -- */
@@ -42,7 +51,14 @@ int main(int argc, char** argv)
 {
   try
   {
-    auto args = application_args_glfw();
+    // configure application
+    application_args args;
+    args_init_glfw(args);
+    args_init_glew(args);
+    args_init_input_manager(args);
+    args_init_state_render_trivial(args);
+
+    // run application
     application app(args);
     app.main();
     return 0;
@@ -56,10 +72,8 @@ int main(int argc, char** argv)
 
 namespace
 {
-  application_args application_args_glfw()
+  void args_init_glfw(application_args& args)
   {
-    application_args args;
-
     // arguments for GLFW interface
     glfw::glfw_interface_args glfw_interface_args;
     glfw_interface_args.opengl_profile			= GLFW_OPENGL_CORE_PROFILE;
@@ -82,27 +96,34 @@ namespace
     glfw::glfw_window::ptr glfw_window = glfw::glfw_window::create(glfw_window_args);
     glfw_window->make_current_context();
     args.window 					= glfw_window;
+  }
 
+  void args_init_glew(application_args& args)
+  {
     // create OpenGL/GLEW interface
     glew::glew_interface::ptr glew_interface = glew::glew_interface::create();
-    args.opengl 					= glew_interface;
+    args.opengl = glew_interface;
+  }
 
+  void args_init_input_manager(application_args& args)
+  {
     // create input manager
     input_manager::ptr input_manager = input_manager::create();
-    args.input_manager 					= input_manager;
+    args.input_manager = input_manager;
+  }
 
+  void args_init_state_render_trivial(application_args& args)
+  {
     // create state manager
     state_manager::ptr state_manager = trivial_state_manager::create();
-    args.state_manager					= state_manager;
+    args.state_manager = state_manager;
 
     // create render manager
     render_manager::ptr render_manager = trivial_render_manager::create();
-    args.render_manager					= render_manager;
+    args.render_manager = render_manager;
 
     // final app configuration
-    args.target_state_delta_t 				= (1.0 / 60.0);
-    args.target_render_delta_t				= (1.0 / 60.0);
-
-    return args;
+    args.target_state_delta_t = (1.0 / 60.0);
+    args.target_render_delta_t = (1.0 / 60.0);
   }
 }
