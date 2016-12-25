@@ -33,7 +33,7 @@ namespace ogl
   /**
    * Main class for the OGL application.
    */
-  class application
+  class application : public input_observer
   {
   public:
 
@@ -53,6 +53,11 @@ namespace ogl
 
     /** Runs the main loop for the application. */
     void main();
+
+    /* -- `input_observer` Interface Implementation -- */
+
+    virtual void input_key_activated(ogl::input_key key);
+    virtual void input_key_deactivated(ogl::input_key key);
 
   private:
 

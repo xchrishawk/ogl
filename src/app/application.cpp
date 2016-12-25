@@ -37,7 +37,8 @@ application::application(const application_args& args)
     ogl::fail();
   }
 
-  // register input manager as observer of window
+  // register data flow for inputs
+  m_input_manager->add_observer(this);
   m_window->add_key_observer(m_input_manager.get());
 
   application::s_instance = this;
@@ -46,7 +47,8 @@ application::application(const application_args& args)
 
 application::~application()
 {
-  // clean up input registration
+  // clean up input data flow
+  m_input_manager->remove_observer(this);
   m_window->remove_key_observer(m_input_manager.get());
 
   application::s_instance = nullptr;
@@ -67,4 +69,23 @@ void application::main()
 
     m_window->swap_buffers();
   }
+}
+
+void application::input_key_activated(input_key key)
+{
+  switch (key)
+  {
+  case input_key::application_exit:
+    // this will terminate the main run loop, resulting in the app closing
+    m_window->set_should_close(true);
+    break;
+
+  default:
+    break;
+  }
+}
+
+void application::input_key_deactivated(input_key key)
+{
+  // no-op
 }
