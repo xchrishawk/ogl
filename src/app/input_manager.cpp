@@ -62,6 +62,7 @@ void input_manager::window_key_pressed(const ogl::window* window,
   case window_key_action::release:
     m_key_active[index] = false;
     notify_input_key_deactivated(the_input_key);
+    break;
 
   default:
     ogl_dbg_assert_fail("Unknown key action type!");
