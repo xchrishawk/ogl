@@ -72,10 +72,45 @@ bool input_manager::command_active(input_command command) const
 
 void input_manager::default_command_map()
 {
+  // application control
   set_command_map(
     window_key::escape,
     window_key_modifier::none,
     input_command::application_exit);
+
+  // color settings
+  set_command_map(
+    window_key::letter_q,
+    window_key_modifier::control,
+    input_command::color_red_increase);
+  set_command_map(
+    window_key::letter_a,
+    window_key_modifier::control,
+    input_command::color_red_decrease);
+  set_command_map(
+    window_key::letter_w,
+    window_key_modifier::control,
+    input_command::color_green_increase);
+  set_command_map(
+    window_key::letter_s,
+    window_key_modifier::control,
+    input_command::color_green_decrease);
+  set_command_map(
+    window_key::letter_e,
+    window_key_modifier::control,
+    input_command::color_blue_increase);
+  set_command_map(
+    window_key::letter_d,
+    window_key_modifier::control,
+    input_command::color_blue_decrease);
+  set_command_map(
+    window_key::letter_r,
+    window_key_modifier::control,
+    input_command::color_alpha_increase);
+  set_command_map(
+    window_key::letter_f,
+    window_key_modifier::control,
+    input_command::color_alpha_decrease);
 }
 
 input_command input_manager::command_map(window_key key, window_key_modifier mod) const

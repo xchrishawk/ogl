@@ -12,6 +12,8 @@
 
 #include "app/application.hpp"
 #include "app/input_manager.hpp"
+#include "app/render_manager.hpp"
+#include "app/render/trivial_render_manager.hpp"
 #include "app/state_manager.hpp"
 #include "app/state/trivial_state_manager.hpp"
 #include "opengl/opengl.hpp"
@@ -92,6 +94,10 @@ namespace
     // create state manager
     state_manager::ptr state_manager = trivial_state_manager::create();
     args.state_manager					= state_manager;
+
+    // create render manager
+    render_manager::ptr render_manager = trivial_render_manager::create();
+    args.render_manager					= render_manager;
 
     // final app configuration
     args.target_state_delta_t 				= (1.0 / 60.0);

@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include <glm/glm.hpp>
 #include "app/state_manager.hpp"
 
 /* -- Types -- */
@@ -27,6 +28,10 @@ namespace ogl
 
     ~trivial_state_manager();
 
+    /** The background color to render. */
+    glm::vec3 background_color() const
+    { return m_background_color; }
+
     /* -- `state_manager` Interface Implementation -- */
 
     virtual void run(const ogl::state_run_args& args);
@@ -38,7 +43,11 @@ namespace ogl
 
   private:
 
+    glm::vec3 m_background_color;
+
     trivial_state_manager();
+
+    void update_background_color(const ogl::state_run_args& args);
 
   };
 

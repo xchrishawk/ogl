@@ -13,6 +13,7 @@ set(APP_LIBRARY_NAME ${APP_LIBRARY_NAME} PARENT_SCOPE)
 set(APP_LIBRARY_SOURCES
   application.cpp
   input_manager.cpp
+  render/trivial_render_manager.cpp
   state/trivial_state_manager.cpp)
 
 # Initial configuration

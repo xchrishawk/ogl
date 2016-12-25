@@ -172,6 +172,32 @@ namespace
     if (!initialized)
     {
       keymap[GLFW_KEY_ESCAPE]		= ogl::window_key::escape;
+      keymap[GLFW_KEY_A]		= ogl::window_key::letter_a;
+      keymap[GLFW_KEY_B]		= ogl::window_key::letter_b;
+      keymap[GLFW_KEY_C]		= ogl::window_key::letter_c;
+      keymap[GLFW_KEY_D]		= ogl::window_key::letter_d;
+      keymap[GLFW_KEY_E]		= ogl::window_key::letter_e;
+      keymap[GLFW_KEY_F]		= ogl::window_key::letter_f;
+      keymap[GLFW_KEY_G]		= ogl::window_key::letter_g;
+      keymap[GLFW_KEY_H]		= ogl::window_key::letter_h;
+      keymap[GLFW_KEY_I]		= ogl::window_key::letter_i;
+      keymap[GLFW_KEY_J]		= ogl::window_key::letter_j;
+      keymap[GLFW_KEY_K]		= ogl::window_key::letter_k;
+      keymap[GLFW_KEY_L]		= ogl::window_key::letter_l;
+      keymap[GLFW_KEY_M]		= ogl::window_key::letter_m;
+      keymap[GLFW_KEY_N]		= ogl::window_key::letter_n;
+      keymap[GLFW_KEY_O]		= ogl::window_key::letter_o;
+      keymap[GLFW_KEY_P]		= ogl::window_key::letter_p;
+      keymap[GLFW_KEY_Q]		= ogl::window_key::letter_q;
+      keymap[GLFW_KEY_R]		= ogl::window_key::letter_r;
+      keymap[GLFW_KEY_S]		= ogl::window_key::letter_s;
+      keymap[GLFW_KEY_T]		= ogl::window_key::letter_t;
+      keymap[GLFW_KEY_U]		= ogl::window_key::letter_u;
+      keymap[GLFW_KEY_V]		= ogl::window_key::letter_v;
+      keymap[GLFW_KEY_W]		= ogl::window_key::letter_w;
+      keymap[GLFW_KEY_X]		= ogl::window_key::letter_x;
+      keymap[GLFW_KEY_Y]		= ogl::window_key::letter_y;
+      keymap[GLFW_KEY_Z]		= ogl::window_key::letter_z;
       keymap[GLFW_KEY_0]		= ogl::window_key::digit_0;
       keymap[GLFW_KEY_1]		= ogl::window_key::digit_1;
       keymap[GLFW_KEY_2]		= ogl::window_key::digit_2;

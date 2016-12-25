@@ -26,8 +26,16 @@ namespace ogl
    */
   enum class input_command : int
   {
-    invalid,
-    application_exit,
+    invalid,			/**< Invalid or unknown command. */
+    application_exit,		/**< Exit the application. */
+    color_red_increase,		/**< Increase red color component. */
+    color_red_decrease,		/**< Decrease red color component. */
+    color_green_increase,	/**< Increase green color component. */
+    color_green_decrease,	/**< Decrease green color component. */
+    color_blue_increase,	/**< Increase blue color component. */
+    color_blue_decrease,	/**< Decrease blue color component. */
+    color_alpha_increase,	/**< Increase alpha color component. */
+    color_alpha_decrease,	/**< Decrease alpha color component. */
     count,
   };
 

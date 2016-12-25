@@ -8,12 +8,15 @@
 
 #include <stdexcept>
 
-// <TEMP>
-#include <GL/glew.h>
-// </TEMP>
-
 #include "app/application.hpp"
+#include "app/input_manager.hpp"
+#include "app/render_manager.hpp"
+#include "app/state_manager.hpp"
+#include "opengl/opengl.hpp"
 #include "util/debug.hpp"
+#include "window/window.hpp"
+#include "window/window_key.hpp"
+#include "window/window_manager.hpp"
 
 /* -- Namespaces -- */
 
@@ -31,6 +34,7 @@ application::application(const application_args& args)
     m_opengl(args.opengl),
     m_input_manager(args.input_manager),
     m_state_manager(args.state_manager),
+    m_render_manager(args.render_manager),
     m_target_state_delta_t(args.target_state_delta_t),
     m_target_render_delta_t(args.target_render_delta_t)
 {
@@ -135,10 +139,15 @@ void application::run_state(double abs_t, double delta_t)
 
 void application::run_render(double abs_t, double delta_t)
 {
-  // <TEMP>
-  glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
-  // </TEMP>
+  // create args
+  render_run_args args;
+  args.abs_t = abs_t;
+  args.delta_t = delta_t;
+  args.state_manager = m_state_manager;
+  args.opengl = m_opengl;
+
+  // run the render loop
+  m_render_manager->run(args);
 
   // swap buffers to display new rendered image
   m_window->swap_buffers();

@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include "app/input_manager.hpp"
+#include "app/render_manager.hpp"
 #include "app/state_manager.hpp"
 #include "opengl/opengl.hpp"
 #include "window/window.hpp"
@@ -30,6 +31,7 @@ namespace ogl
     ogl::opengl::ptr opengl;			/**< The OpenGL interface. */
     ogl::input_manager::ptr input_manager;	/**< The input manager. */
     ogl::state_manager::ptr state_manager;	/**< The state manager. */
+    ogl::render_manager::ptr render_manager;	/**< The render manager. */
     double target_state_delta_t;		/**< Time between state loops. */
     double target_render_delta_t;		/**< Time between render loops. */
   };
@@ -72,6 +74,7 @@ namespace ogl
     const ogl::opengl::ptr m_opengl;
     const ogl::input_manager::ptr m_input_manager;
     const ogl::state_manager::ptr m_state_manager;
+    const ogl::render_manager::ptr m_render_manager;
     const double m_target_state_delta_t;
     const double m_target_render_delta_t;
 
