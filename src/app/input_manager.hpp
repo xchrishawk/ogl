@@ -74,10 +74,10 @@ namespace ogl
     } mods;
 
     /** Returns the input command for the specified modifier. */
-    ogl::input_command command(ogl::window_key_modifier mod) const;
+    ogl::input_command command_map(ogl::window_key_modifier mod) const;
 
     /** Sets the input command for the specified modifier. */
-    void set_command(ogl::window_key_modifier mod, ogl::input_command command);
+    void set_command_map(ogl::window_key_modifier mod, ogl::input_command command);
 
   };
 
@@ -115,10 +115,10 @@ namespace ogl
     void default_command_map();
 
     /** Gets the `input_command` associated with the specified key press. */
-    ogl::input_command command(ogl::window_key key, ogl::window_key_modifier mod) const;
+    ogl::input_command command_map(ogl::window_key key, ogl::window_key_modifier mod) const;
 
     /** Sets the `input_command` associated with the specified key press. */
-    void set_command(ogl::window_key key, ogl::window_key_modifier mod, ogl::input_command command);
+    void set_command_map(ogl::window_key key, ogl::window_key_modifier mod, ogl::input_command command);
 
     /* -- `window_key_observer` Interface Implementation -- */
 

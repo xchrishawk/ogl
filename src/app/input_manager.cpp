@@ -22,14 +22,14 @@ using namespace ogl;
 
 /* -- Procedures -- */
 
-input_command input_command_map::command(window_key_modifier mod) const
+input_command input_command_map::command_map(window_key_modifier mod) const
 {
   const auto index = static_cast<size_t>(mod);
   ogl_dbg_assert(index < sizeof(map));
   return map[index];
 }
 
-void input_command_map::set_command(window_key_modifier mod, input_command command)
+void input_command_map::set_command_map(window_key_modifier mod, input_command command)
 {
   const auto index = static_cast<size_t>(mod);
   ogl_dbg_assert(index < sizeof(map));
@@ -72,24 +72,24 @@ bool input_manager::command_active(input_command command) const
 
 void input_manager::default_command_map()
 {
-  set_command(
+  set_command_map(
     window_key::escape,
     window_key_modifier::none,
     input_command::application_exit);
 }
 
-input_command input_manager::command(window_key key, window_key_modifier mod) const
+input_command input_manager::command_map(window_key key, window_key_modifier mod) const
 {
   const auto index = static_cast<size_t>(key);
   ogl_dbg_assert(index < m_command_map.size());
-  return m_command_map[index].command(mod);
+  return m_command_map[index].command_map(mod);
 }
 
-void input_manager::set_command(window_key key, window_key_modifier mod, input_command command)
+void input_manager::set_command_map(window_key key, window_key_modifier mod, input_command command)
 {
   const auto index = static_cast<size_t>(key);
   ogl_dbg_assert(index < m_command_map.size());
-  m_command_map[index].set_command(mod, command);
+  m_command_map[index].set_command_map(mod, command);
 }
 
 void input_manager::window_key_pressed(const ogl::window* window,
@@ -97,7 +97,7 @@ void input_manager::window_key_pressed(const ogl::window* window,
 				       ogl::window_key_modifier mod,
 				       ogl::window_key_action action)
 {
-  const auto command = this->command(key, mod);
+  const auto command = this->command_map(key, mod);
   if (command == input_command::invalid)
     return;
 
