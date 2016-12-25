@@ -57,9 +57,9 @@ namespace ogl
    */
   enum class window_key_action : int
   {
-    invalid,		/**< Invalid action type. */
-    press,		/**< The key was pressed. */
-    release,		/**< The key was release. */
+    invalid,			/**< Invalid action type. */
+    press,			/**< The key was pressed. */
+    release,			/**< The key was release. */
   };
 
 }

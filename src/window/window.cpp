@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "util/debug.hpp"
 #include "window/window.hpp"
 #include "window/window_key.hpp"
 
@@ -20,11 +21,13 @@ using namespace ogl;
 
 void window::add_key_observer(window_key_observer* observer) const
 {
+  ogl_dbg_assert(observer != nullptr);
   m_key_observers.push_back(observer);
 }
 
 void window::remove_key_observer(window_key_observer* observer) const
 {
+  ogl_dbg_assert(observer != nullptr);
   m_key_observers.erase(
     std::remove(m_key_observers.begin(), m_key_observers.end(), observer),
     m_key_observers.end());
