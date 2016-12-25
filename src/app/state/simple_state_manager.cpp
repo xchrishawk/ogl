@@ -1,5 +1,5 @@
 /**
- * @file	trivial_state_manager.cpp
+ * @file	simple_state_manager.cpp
  * @author	Chris Vig (chris@invictus.so)
  * @date	2016/12/25
  */
@@ -11,7 +11,7 @@
 
 #include "app/input_manager.hpp"
 #include "app/state_manager.hpp"
-#include "app/state/trivial_state_manager.hpp"
+#include "app/state/simple_state_manager.hpp"
 #include "util/debug.hpp"
 #include "util/misc.hpp"
 
@@ -30,34 +30,34 @@ namespace
 
 /* -- Procedures -- */
 
-state_manager::ptr trivial_state_manager::create()
+state_manager::ptr simple_state_manager::create()
 {
-  return state_manager::ptr(new trivial_state_manager());
+  return state_manager::ptr(new simple_state_manager());
 }
 
-trivial_state_manager::trivial_state_manager()
-{
-}
-
-trivial_state_manager::~trivial_state_manager()
+simple_state_manager::simple_state_manager()
 {
 }
 
-void trivial_state_manager::run(const state_run_args& args)
+simple_state_manager::~simple_state_manager()
+{
+}
+
+void simple_state_manager::run(const state_run_args& args)
 {
   update_background_color(args);
 }
 
-void trivial_state_manager::command_activated(ogl::input_command command)
+void simple_state_manager::command_activated(ogl::input_command command)
 {
 }
 
-void trivial_state_manager::command_deactivated(ogl::input_command command)
+void simple_state_manager::command_deactivated(ogl::input_command command)
 {
   // no-op
 }
 
-void trivial_state_manager::update_background_color(const state_run_args& args)
+void simple_state_manager::update_background_color(const state_run_args& args)
 {
   const auto delta = COLOR_PER_SECOND * args.delta_t;
 

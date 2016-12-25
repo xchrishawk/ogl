@@ -13,9 +13,9 @@
 #include "app/application.hpp"
 #include "app/input_manager.hpp"
 #include "app/render_manager.hpp"
-#include "app/render/trivial_render_manager.hpp"
+#include "app/render/simple_render_manager.hpp"
 #include "app/state_manager.hpp"
-#include "app/state/trivial_state_manager.hpp"
+#include "app/state/simple_state_manager.hpp"
 #include "opengl/opengl.hpp"
 #include "opengl/glew/glew_interface.hpp"
 #include "util/debug.hpp"
@@ -41,8 +41,8 @@ namespace
   /** Configures the application args input manager. */
   void args_init_input_manager(application_args& args);
 
-  /** Configures the application args to use the trivial state/render managers. */
-  void args_init_state_render_trivial(application_args& args);
+  /** Configures the application args to use the simple state/render managers. */
+  void args_init_state_render_simple(application_args& args);
 }
 
 /* -- Procedures -- */
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
     args_init_glfw(args);
     args_init_glew(args);
     args_init_input_manager(args);
-    args_init_state_render_trivial(args);
+    args_init_state_render_simple(args);
 
     // run application
     application app(args);
@@ -112,14 +112,14 @@ namespace
     args.input_manager = input_manager;
   }
 
-  void args_init_state_render_trivial(application_args& args)
+  void args_init_state_render_simple(application_args& args)
   {
     // create state manager
-    state_manager::ptr state_manager = trivial_state_manager::create();
+    state_manager::ptr state_manager = simple_state_manager::create();
     args.state_manager = state_manager;
 
     // create render manager
-    render_manager::ptr render_manager = trivial_render_manager::create();
+    render_manager::ptr render_manager = simple_render_manager::create();
     args.render_manager = render_manager;
 
     // final app configuration

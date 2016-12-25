@@ -1,5 +1,5 @@
 /**
- * @file	trivial_state_manager.hpp
+ * @file	simple_state_manager.hpp
  * @author	Chris Vig (chris@invictus.so)
  * @date	2016/12/25
  */
@@ -17,16 +17,16 @@ namespace ogl
 {
 
   /**
-   * Basic trivial state manager object.
+   * Basic simple state manager object.
    */
-  class trivial_state_manager : public state_manager
+  class simple_state_manager : public state_manager
   {
   public:
 
-    /** Creates a shared pointer to a new `trivial_state_manager` instance. */
+    /** Creates a shared pointer to a new `simple_state_manager` instance. */
     static state_manager::ptr create();
 
-    ~trivial_state_manager();
+    ~simple_state_manager();
 
     /** The background color to render. */
     glm::vec3 background_color() const
@@ -45,7 +45,7 @@ namespace ogl
 
     glm::vec3 m_background_color;
 
-    trivial_state_manager();
+    simple_state_manager();
 
     void update_background_color(const ogl::state_run_args& args);
 

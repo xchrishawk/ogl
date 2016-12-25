@@ -1,5 +1,5 @@
 /**
- * @file	trivial_render_manager.cpp
+ * @file	simple_render_manager.cpp
  * @author	Chris Vig (chris@invictus.so)
  * @date	2016/12/25
  */
@@ -11,8 +11,8 @@
 // </TEMP>
 
 #include "app/render_manager.hpp"
-#include "app/render/trivial_render_manager.hpp"
-#include "app/state/trivial_state_manager.hpp"
+#include "app/render/simple_render_manager.hpp"
+#include "app/state/simple_state_manager.hpp"
 #include "opengl/opengl.hpp"
 
 /* -- Namespaces -- */
@@ -21,24 +21,24 @@ using namespace ogl;
 
 /* -- Procedures -- */
 
-render_manager::ptr trivial_render_manager::create()
+render_manager::ptr simple_render_manager::create()
 {
-  return render_manager::ptr(new trivial_render_manager());
+  return render_manager::ptr(new simple_render_manager());
 }
 
-trivial_render_manager::trivial_render_manager()
-{
-}
-
-trivial_render_manager::~trivial_render_manager()
+simple_render_manager::simple_render_manager()
 {
 }
 
-void trivial_render_manager::run(const render_run_args& args)
+simple_render_manager::~simple_render_manager()
+{
+}
+
+void simple_render_manager::run(const render_run_args& args)
 {
   // I'm sure there's probably a better way of doing this...
-  const trivial_state_manager* state_manager
-    = dynamic_cast<const trivial_state_manager*>(args.state_manager.get());
+  const simple_state_manager* state_manager
+    = dynamic_cast<const simple_state_manager*>(args.state_manager.get());
   ogl_dbg_assert(state_manager != nullptr);
 
   // <TEMP>
