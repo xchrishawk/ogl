@@ -20,16 +20,16 @@ namespace ogl
 {
 
   /**
-   * Enumeration of input keys which may be pressed by the user.
+   * Enumeration of input commands which may be selected by the user.
    */
-  enum class input_key : int
+  enum class input_command : int
   {
     invalid,
     application_exit,
   };
 
-  /** The number of `input_key` enum members. */
-  const int INPUT_KEY_COUNT = static_cast<int>(input_key::application_exit) + 1;
+  /** The number of `input_command` enum members. */
+  const int INPUT_COMMAND_COUNT = static_cast<int>(input_command::application_exit) + 1;
 
   /**
    * Abstract interface for classes observing inputs from the `input_manager` class.
@@ -39,10 +39,10 @@ namespace ogl
   public:
 
     /** Notifies the observer that an input key was activated. */
-    virtual void input_key_activated(ogl::input_key key) { }
+    virtual void input_command_activated(ogl::input_command key) { }
 
     /** Notifies the observer that an input key was deactivated. */
-    virtual void input_key_deactivated(ogl::input_key key) { }
+    virtual void input_command_deactivated(ogl::input_command key) { }
 
   };
 
@@ -77,15 +77,15 @@ namespace ogl
   private:
 
     mutable std::vector<input_observer*> m_observers;
-    bool m_key_active[ogl::INPUT_KEY_COUNT];
+    bool m_key_active[ogl::INPUT_COMMAND_COUNT];
 
     input_manager();
     input_manager(const input_manager&) = delete;
     input_manager operator =(const input_manager&) = delete;
 
-    ogl::input_key window_key_to_input_key(ogl::window_key key);
-    void notify_input_key_activated(ogl::input_key key) const;
-    void notify_input_key_deactivated(ogl::input_key key) const;
+    ogl::input_command window_key_to_input_command(ogl::window_key key);
+    void notify_input_command_activated(ogl::input_command key) const;
+    void notify_input_command_deactivated(ogl::input_command key) const;
 
   };
 

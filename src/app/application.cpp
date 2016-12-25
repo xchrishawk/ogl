@@ -71,11 +71,11 @@ void application::main()
   }
 }
 
-void application::input_key_activated(input_key key)
+void application::input_command_activated(input_command key)
 {
   switch (key)
   {
-  case input_key::application_exit:
+  case input_command::application_exit:
     // this will terminate the main run loop, resulting in the app closing
     m_window->set_should_close(true);
     break;
@@ -85,7 +85,7 @@ void application::input_key_activated(input_key key)
   }
 }
 
-void application::input_key_deactivated(input_key key)
+void application::input_command_deactivated(input_command key)
 {
   // no-op
 }
