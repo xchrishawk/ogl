@@ -12,7 +12,8 @@ set(APP_LIBRARY_NAME ${APP_LIBRARY_NAME} PARENT_SCOPE)
 # Library source code
 set(APP_LIBRARY_SOURCES
   application.cpp
-  input_manager.cpp)
+  input_manager.cpp
+  state/trivial_state_manager.cpp)
 
 # Initial configuration
 string(TOUPPER ${APP_LIBRARY_NAME} APP_LIBRARY_NAME_UPPER)

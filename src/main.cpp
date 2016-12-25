@@ -12,6 +12,8 @@
 
 #include "app/application.hpp"
 #include "app/input_manager.hpp"
+#include "app/state_manager.hpp"
+#include "app/state/trivial_state_manager.hpp"
 #include "opengl/opengl.hpp"
 #include "opengl/glew/glew_interface.hpp"
 #include "util/debug.hpp"
@@ -86,6 +88,10 @@ namespace
     // create input manager
     input_manager::ptr input_manager = input_manager::create();
     args.input_manager 					= input_manager;
+
+    // create state manager
+    state_manager::ptr state_manager = trivial_state_manager::create();
+    args.state_manager					= state_manager;
 
     // final app configuration
     args.target_state_delta_t 				= (1.0 / 60.0);

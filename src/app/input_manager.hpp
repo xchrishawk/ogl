@@ -46,10 +46,10 @@ namespace ogl
   public:
 
     /** Notifies the observer that an input command was activated. */
-    virtual void command_activated(ogl::input_command key) { }
+    virtual void command_activated(ogl::input_command command) { }
 
     /** Notifies the observer that an input command was deactivated. */
-    virtual void command_deactivated(ogl::input_command key) { }
+    virtual void command_deactivated(ogl::input_command command) { }
 
   };
 

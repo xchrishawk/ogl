@@ -30,6 +30,7 @@ application::application(const application_args& args)
     m_window(args.window),
     m_opengl(args.opengl),
     m_input_manager(args.input_manager),
+    m_state_manager(args.state_manager),
     m_target_state_delta_t(args.target_state_delta_t),
     m_target_render_delta_t(args.target_render_delta_t)
 {
@@ -40,8 +41,9 @@ application::application(const application_args& args)
   }
 
   // register data flow for inputs
-  m_input_manager->add_observer(this);
   m_window->add_key_observer(m_input_manager.get());
+  m_input_manager->add_observer(this);
+  m_input_manager->add_observer(m_state_manager.get());
 
   application::s_instance = this;
   ogl_dbg_status("Application launched successfully.");
@@ -50,8 +52,9 @@ application::application(const application_args& args)
 application::~application()
 {
   // clean up input data flow
-  m_input_manager->remove_observer(this);
   m_window->remove_key_observer(m_input_manager.get());
+  m_input_manager->remove_observer(this);
+  m_input_manager->remove_observer(m_state_manager.get());
 
   application::s_instance = nullptr;
   ogl_dbg_status("Terminating application...");
@@ -114,12 +117,20 @@ void application::command_deactivated(input_command key)
 
 void application::run_input()
 {
+  // get events from the window manager
   m_window_manager->poll_events();
 }
 
 void application::run_state(double abs_t, double delta_t)
 {
+  // create args
+  state_run_args args;
+  args.abs_t = abs_t;
+  args.delta_t = delta_t;
+  args.input_manager = m_input_manager;
 
+  // run the state loop
+  m_state_manager->run(args);
 }
 
 void application::run_render(double abs_t, double delta_t)
