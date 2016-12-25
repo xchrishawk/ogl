@@ -28,6 +28,8 @@ namespace ogl
     ogl::window::ptr window;			/**< The main application window. */
     ogl::opengl::ptr opengl;			/**< The OpenGL interface. */
     ogl::input_manager::ptr input_manager;	/**< The input manager. */
+    double target_state_delta_t;		/**< Time between state loops. */
+    double target_render_delta_t;		/**< Time between render loops. */
   };
 
   /**
@@ -67,9 +69,15 @@ namespace ogl
     const ogl::window::ptr m_window;
     const ogl::opengl::ptr m_opengl;
     const ogl::input_manager::ptr m_input_manager;
+    const double m_target_state_delta_t;
+    const double m_target_render_delta_t;
 
     application(const application&) = delete;
     application& operator =(const application&) = delete;
+
+    void run_input();
+    void run_state(double abs_t, double delta_t);
+    void run_render(double abs_t, double delta_t);
 
   };
 

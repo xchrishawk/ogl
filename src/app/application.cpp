@@ -29,7 +29,9 @@ application::application(const application_args& args)
   : m_window_manager(args.window_manager),
     m_window(args.window),
     m_opengl(args.opengl),
-    m_input_manager(args.input_manager)
+    m_input_manager(args.input_manager),
+    m_target_state_delta_t(args.target_state_delta_t),
+    m_target_render_delta_t(args.target_render_delta_t)
 {
   if (application::s_instance)
   {
@@ -57,18 +59,38 @@ application::~application()
 
 void application::main()
 {
-  ogl_dbg_status("Running application...");
+  ogl_dbg_status("Running application main loop...");
+
+  double last_state_t = m_window_manager->time();
+  double last_render_t = m_window_manager->time();
+
+  // loop until the main window needs to close
   while (!m_window->should_close())
   {
-    m_window_manager->poll_events();
+    // run input every cycle
+    run_input();
 
-    // <TEMP>
-    glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    // </TEMP>
+    // get current absolute time
+    double abs_t = m_window_manager->time();
 
-    m_window->swap_buffers();
+    // run state if needed
+    double state_delta_t = abs_t - last_state_t;
+    if (state_delta_t > m_target_state_delta_t)
+    {
+      run_state(abs_t, state_delta_t);
+      last_state_t = abs_t;
+    }
+
+    // run rendering if needed
+    double render_delta_t = abs_t - last_render_t;
+    if (render_delta_t > m_target_render_delta_t)
+    {
+      run_render(abs_t, render_delta_t);
+      last_render_t = abs_t;
+    }
   }
+
+  ogl_dbg_status("Application main loop exited.");
 }
 
 void application::command_activated(input_command key)
@@ -88,4 +110,25 @@ void application::command_activated(input_command key)
 void application::command_deactivated(input_command key)
 {
   // no-op
+}
+
+void application::run_input()
+{
+  m_window_manager->poll_events();
+}
+
+void application::run_state(double abs_t, double delta_t)
+{
+
+}
+
+void application::run_render(double abs_t, double delta_t)
+{
+  // <TEMP>
+  glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  // </TEMP>
+
+  // swap buffers to display new rendered image
+  m_window->swap_buffers();
 }

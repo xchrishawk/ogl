@@ -66,7 +66,7 @@ namespace
 
     // create GLFW interface
     glfw::glfw_interface::ptr glfw_interface = glfw::glfw_interface::create(glfw_interface_args);
-    args.window_manager = glfw_interface;
+    args.window_manager 				= glfw_interface;
 
     // arguments for GLFW window
     glfw::glfw_window_args glfw_window_args;
@@ -77,15 +77,19 @@ namespace
     // create GLFW window
     glfw::glfw_window::ptr glfw_window = glfw::glfw_window::create(glfw_window_args);
     glfw_window->make_current_context();
-    args.window = glfw_window;
+    args.window 					= glfw_window;
 
     // create OpenGL/GLEW interface
     glew::glew_interface::ptr glew_interface = glew::glew_interface::create();
-    args.opengl = glew_interface;
+    args.opengl 					= glew_interface;
 
     // create input manager
     input_manager::ptr input_manager = input_manager::create();
-    args.input_manager = input_manager;
+    args.input_manager 					= input_manager;
+
+    // final app configuration
+    args.target_state_delta_t 				= (1.0 / 60.0);
+    args.target_render_delta_t				= (1.0 / 60.0);
 
     return args;
   }
