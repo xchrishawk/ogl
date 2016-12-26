@@ -13,11 +13,11 @@
 
 #include "util/debug.hpp"
 #include "window/window_manager.hpp"
-#include "window/glfw/glfw_interface.hpp"
+#include "window/impl/glfw_interface.hpp"
 
 /* -- Namespaces -- */
 
-using namespace ogl::glfw;
+using namespace ogl::impl;
 
 /* -- Variables -- */
 

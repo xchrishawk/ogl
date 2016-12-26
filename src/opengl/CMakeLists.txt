@@ -11,8 +11,7 @@ set(OPENGL_LIBRARY_NAME ${OPENGL_LIBRARY_NAME} PARENT_SCOPE)
 
 # Library source code
 set(OPENGL_LIBRARY_SOURCES
-  opengl.cpp
-  glew/glew_interface.cpp)
+  impl/opengl_interface.cpp)
 
 # Initial configuration
 string(TOUPPER ${OPENGL_LIBRARY_NAME} OPENGL_LIBRARY_NAME_UPPER)

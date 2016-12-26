@@ -16,7 +16,7 @@
 
 namespace ogl
 {
-  namespace glfw
+  namespace impl
   {
 
     /**

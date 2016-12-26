@@ -17,12 +17,12 @@
 #include "app/state_manager.hpp"
 #include "app/state/simple_state_manager.hpp"
 #include "opengl/opengl.hpp"
-#include "opengl/glew/glew_interface.hpp"
+#include "opengl/impl/opengl_interface.hpp"
 #include "util/debug.hpp"
 #include "window/window.hpp"
 #include "window/window_manager.hpp"
-#include "window/glfw/glfw_interface.hpp"
-#include "window/glfw/glfw_window.hpp"
+#include "window/impl/glfw_interface.hpp"
+#include "window/impl/glfw_window.hpp"
 
 /* -- Namespaces -- */
 
@@ -75,7 +75,7 @@ namespace
   void args_init_glfw(application_args& args)
   {
     // arguments for GLFW interface
-    glfw::glfw_interface_args glfw_interface_args;
+    impl::glfw_interface_args glfw_interface_args;
     glfw_interface_args.opengl_profile			= GLFW_OPENGL_CORE_PROFILE;
     glfw_interface_args.opengl_forward_compat		= GL_TRUE;
     glfw_interface_args.opengl_context_version_major	= 3;
@@ -83,17 +83,17 @@ namespace
     glfw_interface_args.opengl_msaa_samples		= 4;
 
     // create GLFW interface
-    glfw::glfw_interface::ptr glfw_interface = glfw::glfw_interface::create(glfw_interface_args);
+    impl::glfw_interface::ptr glfw_interface = impl::glfw_interface::create(glfw_interface_args);
     args.window_manager 				= glfw_interface;
 
     // arguments for GLFW window
-    glfw::glfw_window_args glfw_window_args;
+    impl::glfw_window_args glfw_window_args;
     glfw_window_args.title 				= "OGL";
     glfw_window_args.width 				= 1024;
     glfw_window_args.height 				= 768;
 
     // create GLFW window
-    glfw::glfw_window::ptr glfw_window = glfw::glfw_window::create(glfw_window_args);
+    impl::glfw_window::ptr glfw_window = impl::glfw_window::create(glfw_window_args);
     glfw_window->make_current_context();
     args.window 					= glfw_window;
   }
@@ -101,8 +101,8 @@ namespace
   void args_init_glew(application_args& args)
   {
     // create OpenGL/GLEW interface
-    glew::glew_interface::ptr glew_interface = glew::glew_interface::create();
-    args.opengl = glew_interface;
+    impl::opengl_interface::ptr opengl = impl::opengl_interface::create();
+    args.opengl = opengl;
   }
 
   void args_init_input_manager(application_args& args)

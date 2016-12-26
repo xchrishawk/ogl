@@ -17,7 +17,7 @@
 
 namespace ogl
 {
-  namespace glfw
+  namespace impl
   {
 
     /**
@@ -61,28 +61,6 @@ namespace ogl
       glfw_interface(const glfw_interface_args& args);
 
     };
-
-  }
-}
-
-/* -- Procedures -- */
-
-namespace ogl
-{
-  namespace glfw
-  {
-
-    /** Converts an `int` to a `bool` for the GLFW interface. */
-    inline bool glfw_boolean_to_bool(int value)
-    {
-      return (value != GL_FALSE);
-    }
-
-    /** Converts an `bool` to an `int` for the GLFW interface. */
-    inline int bool_to_glfw_boolean(bool value)
-    {
-      return (value ? GL_TRUE : GL_FALSE);
-    }
 
   }
 }

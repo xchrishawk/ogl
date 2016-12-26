@@ -57,25 +57,24 @@ namespace ogl
     /* -- Platform Information -- */
 
     /** Returns the `GL_VERSION` string for the OpenGL implementation. */
-    virtual std::string version() const;
+    virtual std::string version() const = 0;
 
     /** Returns the `GL_SHADING_LANGUAGE_VERSION` string for the OpenGL implementation. */
-    virtual std::string glsl_version() const;
+    virtual std::string glsl_version() const = 0;
 
     /** Returns the `GL_VENDOR` string for the OpenGL implementation. */
-    virtual std::string vendor() const;
+    virtual std::string vendor() const = 0;
 
     /** Returns the `GL_RENDERER` string for the OpenGL implementation. */
-    virtual std::string renderer() const;
+    virtual std::string renderer() const = 0;
 
     /* -- Error Handling -- */
 
     /** Returns the last error registered by the OpenGL interface. */
-    virtual ogl::opengl_error last_error() const;
+    virtual ogl::opengl_error last_error() const = 0;
 
     /** Returns a `std::string` for the specified error enum. */
-    virtual std::string error_string(ogl::opengl_error error) const;
-
+    virtual std::string error_string(ogl::opengl_error error) const = 0;
 
   protected:
 
