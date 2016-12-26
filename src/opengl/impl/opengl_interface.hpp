@@ -24,7 +24,12 @@ namespace ogl
     {
     public:
 
-      /** Creates a new OpenGL interface instance. */
+      /**
+       * Creates a new OpenGL interface instance.
+       *
+       * @exception ogl::opengl_exception
+       * Thrown if the OpenGL interface cannot be initialized for any reason.
+       */
       static ogl::opengl::ptr create();
 
       ~opengl_interface();

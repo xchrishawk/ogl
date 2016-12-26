@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include <memory>
+#include <string>
 
 /* -- Constants -- */
 
@@ -53,6 +54,25 @@ namespace ogl
     /** Returns the type of this shader. */
     ogl::shader_type type() const
     { return m_type; }
+
+    /* -- Abstract Interface -- */
+
+    /** Sets the source code for this shader. */
+    virtual void set_source(const std::string& source) = 0;
+
+    /**
+     * Compiles the shader.
+     *
+     * @exception ogl::opengl_exception
+     * Thrown if the shader fails to compile for any reason.
+     */
+    virtual void compile() = 0;
+
+    /** Returns `true` if the shader has been compiled. */
+    virtual bool is_compiled() const = 0;
+
+    /** Returns the info log string for this shader. */
+    virtual std::string info_log() const = 0;
 
   protected:
 

@@ -53,7 +53,7 @@ opengl_interface::opengl_interface()
 
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK)
-    throw std::runtime_error("Failed to initialize GLEW.");
+    throw opengl_exception("Failed to initialize GLEW.");
 
   // there is a bug where GLEW triggers an error on init. flush it from the queue.
   // http://stackoverflow.com/q/20034615/434245

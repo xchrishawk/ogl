@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 #include "opengl/shader.hpp"
@@ -42,6 +43,17 @@ namespace ogl
 {
 
   /**
+   * Class representing a general OpenGL error.
+   */
+  class opengl_exception : public std::runtime_error
+  {
+  public:
+    opengl_exception(const std::string& message)
+      : std::runtime_error(message)
+    { }
+  };
+
+  /**
    * Abstract base class for types wrapping the OpenGL interface.
    */
   class opengl
@@ -58,7 +70,15 @@ namespace ogl
 
     /* -- Factory Methods -- */
 
-    /** Creates a new shader instance. */
+    /**
+     * Creates a new shader instance.
+     *
+     * @param type
+     * The type of shader to create.
+     *
+     * @exception ogl::opengl_exception
+     * Thrown if the shader cannot be created for any reason.
+     */
     virtual ogl::shader::ptr create_shader(ogl::shader_type type) const = 0;
 
     /* -- Platform Information -- */
