@@ -12,6 +12,7 @@
 #include "app/render_manager.hpp"
 #include "app/state_manager.hpp"
 #include "opengl/opengl.hpp"
+#include "resources/resource_manager.hpp"
 #include "window/window.hpp"
 #include "window/window_key.hpp"
 #include "window/window_manager.hpp"
@@ -26,14 +27,15 @@ namespace ogl
    */
   struct application_args
   {
-    ogl::window_manager::ptr window_manager;	/**< The window manager interface. */
-    ogl::window::ptr window;			/**< The main application window. */
-    ogl::opengl::ptr opengl;			/**< The OpenGL interface. */
-    ogl::input_manager::ptr input_manager;	/**< The input manager. */
-    ogl::state_manager::ptr state_manager;	/**< The state manager. */
-    ogl::render_manager::ptr render_manager;	/**< The render manager. */
-    double target_state_delta_t;		/**< Time between state loops. */
-    double target_render_delta_t;		/**< Time between render loops. */
+    ogl::window_manager::ptr window_manager;		/**< The window manager interface. */
+    ogl::window::ptr window;				/**< The main application window. */
+    ogl::opengl::ptr opengl;				/**< The OpenGL interface. */
+    ogl::input_manager::ptr input_manager;		/**< The input manager. */
+    ogl::resource_manager::ptr resource_manager;	/**< The resource manager. */
+    ogl::state_manager::ptr state_manager;		/**< The state manager. */
+    ogl::render_manager::ptr render_manager;		/**< The render manager. */
+    double target_state_delta_t;			/**< Time between state loops. */
+    double target_render_delta_t;			/**< Time between render loops. */
   };
 
   /**
@@ -73,6 +75,7 @@ namespace ogl
     const ogl::window::ptr m_window;
     const ogl::opengl::ptr m_opengl;
     const ogl::input_manager::ptr m_input_manager;
+    const ogl::resource_manager::ptr m_resource_manager;
     const ogl::state_manager::ptr m_state_manager;
     const ogl::render_manager::ptr m_render_manager;
     const double m_target_state_delta_t;

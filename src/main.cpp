@@ -18,6 +18,7 @@
 #include "app/state/simple_state_manager.hpp"
 #include "opengl/opengl.hpp"
 #include "opengl/impl/opengl_interface.hpp"
+#include "resources/resource_manager.hpp"
 #include "util/debug.hpp"
 #include "window/window.hpp"
 #include "window/window_manager.hpp"
@@ -41,6 +42,9 @@ namespace
   /** Configures the application args input manager. */
   void args_init_input_manager(application_args& args);
 
+  /** Configures the application args resource manager. */
+  void args_init_resource_manager(application_args& args);
+
   /** Configures the application args to use the simple state/render managers. */
   void args_init_state_render_simple(application_args& args);
 }
@@ -56,6 +60,7 @@ int main(int argc, char** argv)
     args_init_glfw(args);
     args_init_glew(args);
     args_init_input_manager(args);
+    args_init_resource_manager(args);
     args_init_state_render_simple(args);
 
     // run application
@@ -107,9 +112,16 @@ namespace
 
   void args_init_input_manager(application_args& args)
   {
-    // create input manager
+    // create default input manager
     input_manager::ptr input_manager = input_manager::create();
     args.input_manager = input_manager;
+  }
+
+  void args_init_resource_manager(application_args& args)
+  {
+    // create default resource manager
+    resource_manager::ptr resource_manager = resource_manager::create();
+    args.resource_manager = resource_manager;
   }
 
   void args_init_state_render_simple(application_args& args)

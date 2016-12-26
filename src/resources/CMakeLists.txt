@@ -11,8 +11,7 @@ set(RESOURCES_LIBRARY_NAME ${RESOURCES_LIBRARY_NAME} PARENT_SCOPE)
 
 # Library source code
 set(RESOURCES_LIBRARY_SOURCES
-  resource_manager.cpp
-  shaders/shaders.cpp)
+  resource_manager.cpp)
 
 # Initial configuration
 string(TOUPPER ${RESOURCES_LIBRARY_NAME} RESOURCES_LIBRARY_NAME_UPPER)

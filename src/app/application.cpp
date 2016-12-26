@@ -33,6 +33,7 @@ application::application(const application_args& args)
     m_window(args.window),
     m_opengl(args.opengl),
     m_input_manager(args.input_manager),
+    m_resource_manager(args.resource_manager),
     m_state_manager(args.state_manager),
     m_render_manager(args.render_manager),
     m_target_state_delta_t(args.target_state_delta_t),
@@ -161,16 +162,6 @@ void application::run_render(double abs_t, double delta_t)
 
 void application::prototype_test() const
 {
-  shader::ptr vertex_shader = m_opengl->create_shader(shader_type::vertex_shader);
-  vertex_shader->set_source("void main(void) { gl_Position = vec4(0.0, 0.0, 0.0, 1.0); }");
-  vertex_shader->compile();
-
-  shader::ptr fragment_shader = m_opengl->create_shader(shader_type::fragment_shader);
-  fragment_shader->set_source("void main(void) { }");
-  fragment_shader->compile();
-
-  program::ptr program = m_opengl->create_program();
-  program->link({ vertex_shader, fragment_shader });
 }
 
 #endif /* defined(OGL_DEBUG) */

@@ -8,7 +8,6 @@
 
 /* -- Includes -- */
 
-#include <map>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -55,9 +54,7 @@ namespace ogl
 
   private:
 
-    const std::map<std::string, std::string> m_shaders;
-
-    resource_manager(const std::map<std::string, std::string>& shaders);
+    resource_manager() = default;
     resource_manager(const resource_manager&) = delete;
     resource_manager& operator =(const resource_manager&) = delete;
 
