@@ -12,6 +12,7 @@
 
 #include "opengl/opengl.hpp"
 #include "opengl/impl/opengl_interface.hpp"
+#include "opengl/impl/opengl_program.hpp"
 #include "opengl/impl/opengl_shader.hpp"
 #include "util/debug.hpp"
 
@@ -78,6 +79,11 @@ opengl_interface::~opengl_interface()
 shader::ptr opengl_interface::create_shader(shader_type type) const
 {
   return opengl_shader::create(type);
+}
+
+program::ptr opengl_interface::create_program() const
+{
+  return opengl_program::create();
 }
 
 std::string opengl_interface::version() const

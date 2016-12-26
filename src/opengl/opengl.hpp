@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <string>
 
+#include "opengl/program.hpp"
 #include "opengl/shader.hpp"
 
 /* -- Constants -- */
@@ -80,6 +81,14 @@ namespace ogl
      * Thrown if the shader cannot be created for any reason.
      */
     virtual ogl::shader::ptr create_shader(ogl::shader_type type) const = 0;
+
+    /**
+     * Creates a new shader program instance.
+     *
+     * @exception ogl::opengl_exception
+     * Thrown if the shader program cannot be created for any reason.
+     */
+    virtual ogl::program::ptr create_program() const = 0;
 
     /* -- Platform Information -- */
 

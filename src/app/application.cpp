@@ -161,9 +161,16 @@ void application::run_render(double abs_t, double delta_t)
 
 void application::prototype_test() const
 {
-  shader::ptr shader = m_opengl->create_shader(shader_type::vertex_shader);
-  shader->set_source("void main(void) { }");
-  shader->compile();
+  shader::ptr vertex_shader = m_opengl->create_shader(shader_type::vertex_shader);
+  vertex_shader->set_source("void main(void) { gl_Position = vec4(0.0, 0.0, 0.0, 1.0); }");
+  vertex_shader->compile();
+
+  shader::ptr fragment_shader = m_opengl->create_shader(shader_type::fragment_shader);
+  fragment_shader->set_source("void main(void) { }");
+  fragment_shader->compile();
+
+  program::ptr program = m_opengl->create_program();
+  program->link({ vertex_shader, fragment_shader });
 }
 
 #endif /* defined(OGL_DEBUG) */

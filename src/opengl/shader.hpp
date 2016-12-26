@@ -71,7 +71,7 @@ namespace ogl
     /** Returns `true` if the shader has been compiled. */
     virtual bool is_compiled() const = 0;
 
-    /** Returns the info log string for this shader. */
+    /** Returns the information log for this shader. */
     virtual std::string info_log() const = 0;
 
   protected:

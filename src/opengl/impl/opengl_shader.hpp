@@ -42,6 +42,10 @@ namespace ogl
 
       ~opengl_shader();
 
+      /** Returns the OpenGL handle for this shader. */
+      GLuint handle() const
+      { return m_handle; }
+
       /* -- `shader` Interface Implementation -- */
 
       virtual void set_source(const std::string& source);
