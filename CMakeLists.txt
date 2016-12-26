@@ -80,6 +80,7 @@ endif()
 
 # -- Subdirectories --
 
+add_subdirectory(doc)
 add_subdirectory(src)
 
 # -- Run Target --

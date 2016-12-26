@@ -1,5 +1,5 @@
 #
-# CMakeLists.txt
+# src/opengl/CMakeLists.txt
 # Chris Vig (chris@invictus.so)
 #
 

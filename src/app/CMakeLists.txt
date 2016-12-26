@@ -1,5 +1,5 @@
 #
-# CMakeLists.txt
+# src/app/CMakeLists.txt
 # Chris Vig (chris@invictus.so)
 #
 

@@ -1,5 +1,5 @@
 #
-# CMakeLists.txt
+# src/window/CMakeLists.txt
 # Chris Vig (chris@invictus.so)
 #
 
