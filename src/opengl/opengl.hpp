@@ -11,6 +11,29 @@
 #include <memory>
 #include <string>
 
+/* -- Constants -- */
+
+namespace ogl
+{
+
+  /**
+   * Enumeration of errors which may be returned by OpenGL.
+   */
+  enum class opengl_error : int
+  {
+    no_error,
+    invalid_enum,
+    invalid_value,
+    invalid_operation,
+    invalid_framebuffer_operation,
+    out_of_memory,
+    stack_underflow,
+    stack_overflow,
+    unknown,
+  };
+
+}
+
 /* -- Types -- */
 
 namespace ogl
@@ -44,6 +67,15 @@ namespace ogl
 
     /** Returns the `GL_RENDERER` string for the OpenGL implementation. */
     virtual std::string renderer() const;
+
+    /* -- Error Handling -- */
+
+    /** Returns the last error registered by the OpenGL interface. */
+    virtual ogl::opengl_error last_error() const;
+
+    /** Returns a `std::string` for the specified error enum. */
+    virtual std::string error_string(ogl::opengl_error error) const;
+
 
   protected:
 
