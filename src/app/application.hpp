@@ -85,6 +85,10 @@ namespace ogl
     void run_state(double abs_t, double delta_t);
     void run_render(double abs_t, double delta_t);
 
+#if defined(OGL_DEBUG)
+    void prototype_test() const;
+#endif /* defined(OGL_DEBUG) */
+
   };
 
 }

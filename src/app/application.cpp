@@ -51,6 +51,10 @@ application::application(const application_args& args)
 
   application::s_instance = this;
   ogl_dbg_status("Application launched successfully.");
+
+#if defined(OGL_DEBUG)
+  prototype_test();
+#endif /* defined (OGL_DEBUG) */
 }
 
 application::~application()
@@ -152,3 +156,14 @@ void application::run_render(double abs_t, double delta_t)
   // swap buffers to display new rendered image
   m_window->swap_buffers();
 }
+
+#if defined(OGL_DEBUG)
+
+void application::prototype_test() const
+{
+  shader::ptr shader = m_opengl->create_shader(shader_type::vertex_shader);
+  shader->set_source("void main(void) { }");
+  shader->compile();
+}
+
+#endif /* defined(OGL_DEBUG) */
