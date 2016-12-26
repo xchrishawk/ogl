@@ -9,7 +9,6 @@
 /* -- Includes -- */
 
 #include <memory>
-#include "app/input_manager.hpp"
 
 /* -- Types -- */
 
@@ -23,13 +22,12 @@ namespace ogl
   {
     double abs_t;
     double delta_t;
-    ogl::input_manager::const_ptr input_manager;
   };
 
   /**
    * Abstract interface for types representing the state of the application.
    */
-  class state_manager : public input_observer
+  class state_manager
   {
   public:
 

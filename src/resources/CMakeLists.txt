@@ -11,7 +11,7 @@ set(RESOURCES_LIBRARY_NAME ${RESOURCES_LIBRARY_NAME} PARENT_SCOPE)
 
 # Library source code
 set(RESOURCES_LIBRARY_SOURCES
-  resource_manager.cpp)
+  resources.cpp)
 
 # Initial configuration
 string(TOUPPER ${RESOURCES_LIBRARY_NAME} RESOURCES_LIBRARY_NAME_UPPER)

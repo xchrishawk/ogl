@@ -10,9 +10,9 @@
 
 #include "app/input_manager.hpp"
 #include "app/render_manager.hpp"
+#include "app/resource_manager.hpp"
 #include "app/state_manager.hpp"
 #include "opengl/opengl.hpp"
-#include "resources/resource_manager.hpp"
 #include "window/window.hpp"
 #include "window/window_key.hpp"
 #include "window/window_manager.hpp"

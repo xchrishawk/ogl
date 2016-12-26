@@ -13,8 +13,9 @@ set(APP_LIBRARY_NAME ${APP_LIBRARY_NAME} PARENT_SCOPE)
 set(APP_LIBRARY_SOURCES
   application.cpp
   input_manager.cpp
-  render/simple_render_manager.cpp
-  state/simple_state_manager.cpp)
+  resource_manager.cpp
+  simple/render_manager.cpp
+  simple/state_manager.cpp)
 
 # Initial configuration
 string(TOUPPER ${APP_LIBRARY_NAME} APP_LIBRARY_NAME_UPPER)

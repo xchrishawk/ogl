@@ -11,6 +11,7 @@
 #include "app/application.hpp"
 #include "app/input_manager.hpp"
 #include "app/render_manager.hpp"
+#include "app/resource_manager.hpp"
 #include "app/state_manager.hpp"
 #include "opengl/opengl.hpp"
 #include "util/debug.hpp"
@@ -48,7 +49,6 @@ application::application(const application_args& args)
   // register data flow for inputs
   m_window->add_key_observer(m_input_manager.get());
   m_input_manager->add_observer(this);
-  m_input_manager->add_observer(m_state_manager.get());
 
   application::s_instance = this;
   ogl_dbg_status("Application launched successfully.");
@@ -63,7 +63,6 @@ application::~application()
   // clean up input data flow
   m_window->remove_key_observer(m_input_manager.get());
   m_input_manager->remove_observer(this);
-  m_input_manager->remove_observer(m_state_manager.get());
 
   application::s_instance = nullptr;
   ogl_dbg_status("Terminating application...");
@@ -136,7 +135,6 @@ void application::run_state(double abs_t, double delta_t)
   state_run_args args;
   args.abs_t = abs_t;
   args.delta_t = delta_t;
-  args.input_manager = m_input_manager;
 
   // run the state loop
   m_state_manager->run(args);
