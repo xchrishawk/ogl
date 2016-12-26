@@ -16,6 +16,15 @@ namespace ogl
 {
 
   /**
+   * Returns the size of the specified array.
+   */
+  template <typename T, size_t size>
+  constexpr size_t array_size(const T (&)[size])
+  {
+    return size;
+  }
+
+  /**
    * Returns the number of elements in an enum.
    *
    * @note
