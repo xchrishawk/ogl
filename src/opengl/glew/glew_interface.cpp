@@ -22,13 +22,6 @@ using namespace ogl::glew;
 
 glew_interface* glew_interface::s_instance = nullptr;
 
-/* -- Procedure Prototypes -- */
-
-namespace
-{
-  std::string get_opengl_string(GLenum name);
-}
-
 /* -- Procedures -- */
 
 ogl::opengl::ptr glew_interface::create()
@@ -62,34 +55,4 @@ glew_interface::~glew_interface()
 {
   glew_interface::s_instance = nullptr;
   ogl_dbg_status("OpenGL terminated.");
-}
-
-std::string glew_interface::version() const
-{
-  return get_opengl_string(GL_VERSION);
-}
-
-std::string glew_interface::glsl_version() const
-{
-  return get_opengl_string(GL_SHADING_LANGUAGE_VERSION);
-}
-
-std::string glew_interface::vendor() const
-{
-  return get_opengl_string(GL_VENDOR);
-}
-
-std::string glew_interface::renderer() const
-{
-  return get_opengl_string(GL_RENDERER);
-}
-
-/* -- Private Procedures -- */
-
-namespace
-{
-   std::string get_opengl_string(GLenum name)
-   {
-     return std::string(reinterpret_cast<const char*>(glGetString(name)));
-   }
 }
