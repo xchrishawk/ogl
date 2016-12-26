@@ -7,7 +7,6 @@
 
 # Library name
 set(UTIL_LIBRARY_NAME oglutil)
-set(UTIL_LIBRARY_NAME ${UTIL_LIBRARY_NAME} PARENT_SCOPE)
 
 # Library source code
 set(UTIL_LIBRARY_SOURCES
@@ -23,3 +22,8 @@ add_library(${UTIL_LIBRARY_NAME} STATIC
   ${UTIL_LIBRARY_SOURCES})
 target_compile_definitions(${UTIL_LIBRARY_NAME}
   PRIVATE ${UTIL_LIBRARY_COMPILE_DEFINITIONS})
+
+# -- Exports --
+
+# Library name
+set(UTIL_LIBRARY_NAME ${UTIL_LIBRARY_NAME} PARENT_SCOPE)

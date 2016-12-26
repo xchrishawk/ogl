@@ -42,7 +42,7 @@ input_manager::ptr input_manager::create()
 }
 
 input_manager::input_manager()
-  : m_command_map(enum_count<window_key>(), { input_command::invalid }),
+  : m_command_map(enum_count<window_key>(), { { input_command::invalid } }),
     m_command_active(enum_count<input_command>(), false),
     m_observers()
 {

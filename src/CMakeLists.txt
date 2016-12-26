@@ -8,6 +8,18 @@
 # Include src/, so we can use paths relative to src/ for header files
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+# Initialize this variable so subdirectories can add to it as needed
+set(APP_EXECUTABLE_LINK_DIRECTORIES "")
+
+# -- Platform-Specific Configuration --
+
+if (APPLE)
+
+  # Must include /usr/local/include manually
+  include_directories(/usr/local/include)
+
+endif()
+
 # -- Subdirectories --
 
 add_subdirectory(app)
@@ -33,6 +45,9 @@ list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${OPENGL_LIBRARY_NAME})
 list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${RESOURCES_LIBRARY_NAME})
 list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${UTIL_LIBRARY_NAME})
 list(APPEND APP_EXECUTABLE_LINK_LIBRARIES ${WINDOW_LIBRARY_NAME})
+
+message(STATUS ${APP_EXECUTABLE_LINK_DIRECTORIES})
+link_directories(${APP_EXECUTABLE_LINK_DIRECTORIES})
 
 # -- Target Definition --
 

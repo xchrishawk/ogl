@@ -28,7 +28,7 @@ namespace ogl
    * Converts a non-null terminated `char` array to a `std::string`.
    */
   template <size_t size>
-  constexpr std::string char_array_to_string(const char (&array)[size])
+  std::string char_array_to_string(const char (&array)[size])
   {
     return std::string(array, size);
   }

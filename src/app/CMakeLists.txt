@@ -7,7 +7,6 @@
 
 # Library name
 set(APP_LIBRARY_NAME oglapp)
-set(APP_LIBRARY_NAME ${APP_LIBRARY_NAME} PARENT_SCOPE)
 
 # Library source code
 set(APP_LIBRARY_SOURCES
@@ -27,3 +26,8 @@ add_library(${APP_LIBRARY_NAME} STATIC
   ${APP_LIBRARY_SOURCES})
 target_compile_definitions(${APP_LIBRARY_NAME}
   PRIVATE ${APP_LIBRARY_COMPILE_DEFINITIONS})
+
+# -- Exports --
+
+# Library name
+set(APP_LIBRARY_NAME ${APP_LIBRARY_NAME} PARENT_SCOPE)
