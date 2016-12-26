@@ -11,7 +11,8 @@ set(OPENGL_LIBRARY_NAME ${OPENGL_LIBRARY_NAME} PARENT_SCOPE)
 
 # Library source code
 set(OPENGL_LIBRARY_SOURCES
-  impl/opengl_interface.cpp)
+  impl/opengl_interface.cpp
+  impl/opengl_shader.cpp)
 
 # Initial configuration
 string(TOUPPER ${OPENGL_LIBRARY_NAME} OPENGL_LIBRARY_NAME_UPPER)

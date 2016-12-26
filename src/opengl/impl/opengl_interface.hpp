@@ -31,6 +31,9 @@ namespace ogl
 
       /* -- `opengl` Interface Implentation -- */
 
+      // factory methods
+      virtual ogl::shader::ptr create_shader(ogl::shader_type type) const;
+
       // platform information
       virtual std::string version() const;
       virtual std::string glsl_version() const;

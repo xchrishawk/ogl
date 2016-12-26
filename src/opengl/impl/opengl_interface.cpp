@@ -12,6 +12,7 @@
 
 #include "opengl/opengl.hpp"
 #include "opengl/impl/opengl_interface.hpp"
+#include "opengl/impl/opengl_shader.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */
@@ -72,6 +73,11 @@ opengl_interface::~opengl_interface()
 {
   opengl_interface::s_instance = nullptr;
   ogl_dbg_status("OpenGL terminated.");
+}
+
+shader::ptr opengl_interface::create_shader(shader_type type) const
+{
+  return opengl_shader::create(type);
 }
 
 std::string opengl_interface::version() const

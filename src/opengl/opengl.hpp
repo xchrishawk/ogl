@@ -11,6 +11,8 @@
 #include <memory>
 #include <string>
 
+#include "opengl/shader.hpp"
+
 /* -- Constants -- */
 
 namespace ogl
@@ -53,6 +55,11 @@ namespace ogl
     typedef std::shared_ptr<const opengl> const_ptr;
 
     virtual ~opengl() { }
+
+    /* -- Factory Methods -- */
+
+    /** Creates a new shader instance. */
+    virtual ogl::shader::ptr create_shader(ogl::shader_type type) const = 0;
 
     /* -- Platform Information -- */
 
