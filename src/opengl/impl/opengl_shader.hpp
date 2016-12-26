@@ -25,7 +25,7 @@ namespace ogl
     /**
      * Concrete implementation of the `ogl::shader` interface.
      */
-    class opengl_shader : public shader
+    class opengl_shader final : public shader
     {
     public:
 
