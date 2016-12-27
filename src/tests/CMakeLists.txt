@@ -16,8 +16,16 @@ set(TEST_EXECUTABLE_SOURCES
 list(APPEND TEST_EXECUTABLE_COMPILE_DEFINITIONS -DOGL_TEST)
 list(APPEND TEST_EXECUTABLE_LINK_LIBRARIES ${APP_EXECUTABLE_LINK_LIBRARIES})
 
-# GTest is required
-find_package(GTest REQUIRED)
+# -- Libraries --
+
+# Make sure we can find Google Test, otherwise bail out
+find_package(GTest)
+if (NOT ${GTEST_FOUND})
+  message(WARNING "Google Test not found! Unit tests will not be built.")
+  return()
+endif()
+
+# Add additional stuff required by Google Test
 list(APPEND TEST_EXECUTABLE_INCLUDE_DIRECTORIES ${GTEST_INCLUDE_DIRS})
 list(APPEND TEST_EXECUTABLE_LINK_LIBRARIES ${GTEST_LIBRARIES})
 list(APPEND TEST_EXECUTABLE_LINK_LIBRARIES pthread)
