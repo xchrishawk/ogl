@@ -168,41 +168,8 @@ void application::run_render(double abs_t, double delta_t)
 
 #if defined(OGL_DEBUG)
 
-#include "opengl/impl/opengl_interface.hpp"
-
 void application::prototype_test() const
 {
-  static const char DATA[] = "Hello there!";
-  static const size_t SIZE = array_size(DATA);
-
-  GLuint buffer1, buffer2;
-  glCreateBuffers(1, &buffer1);
-  glCreateBuffers(1, &buffer2);
-
-  GLint bound;
-
-  impl::opengl_interface* intf = (impl::opengl_interface*)m_opengl.get();
-
-
-  intf->push_buffer(GL_ARRAY_BUFFER, buffer1);
-  glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &bound);
-  ogl_dbg_assert(bound == buffer1);
-  std::cout << bound << std::endl;
-
-  intf->push_buffer(GL_ARRAY_BUFFER, buffer2);
-  glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &bound);
-  ogl_dbg_assert(bound == buffer2);
-  std::cout << bound << std::endl;
-
-  intf->pop_buffer(GL_ARRAY_BUFFER);
-  glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &bound);
-  ogl_dbg_assert(bound == buffer1);
-  std::cout << bound << std::endl;
-
-  intf->pop_buffer(GL_ARRAY_BUFFER);
-  glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &bound);
-  ogl_dbg_assert(bound == 0);
-  std::cout << bound << std::endl;
 }
 
 #endif /* defined(OGL_DEBUG) */

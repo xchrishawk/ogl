@@ -12,7 +12,6 @@
 
 #include "opengl/api.hpp"
 #include "opengl/opengl.hpp"
-#include "opengl/impl/opengl_buffer.hpp"
 #include "opengl/impl/opengl_interface.hpp"
 #include "opengl/impl/opengl_program.hpp"
 #include "opengl/impl/opengl_shader.hpp"
