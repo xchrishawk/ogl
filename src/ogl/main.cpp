@@ -6,6 +6,9 @@
 
 /* -- Includes -- */
 
+#include <exception>
+
+#include "app/application.hpp"
 #include "util/debug.hpp"
 
 /* -- Namespaces -- */
@@ -16,13 +19,17 @@ using namespace ogl;
 
 int main(int argc, char** argv)
 {
-  ogl_dbg_status("Hello there!");
-  ogl_dbg_status("This message", "has multiple lines");
-  ogl_dbg_warning("This is a warning");
-  ogl_dbg_error("This is an error");
-
-  ogl_assert(1 == 1);
-  ogl_assert_fail("Failed assert");
-
-  return 0;
+  try
+  {
+    application_args app_args;
+    application::ptr app = application::create(app_args);
+    app->main();
+    return 0;
+  }
+  catch (const std::exception& ex)
+  {
+    ogl_dbg_error("Uncaught exception!", ex.what());
+    ogl_dbg_fail();
+    return 1;
+  }
 }
