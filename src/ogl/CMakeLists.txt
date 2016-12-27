@@ -18,6 +18,7 @@ set(OGL_EXECUTABLE_SOURCES
 
 # Libraries
 set(OGL_EXECUTABLE_LINK_LIBRARIES
+  ${APP_LIBRARY_NAME}
   ${UTIL_LIBRARY_NAME})
 
 # -- Target Definition --

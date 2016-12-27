@@ -81,6 +81,7 @@ endif()
 
 # -- Libraries --
 
+add_subdirectory(app)
 add_subdirectory(util)
 
 # -- Executables --
