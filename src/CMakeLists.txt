@@ -79,6 +79,10 @@ else()
 
 endif()
 
+# -- Libraries --
+
+add_subdirectory(util)
+
 # -- Executables --
 
 add_subdirectory(ogl)

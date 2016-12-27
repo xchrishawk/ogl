@@ -16,6 +16,10 @@ list(APPEND TESTS_EXECUTABLE_COMPILE_DEFINITIONS -DOGL_${TESTS_EXECUTABLE_NAME_U
 set(TESTS_EXECUTABLE_SOURCES
   main.cpp)
 
+# Libraries
+set(TESTS_EXECUTABLE_LINK_LIBRARIES
+  ${UTIL_LIBRARY_NAME})
+
 # -- Google Test --
 
 # Make sure we can find Google Test, otherwise bail out
