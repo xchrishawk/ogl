@@ -10,6 +10,7 @@ set(OPENGL_LIBRARY_NAME oglopengl)
 
 # Library source code
 set(OPENGL_LIBRARY_SOURCES
+  impl/opengl_buffer.cpp
   impl/opengl_interface.cpp
   impl/opengl_program.cpp
   impl/opengl_shader.cpp)

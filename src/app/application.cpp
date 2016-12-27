@@ -15,6 +15,7 @@
 #include "app/state_manager.hpp"
 #include "opengl/opengl.hpp"
 #include "util/debug.hpp"
+#include "util/misc.hpp"
 #include "window/window.hpp"
 #include "window/window_key.hpp"
 #include "window/window_manager.hpp"
@@ -160,6 +161,10 @@ void application::run_render(double abs_t, double delta_t)
 
 void application::prototype_test() const
 {
+  static const char DATA[] = "Hello there!";
+  static const size_t SIZE = array_size(DATA);
+
+  buffer::ptr buffer = m_opengl->create_immutable_buffer(buffer_type::array_buffer, DATA, SIZE, BUFFER_FLAGS_NONE);
 }
 
 #endif /* defined(OGL_DEBUG) */

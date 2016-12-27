@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <string>
 
+#include "opengl/buffer.hpp"
 #include "opengl/program.hpp"
 #include "opengl/shader.hpp"
 
@@ -89,6 +90,26 @@ namespace ogl
      * Thrown if the shader program cannot be created for any reason.
      */
     virtual ogl::program::ptr create_program() const = 0;
+
+    /**
+     * Creates a new immutable buffer.
+     *
+     * @param type
+     * The type of buffer to create.
+     *
+     * @param data
+     * The data to load into the buffer, or `nullptr` if the data should be left uninitialized.
+     *
+     * @param size
+     * The size of the buffer, in bytes. Must be greater than or equal to zero.
+     *
+     * @param flags
+     * The flags to use to create the buffer.
+     */
+    virtual ogl::buffer::ptr create_immutable_buffer(ogl::buffer_type type,
+						     const void* data,
+						     size_t size,
+						     ogl::buffer_flags flags) const = 0;
 
     /* -- Platform Information -- */
 

@@ -36,10 +36,7 @@ namespace
 
 namespace
 {
-  /** Creates and returns a new program handle. */
   GLuint new_program_handle();
-
-  /** Convert a `shader::const_ptr` to an `opengl_shader*`. */
   const opengl_shader* get_opengl_shader(const shader::const_ptr& ptr);
 }
 

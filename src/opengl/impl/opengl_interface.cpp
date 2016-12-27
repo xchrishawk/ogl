@@ -11,6 +11,7 @@
 #include <GL/glew.h>
 
 #include "opengl/opengl.hpp"
+#include "opengl/impl/opengl_buffer.hpp"
 #include "opengl/impl/opengl_interface.hpp"
 #include "opengl/impl/opengl_program.hpp"
 #include "opengl/impl/opengl_shader.hpp"
@@ -84,6 +85,14 @@ shader::ptr opengl_interface::create_shader(shader_type type) const
 program::ptr opengl_interface::create_program() const
 {
   return opengl_program::create();
+}
+
+buffer::ptr opengl_interface::create_immutable_buffer(buffer_type type,
+						      const void* data,
+						      size_t size,
+						      ogl::buffer_flags flags) const
+{
+  return opengl_immutable_buffer::create(type, data, size, flags);
 }
 
 std::string opengl_interface::version() const

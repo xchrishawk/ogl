@@ -39,6 +39,10 @@ namespace ogl
       // factory methods
       virtual ogl::shader::ptr create_shader(ogl::shader_type type) const;
       virtual ogl::program::ptr create_program() const;
+      virtual ogl::buffer::ptr create_immutable_buffer(ogl::buffer_type type,
+						       const void* data,
+						       size_t size,
+						       ogl::buffer_flags flags) const;
 
       // platform information
       virtual std::string version() const;
