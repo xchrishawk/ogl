@@ -8,8 +8,6 @@
 
 #include <exception>
 
-#include <GLFW/glfw3.h>
-
 #include "app/application.hpp"
 #include "app/input_manager.hpp"
 #include "app/render_manager.hpp"
@@ -17,6 +15,7 @@
 #include "app/state_manager.hpp"
 #include "app/simple/render_manager.hpp"
 #include "app/simple/state_manager.hpp"
+#include "opengl/api.hpp"
 #include "opengl/opengl.hpp"
 #include "opengl/impl/opengl_interface.hpp"
 #include "util/debug.hpp"

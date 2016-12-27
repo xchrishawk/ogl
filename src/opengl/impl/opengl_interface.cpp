@@ -8,8 +8,7 @@
 
 #include <stdexcept>
 
-#include <GL/glew.h>
-
+#include "opengl/api.hpp"
 #include "opengl/opengl.hpp"
 #include "opengl/impl/opengl_buffer.hpp"
 #include "opengl/impl/opengl_interface.hpp"
@@ -30,11 +29,7 @@ opengl_interface* opengl_interface::s_instance = nullptr;
 
 namespace
 {
-  /** Returns an OpenGL string. */
   std::string get_opengl_string(GLenum name);
-
-  /** Converts a `GLenum` to an `opengl_error`. */
-  opengl_error glenum_to_opengl_error(GLenum error);
 }
 
 /* -- Procedures -- */
@@ -59,8 +54,8 @@ opengl_interface::opengl_interface()
 
   // there is a bug where GLEW triggers an error on init. flush it from the queue.
   // http://stackoverflow.com/q/20034615/434245
-  opengl_error error __attribute__((unused)) = last_error();
-  ogl_dbg_assert(error == opengl_error::invalid_enum);
+  GLenum error __attribute__((unused)) = last_error();
+  ogl_dbg_assert(error == GL_INVALID_ENUM);
 
   opengl_interface::s_instance = this;
   ogl_dbg_status("OpenGL initialized.",
@@ -77,7 +72,7 @@ opengl_interface::~opengl_interface()
   ogl_dbg_status("OpenGL terminated.");
 }
 
-shader::ptr opengl_interface::create_shader(shader_type type) const
+shader::ptr opengl_interface::create_shader(GLenum type) const
 {
   return opengl_shader::create(type);
 }
@@ -87,12 +82,13 @@ program::ptr opengl_interface::create_program() const
   return opengl_program::create();
 }
 
-buffer::ptr opengl_interface::create_immutable_buffer(buffer_type type,
+buffer::ptr opengl_interface::create_immutable_buffer(GLenum type,
 						      const void* data,
 						      size_t size,
-						      ogl::buffer_flags flags) const
+						      GLbitfield flags) const
 {
-  return opengl_immutable_buffer::create(type, data, size, flags);
+  ogl_dbg_error("Not yet implemented!");
+  ogl::fail();
 }
 
 std::string opengl_interface::version() const
@@ -115,15 +111,15 @@ std::string opengl_interface::renderer() const
   return get_opengl_string(GL_RENDERER);
 }
 
-ogl::opengl_error opengl_interface::last_error() const
+GLenum opengl_interface::last_error() const
 {
-  opengl_error last_error = opengl_error::no_error;
-  opengl_error this_error = opengl_error::no_error;
+  GLenum last_error = GL_NO_ERROR;
+  GLenum this_error = GL_NO_ERROR;
 
-  while ((this_error = glenum_to_opengl_error(glGetError())) != opengl_error::no_error)
+  while ((this_error = glGetError()) != GL_NO_ERROR)
   {
 #if defined(OGL_DEBUG)
-    if (last_error != opengl_error::no_error)
+    if (last_error != GL_NO_ERROR)
     {
       // this error is going to be swallowed, so print a warning about it so it's not lost
       ogl_dbg_warning("Suppressing OpenGL error: " + error_string(last_error));
@@ -135,27 +131,27 @@ ogl::opengl_error opengl_interface::last_error() const
   return last_error;
 }
 
-std::string opengl_interface::error_string(ogl::opengl_error error) const
+std::string opengl_interface::error_string(GLenum error) const
 {
   switch (error)
   {
-  case opengl_error::no_error:
+  case GL_NO_ERROR:
     return "GL_NO_ERROR";
-  case opengl_error::invalid_enum:
+  case GL_INVALID_ENUM:
     return "GL_INVALID_ENUM";
-  case opengl_error::invalid_value:
+  case GL_INVALID_VALUE:
     return "GL_INVALID_VALUE";
-  case opengl_error::invalid_operation:
+  case GL_INVALID_OPERATION:
     return "GL_INVALID_OPERATION";
-  case opengl_error::invalid_framebuffer_operation:
+  case GL_INVALID_FRAMEBUFFER_OPERATION:
     return "GL_INVALID_FRAMEBUFFER_OPERATION";
-  case opengl_error::out_of_memory:
+  case GL_OUT_OF_MEMORY:
     return "GL_OUT_OF_MEMORY";
-  case opengl_error::stack_underflow:
+  case GL_STACK_UNDERFLOW:
     return "GL_STACK_UNDERFLOW";
-  case opengl_error::stack_overflow:
+  case GL_STACK_OVERFLOW:
     return "GL_STACK_OVERFLOW";
-  default: // includes opengl_error::unknown
+  default:
     ogl_dbg_assert_fail("Unknown error!");
     return "Unknown Error";
   }
@@ -168,31 +164,5 @@ namespace
   std::string get_opengl_string(GLenum name)
   {
     return std::string(reinterpret_cast<const char*>(glGetString(name)));
-  }
-
-  opengl_error glenum_to_opengl_error(GLenum error)
-  {
-    switch (error)
-    {
-    case GL_NO_ERROR:
-      return opengl_error::no_error;
-    case GL_INVALID_ENUM:
-      return opengl_error::invalid_enum;
-    case GL_INVALID_VALUE:
-      return opengl_error::invalid_value;
-    case GL_INVALID_OPERATION:
-      return opengl_error::invalid_operation;
-    case GL_INVALID_FRAMEBUFFER_OPERATION:
-      return opengl_error::invalid_framebuffer_operation;
-    case GL_OUT_OF_MEMORY:
-      return opengl_error::out_of_memory;
-    case GL_STACK_OVERFLOW:
-      return opengl_error::stack_overflow;
-    case GL_STACK_UNDERFLOW:
-      return opengl_error::stack_underflow;
-    default:
-      ogl_dbg_assert_fail("Unknown error!");
-      return opengl_error::unknown;
-    }
   }
 }

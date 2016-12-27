@@ -164,7 +164,7 @@ void application::prototype_test() const
   static const char DATA[] = "Hello there!";
   static const size_t SIZE = array_size(DATA);
 
-  buffer::ptr buffer = m_opengl->create_immutable_buffer(buffer_type::array_buffer, DATA, SIZE, BUFFER_FLAGS_NONE);
+//  buffer::ptr buffer = m_opengl->create_immutable_buffer(GL_ARRAY_BUFFER, DATA, SIZE, 0);
 }
 
 #endif /* defined(OGL_DEBUG) */

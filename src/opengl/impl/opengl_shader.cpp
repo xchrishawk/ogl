@@ -10,8 +10,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include <GL/glew.h>
-
+#include "opengl/api.hpp"
 #include "opengl/opengl.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/impl/opengl_shader.hpp"
@@ -33,24 +32,18 @@ namespace
 
 namespace
 {
-  /** Creates and returns a new shader handle. */
-  GLuint new_shader_handle(shader_type type);
-
-  /** Convert an `ogl::shader_type` to a `GLenum`. */
-  GLenum shader_type_to_enum(shader_type type);
-
-  /** Convert an `ogl::shader_type` to a `std::string`. */
-  std::string shader_type_to_string(shader_type type);
+  GLuint new_shader_handle(GLenum type);
+  std::string shader_type_to_string(GLenum type);
 }
 
 /* -- Procedures -- */
 
-shader::ptr opengl_shader::create(shader_type type)
+shader::ptr opengl_shader::create(GLenum type)
 {
   return shader::ptr(new opengl_shader(type));
 }
 
-opengl_shader::opengl_shader(shader_type type)
+opengl_shader::opengl_shader(GLenum type)
   : shader(type),
     m_handle(new_shader_handle(type))
 {
@@ -106,41 +99,24 @@ std::string opengl_shader::info_log() const
 
 namespace
 {
-  GLuint new_shader_handle(shader_type type)
+  GLuint new_shader_handle(GLenum type)
   {
-    GLenum type_enum = shader_type_to_enum(type);
-    GLuint handle = glCreateShader(type_enum);
+    GLuint handle = glCreateShader(type);
     if (handle == INVALID_SHADER_HANDLE)
       throw opengl_exception("Failed to create shader of type " + shader_type_to_string(type));
     return handle;
   }
 
-  GLenum shader_type_to_enum(shader_type type)
+  std::string shader_type_to_string(GLenum type)
   {
     switch (type)
     {
-    case shader_type::compute_shader:		return GL_COMPUTE_SHADER;
-    case shader_type::vertex_shader:		return GL_VERTEX_SHADER;
-    case shader_type::tess_control_shader:	return GL_TESS_CONTROL_SHADER;
-    case shader_type::tess_evaluation_shader:	return GL_TESS_EVALUATION_SHADER;
-    case shader_type::geometry_shader:		return GL_GEOMETRY_SHADER;
-    case shader_type::fragment_shader:		return GL_FRAGMENT_SHADER;
-    default:
-      ogl_dbg_assert_fail("Invalid shader type!");
-      return 0;
-    }
-  }
-
-  std::string shader_type_to_string(shader_type type)
-  {
-    switch (type)
-    {
-    case shader_type::compute_shader:		return "GL_COMPUTE_SHADER";
-    case shader_type::vertex_shader:		return "GL_VERTEX_SHADER";
-    case shader_type::tess_control_shader:	return "GL_TESS_CONTROL_SHADER";
-    case shader_type::tess_evaluation_shader:	return "GL_TESS_EVALUATION_SHADER";
-    case shader_type::geometry_shader:		return "GL_GEOMETRY_SHADER";
-    case shader_type::fragment_shader:		return "GL_FRAGMENT_SHADER";
+    case GL_COMPUTE_SHADER:		return "GL_COMPUTE_SHADER";
+    case GL_VERTEX_SHADER:		return "GL_VERTEX_SHADER";
+    case GL_TESS_CONTROL_SHADER:	return "GL_TESS_CONTROL_SHADER";
+    case GL_TESS_EVALUATION_SHADER:	return "GL_TESS_EVALUATION_SHADER";
+    case GL_GEOMETRY_SHADER:		return "GL_GEOMETRY_SHADER";
+    case GL_FRAGMENT_SHADER:		return "GL_FRAGMENT_SHADER";
     default:
       ogl_dbg_assert_fail("Invalid shader type!");
       return "Unknown";

@@ -43,45 +43,5 @@ namespace ogl
 
     };
 
-    /**
-     * Class representing an immutable OpenGL buffer.
-     *
-     * @note
-     * The buffer is "immutable" in the sense that its size and location cannot
-     * be changed. However, its data can be modified.
-     */
-    class opengl_immutable_buffer : public opengl_buffer
-    {
-    public:
-
-      /**
-       * Creates a `buffer::ptr` instance wrapping a new OpenGL immutable buffer.
-       *
-       * @param type
-       * The type of buffer to create.
-       *
-       * @param data
-       * The data to load into the buffer, or `nullptr` if the data should be left uninitialized.
-       *
-       * @param size
-       * The size of the buffer, in bytes. Must be greater than or equal to zero.
-       *
-       * @param flags
-       * The flags to use to create the buffer.
-       */
-      static ogl::buffer::ptr create(ogl::buffer_type type,
-				     const void* data,
-				     size_t size,
-				     ogl::buffer_flags flags);
-
-    private:
-
-      opengl_immutable_buffer(ogl::buffer_type type,
-			      const void* data,
-			      size_t size,
-			      ogl::buffer_flags flags);
-
-    };
-
   }
 }

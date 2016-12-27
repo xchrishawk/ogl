@@ -11,8 +11,7 @@
 #include <memory>
 #include <string>
 
-#include <GL/glew.h>
-
+#include "opengl/api.hpp"
 #include "opengl/shader.hpp"
 
 /* -- Types -- */
@@ -38,7 +37,7 @@ namespace ogl
        * @exception ogl::opengl_exception
        * Thrown if the shader cannot be created for any reason.
        */
-      static ogl::shader::ptr create(ogl::shader_type type);
+      static ogl::shader::ptr create(GLenum type);
 
       ~opengl_shader();
 
@@ -57,7 +56,7 @@ namespace ogl
 
       const GLuint m_handle;
 
-      opengl_shader(ogl::shader_type type);
+      opengl_shader(GLenum type);
 
     };
 

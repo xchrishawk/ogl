@@ -11,26 +11,6 @@
 #include <memory>
 #include <string>
 
-/* -- Constants -- */
-
-namespace ogl
-{
-
-  /**
-   * Enumeration of valid shader types.
-   */
-  enum class shader_type
-  {
-    compute_shader,		/**< Equivalent to GL_COMPUTE_SHADER. */
-    vertex_shader,		/**< Equivalent to GL_VERTEX_SHADER. */
-    tess_control_shader,	/**< Equivalent to GL_TESS_CONTROL_SHADER. */
-    tess_evaluation_shader,	/**< Equivalent to GL_TESS_EVALUATION_SHADER. */
-    geometry_shader,		/**< Equivalent to GL_GEOMETRY_SHADER. */
-    fragment_shader,		/**< Equivalent to GL_FRAGMENT_SHADER. */
-  };
-
-}
-
 /* -- Types -- */
 
 namespace ogl
@@ -52,7 +32,7 @@ namespace ogl
     virtual ~shader() { }
 
     /** Returns the type of this shader. */
-    ogl::shader_type type() const
+    GLenum type() const
     { return m_type; }
 
     /* -- Abstract Interface -- */
@@ -76,13 +56,13 @@ namespace ogl
 
   protected:
 
-    shader(ogl::shader_type type)
+    shader(GLenum type)
       : m_type(type)
     { }
 
   private:
 
-    const ogl::shader_type m_type;
+    const GLenum m_type;
 
     shader(const shader&) = delete;
     shader& operator =(const shader&) = delete;

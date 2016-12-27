@@ -12,32 +12,10 @@
 #include <stdexcept>
 #include <string>
 
+#include "opengl/api.hpp"
 #include "opengl/buffer.hpp"
 #include "opengl/program.hpp"
 #include "opengl/shader.hpp"
-
-/* -- Constants -- */
-
-namespace ogl
-{
-
-  /**
-   * Enumeration of errors which may be returned by OpenGL.
-   */
-  enum class opengl_error : int
-  {
-    no_error,
-    invalid_enum,
-    invalid_value,
-    invalid_operation,
-    invalid_framebuffer_operation,
-    out_of_memory,
-    stack_underflow,
-    stack_overflow,
-    unknown,
-  };
-
-}
 
 /* -- Types -- */
 
@@ -81,7 +59,7 @@ namespace ogl
      * @exception ogl::opengl_exception
      * Thrown if the shader cannot be created for any reason.
      */
-    virtual ogl::shader::ptr create_shader(ogl::shader_type type) const = 0;
+    virtual ogl::shader::ptr create_shader(GLenum type) const = 0;
 
     /**
      * Creates a new shader program instance.
@@ -106,10 +84,10 @@ namespace ogl
      * @param flags
      * The flags to use to create the buffer.
      */
-    virtual ogl::buffer::ptr create_immutable_buffer(ogl::buffer_type type,
+    virtual ogl::buffer::ptr create_immutable_buffer(GLenum type,
 						     const void* data,
 						     size_t size,
-						     ogl::buffer_flags flags) const = 0;
+						     GLbitfield flags) const = 0;
 
     /* -- Platform Information -- */
 
@@ -128,10 +106,10 @@ namespace ogl
     /* -- Error Handling -- */
 
     /** Returns the last error registered by the OpenGL interface. */
-    virtual ogl::opengl_error last_error() const = 0;
+    virtual GLenum last_error() const = 0;
 
     /** Returns a `std::string` for the specified error enum. */
-    virtual std::string error_string(ogl::opengl_error error) const = 0;
+    virtual std::string error_string(GLenum error) const = 0;
 
   protected:
 

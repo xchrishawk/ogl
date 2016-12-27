@@ -8,6 +8,7 @@
 
 /* -- Includes -- */
 
+#include "opengl/api.hpp"
 #include "opengl/opengl.hpp"
 
 /* -- Types -- */
@@ -37,12 +38,12 @@ namespace ogl
       /* -- `opengl` Interface Implentation -- */
 
       // factory methods
-      virtual ogl::shader::ptr create_shader(ogl::shader_type type) const;
+      virtual ogl::shader::ptr create_shader(GLenum type) const;
       virtual ogl::program::ptr create_program() const;
-      virtual ogl::buffer::ptr create_immutable_buffer(ogl::buffer_type type,
+      virtual ogl::buffer::ptr create_immutable_buffer(GLenum type,
 						       const void* data,
 						       size_t size,
-						       ogl::buffer_flags flags) const;
+						       GLbitfield flags) const;
 
       // platform information
       virtual std::string version() const;
@@ -51,8 +52,8 @@ namespace ogl
       virtual std::string renderer() const;
 
       // error handling
-      virtual ogl::opengl_error last_error() const;
-      virtual std::string error_string(ogl::opengl_error error) const;
+      virtual GLenum last_error() const;
+      virtual std::string error_string(GLenum error) const;
 
     private:
 
