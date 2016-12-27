@@ -6,7 +6,9 @@
 
 /* -- Includes -- */
 
+#include <map>
 #include <stdexcept>
+#include <vector>
 
 #include "opengl/api.hpp"
 #include "opengl/opengl.hpp"
@@ -40,7 +42,8 @@ ogl::opengl::ptr opengl_interface::create()
 }
 
 opengl_interface::opengl_interface()
-  : opengl()
+  : opengl(),
+    m_buffer_stack()
 {
   if (opengl_interface::s_instance)
   {
@@ -70,6 +73,37 @@ opengl_interface::~opengl_interface()
 {
   opengl_interface::s_instance = nullptr;
   ogl_dbg_status("OpenGL terminated.");
+}
+
+void opengl_interface::push_buffer(GLenum type, GLuint buffer)
+{
+  auto& stack = m_buffer_stack[type];
+  glBindBuffer(type, buffer);
+  stack.push_back(buffer);
+}
+
+void opengl_interface::pop_buffer(GLenum type)
+{
+  // find the stack for this buffer type
+  const auto it = m_buffer_stack.find(type);
+  if (it == m_buffer_stack.end())
+  {
+    ogl_dbg_assert_fail("Attempted to pop a buffer with no buffer pushed!");
+    return;
+  }
+
+  // make sure we have something pushed on the stack
+  auto& stack = it->second;
+  if (stack.size() == 0)
+  {
+    ogl_dbg_assert_fail("Attempted to pop a buffer with no buffer pushed!");
+    return;
+  }
+
+  // pop the last buffer off the stack, and restore the next buffer
+  stack.pop_back();
+  GLuint new_buffer = (stack.size() != 0 ? stack.back() : 0);
+  glBindBuffer(type, new_buffer);
 }
 
 shader::ptr opengl_interface::create_shader(GLenum type) const

@@ -8,6 +8,9 @@
 
 /* -- Includes -- */
 
+#include <map>
+#include <vector>
+
 #include "opengl/api.hpp"
 #include "opengl/opengl.hpp"
 
@@ -35,6 +38,14 @@ namespace ogl
 
       ~opengl_interface();
 
+      /* -- Concrete Methods -- */
+
+      /** Pushes a buffer onto the stack for the specified type. */
+      void push_buffer(GLenum type, GLuint buffer);
+
+      /** Pops a buffer off of the stack for the specified type. */
+      void pop_buffer(GLenum type);
+
       /* -- `opengl` Interface Implentation -- */
 
       // factory methods
@@ -58,6 +69,8 @@ namespace ogl
     private:
 
       static opengl_interface* s_instance;
+
+      std::map<GLenum, std::vector<GLuint> > m_buffer_stack;
 
       opengl_interface();
 
