@@ -90,3 +90,11 @@ add_custom_target(run
   ${APP_EXECUTABLE_NAME}
   DEPENDS ${APP_EXECUTABLE_NAME}
   COMMENT "Running application...")
+
+# -- Test Target --
+
+# Custom target to run tests
+add_custom_target(runtests
+  ${TEST_EXECUTABLE_NAME}
+  DEPENDS ${TEST_EXECUTABLE_NAME}
+  COMMENT "Running tests...")
