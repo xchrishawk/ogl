@@ -6,6 +6,7 @@
 
 /* -- Includes -- */
 
+#include <memory>
 #include <sstream>
 #include <stdexcept>
 
@@ -23,6 +24,7 @@ using namespace glfw;
 /* -- Variables -- */
 
 window_manager* window_manager::instance_s = nullptr;
+std::shared_ptr<glfw_error> window_manager::last_error_s = nullptr;
 
 /* -- Procedures -- */
 
@@ -38,7 +40,7 @@ window_manager::window_manager(const window_manager_args& args)
 
   api_->set_error_callback(window_manager::error_callback);
   if (!api_->init())
-    throw ogl::library_init_exception("Failed to initialize GLFW!");
+    window_manager::throw_last_error();
 
   window_manager::instance_s = this;
   ogl_dbg_status("GLFW initialized.", "API Version:\t\t" + version());
@@ -60,10 +62,26 @@ std::string window_manager::version() const
 
 void window_manager::error_callback(int error, const char* description)
 {
+  window_manager::last_error_s = std::shared_ptr<glfw_error>(new glfw_error(error, description));
+
 #if defined(OGL_DEBUG)
   std::ostringstream message;
   message << "GLFW error code " << error << ": " << description;
   ogl_dbg_warning(message.str());
-  ogl_dbg_breakpoint();
 #endif
+}
+
+void window_manager::throw_last_error()
+{
+  if (window_manager::last_error_s)
+  {
+    glfw_error error = *window_manager::last_error_s;
+    window_manager::last_error_s = nullptr;
+    throw error;
+  }
+  else
+  {
+    ogl_assert_fail("Attempting to throw, but there is no error set!");
+    throw glfw_error(-1, "Unknown error");
+  }
 }

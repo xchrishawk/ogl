@@ -8,12 +8,10 @@
 
 /* -- Includes -- */
 
-#include <functional>
 #include <memory>
+#include <gmock/gmock.h>
 
-#include "app/window_manager.hpp"
-#include "glfw/window_manager.hpp"
-#include "util/debug.hpp"
+#include "glfw/api.hpp"
 
 /* -- Types -- */
 
@@ -23,15 +21,16 @@ namespace glfw
   {
 
     /**
-     * Mock GLFW API class.
+     * Mock class for the GLFW API.
      *
-     * This is used for unit testing the wrapper around the GLFW library. The implementation
-     * for each method may be overridden/modified by setting the corresponding lambda.
+     * This is intended to allow stubbing/modifying methods from the GLFW API to support unit
+     * testing of the GLFW wrapper.
      */
-    class api final : public glfw::api
+    class api : public glfw::api
     {
     public:
 
+      /** Create a shared pointer to a new mock API instance. */
       static auto create()
       {
         return std::shared_ptr<glfw::mock::api>(new glfw::mock::api());
@@ -39,30 +38,14 @@ namespace glfw
 
       /* -- Mock Methods -- */
 
-      virtual int init() const override
-      { ogl_dbg_status("hello!"); return init_lambda(); }
+      MOCK_CONST_METHOD0(init, int());
+      MOCK_CONST_METHOD0(terminate, void());
+      MOCK_CONST_METHOD1(set_error_callback, void(GLFWerrorfun cbfun));
+      MOCK_CONST_METHOD0(get_version_string, const char*());
 
-      virtual void terminate() const override
-      { terminate_lambda(); }
+      /* -- Stored State -- */
 
-      virtual void set_error_callback(GLFWerrorfun cbfun) const override
-      { set_error_callback_lambda(cbfun); }
-
-      virtual const char* get_version_string() const override
-      { return get_version_string_lambda(); }
-
-      /* -- Lambdas -- */
-
-      std::function<int(void)> init_lambda = [] { return 1; };
-      std::function<void(void)> terminate_lambda = [] { };
-      std::function<void(GLFWerrorfun)> set_error_callback_lambda = [] (GLFWerrorfun) { };
-      std::function<const char*(void)> get_version_string_lambda = [] { return "Mock API"; };
-
-    private:
-
-      api() = default;
-      api(const glfw::mock::api&) = delete;
-      glfw::mock::api& operator =(const glfw::mock::api&) = delete;
+      GLFWerrorfun error_callback = nullptr;
 
     };
 

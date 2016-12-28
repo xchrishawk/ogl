@@ -19,9 +19,9 @@ namespace glfw
   /**
    * Class wrapping the GLFW C API.
    *
-   * @note
-   * This is mostly intended for unit testing, so we can stub out the API when
-   * we need to simulate specific behavior.
+   * This is mostly intended for unit testing, so we can stub out the API when we need to simulate
+   * specific behavior. In the default implementation, each method just forwards directly to the
+   * corresponding C API function.
    */
   class api
   {

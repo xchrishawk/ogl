@@ -26,16 +26,9 @@ set(TESTS_EXECUTABLE_LINK_LIBRARIES
 
 # -- Google Test --
 
-# Make sure we can find Google Test, otherwise bail out
-find_package(GTest)
-if (NOT ${GTEST_FOUND})
-  message(WARNING "Google Test not found! Unit tests will not be built.")
-  return()
-endif()
-
-# Add additional stuff required by Google Test
-list(APPEND TESTS_EXECUTABLE_INCLUDE_DIRECTORIES ${GTEST_INCLUDE_DIRS})
-list(APPEND TESTS_EXECUTABLE_LINK_LIBRARIES ${GTEST_LIBRARIES})
+# Include Google Test, Google Mock, and pthread
+list(APPEND TESTS_EXECUTABLE_LINK_LIBRARIES gtest gtest_main)
+list(APPEND TESTS_EXECUTABLE_LINK_LIBRARIES gmock gmock_main)
 list(APPEND TESTS_EXECUTABLE_LINK_LIBRARIES pthread)
 
 # -- Target Definition --

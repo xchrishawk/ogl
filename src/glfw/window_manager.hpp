@@ -10,6 +10,7 @@
 
 #include "app/window_manager.hpp"
 #include "glfw/api.hpp"
+#include "glfw/glfw_error.hpp"
 
 /* -- Types -- */
 
@@ -43,7 +44,7 @@ namespace glfw
      * @exception ogl::duplicate_object_exception
      * Thrown if there is already an active GLFW window manager object.
      *
-     * @exception ogl::library_init_exception
+     * @exception glfw::glfw_error
      * Thrown if the library cannot be initialized.
      */
     static auto create(const glfw::window_manager_args& args)
@@ -59,9 +60,12 @@ namespace glfw
   private:
 
     static glfw::window_manager* instance_s;
-    std::shared_ptr<glfw::api> api_;
+    static std::shared_ptr<glfw::glfw_error> last_error_s;
 
     static void error_callback(int error, const char* description);
+    static void throw_last_error() __attribute__((noreturn));
+
+    std::shared_ptr<glfw::api> api_;
 
     window_manager(const glfw::window_manager_args& args);
     window_manager(const glfw::window_manager&) = delete;
