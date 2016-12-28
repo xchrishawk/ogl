@@ -8,20 +8,6 @@
 
 #include <gtest/gtest.h>
 
-/* -- Test Case -- */
-
-TEST(SampleTestCase, ShouldPass)
-{
-  ASSERT_EQ(1, 1);
-  ASSERT_EQ(2, 2);
-}
-
-TEST(SampleTestCase, ShouldFail)
-{
-  ASSERT_EQ(1, 2);
-  ASSERT_EQ(2, 1);
-}
-
 /* -- Procedures -- */
 
 int main(int argc, char** argv)

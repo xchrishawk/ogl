@@ -14,7 +14,8 @@ list(APPEND TESTS_EXECUTABLE_COMPILE_DEFINITIONS -DOGL_${TESTS_EXECUTABLE_NAME_U
 
 # Source files
 set(TESTS_EXECUTABLE_SOURCES
-  main.cpp)
+  main.cpp
+  app/application_tests.cpp)
 
 # Libraries
 set(TESTS_EXECUTABLE_LINK_LIBRARIES
