@@ -23,13 +23,10 @@ namespace glfw
   {
   public:
 
-    typedef std::shared_ptr<glfw::api> ptr;
-    typedef std::shared_ptr<const glfw::api> const_ptr;
-
     /** Returns a shared pointer to a new `glfw::api` instance. */
-    static glfw::api::ptr create()
+    static auto create()
     {
-      return glfw::api::ptr(new glfw::api());
+      return std::shared_ptr<glfw::api>(new glfw::api());
     }
 
     virtual ~api() = default;

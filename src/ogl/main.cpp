@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     init_application_args_glfw_window_manager(app_args);
 
     // create and run application
-    application::ptr app = application::create(app_args);
+    auto app = application::create(app_args);
     app->main();
     return 0;
   }

@@ -18,12 +18,11 @@
  */
 TEST(ApplicationInitialization, ExceptionThrownIfWindowManagerIsNull)
 {
-  ogl::application_args args;
-  args.window_manager = ogl::window_manager::ptr(nullptr);
-
   try
   {
-    ogl::application::ptr app = ogl::application::create(args);
+    ogl::application_args args;
+    args.window_manager = nullptr;
+    auto app = ogl::application::create(args);
     ADD_FAILURE();
   }
   catch (std::invalid_argument&)

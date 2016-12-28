@@ -22,9 +22,6 @@ namespace ogl
   {
   public:
 
-    typedef std::shared_ptr<window_manager> ptr;
-    typedef std::shared_ptr<const window_manager> const_ptr;
-
     virtual ~window_manager() { }
 
   protected:

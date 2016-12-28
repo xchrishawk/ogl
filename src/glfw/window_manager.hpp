@@ -21,7 +21,7 @@ namespace glfw
    */
   struct window_manager_args final
   {
-    glfw::api::ptr api;
+    std::shared_ptr<glfw::api> api;
   };
 
   /**
@@ -31,9 +31,6 @@ namespace glfw
     : public ogl::window_manager
   {
   public:
-
-    typedef std::shared_ptr<window_manager> ptr;
-    typedef std::shared_ptr<const window_manager> const_ptr;
 
     /**
      * Creates a shared pointer to a new `glfw::window_manager` instance.
@@ -50,9 +47,9 @@ namespace glfw
      * @exception ogl::library_init_exception
      * Thrown if the library cannot be initialized.
      */
-    static glfw::window_manager::ptr create(const glfw::window_manager_args& args)
+    static auto create(const glfw::window_manager_args& args)
     {
-      return glfw::window_manager::ptr(new glfw::window_manager(args));
+      return std::shared_ptr<glfw::window_manager>(new glfw::window_manager(args));
     }
 
     virtual ~window_manager();
@@ -63,7 +60,7 @@ namespace glfw
   private:
 
     static glfw::window_manager* instance_s;
-    glfw::api::ptr api_;
+    std::shared_ptr<glfw::api> api_;
 
     static void error_callback(int error, const char* description);
 

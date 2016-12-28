@@ -19,7 +19,7 @@ namespace
 {
 
   /** Create a window manager with the specified API. */
-  glfw::window_manager::ptr make_window_manager(glfw::api::ptr api)
+  auto make_window_manager(std::shared_ptr<glfw::mock_api> api)
   {
     glfw::window_manager_args args;
     args.api = api;
@@ -37,7 +37,7 @@ TEST(GLFWWindowManagerInitialization, ExceptionThrownIfAPIIsNull)
 {
   try
   {
-    auto window_manager = make_window_manager(glfw::api::ptr(nullptr));
+    auto window_manager = make_window_manager(nullptr);
     ADD_FAILURE();
   }
   catch (const std::invalid_argument&)

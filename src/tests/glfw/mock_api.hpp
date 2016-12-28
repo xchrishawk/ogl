@@ -27,7 +27,7 @@ namespace glfw
   {
   public:
 
-    static std::shared_ptr<mock_api> create() { return std::shared_ptr<mock_api>(new mock_api()); }
+    static auto create() { return std::shared_ptr<glfw::mock_api>(new glfw::mock_api()); }
 
     /* -- Mock Methods -- */
 
