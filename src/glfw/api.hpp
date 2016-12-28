@@ -48,9 +48,12 @@ namespace glfw
     virtual const char* get_version_string()
     { return ::glfwGetVersionString(); }
 
-  private:
+  protected:
 
     api() = default;
+
+  private:
+
     api(const glfw::api&) = delete;
     glfw::api& operator =(const glfw::api&) = delete;
 

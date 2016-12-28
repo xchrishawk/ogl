@@ -7,17 +7,16 @@
 /* -- Includes -- */
 
 #include <gtest/gtest.h>
-#include <GLFW/glfw3.h>
 
 #include "app/window_manager.hpp"
 #include "glfw/window_manager.hpp"
+#include "tests/glfw/mock_api.hpp"
 #include "util/exceptions.hpp"
 
 /* -- Test Cases -- */
 
 /**
- * Verify that a `std::invalid_argument` exception is thrown if the API object
- * is null.
+ * Verify that a `std::invalid_argument` exception is thrown if the API object is null.
  */
 TEST(GLFWWindowManagerInitialization, ExceptionThrownIfAPIIsNull)
 {
@@ -40,11 +39,11 @@ TEST(GLFWWindowManagerInitialization, ExceptionThrownIfAPIIsNull)
  */
 TEST(GLFWWindowManagerInitialization, ExceptionThrownIfGLFWIsAlreadyInitialized)
 {
-  glfw::window_manager_args args;
-  auto window_manager = glfw::window_manager::create(args);
-
   try
   {
+    glfw::window_manager_args args;
+    args.api = glfw::mock_api::create();
+    auto window_manager = glfw::window_manager::create(args);
     auto duplicate_window_manager = glfw::window_manager::create(args);
     ADD_FAILURE();
   }
@@ -59,10 +58,11 @@ TEST(GLFWWindowManagerInitialization, ExceptionThrownIfGLFWIsAlreadyInitialized)
  */
 TEST(GLFWWindowManagerInitialization, CanReinitializeAfterDeinitializingPreviousInstance)
 {
-  glfw::window_manager_args args;
-
   try
   {
+    glfw::window_manager_args args;
+    args.api = glfw::mock_api::create();
+
     // for scope
     {
       auto window_manager = glfw::window_manager::create(args);
