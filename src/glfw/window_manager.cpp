@@ -26,9 +26,9 @@ window_manager* window_manager::instance_s = nullptr;
 
 /* -- Procedures -- */
 
-ogl::window_manager::ptr window_manager::create(const window_manager_args& args)
+window_manager::ptr window_manager::create(const window_manager_args& args)
 {
-  return ogl::window_manager::ptr(new window_manager(args));
+  return window_manager::ptr(new window_manager(args));
 }
 
 window_manager::window_manager(const window_manager_args& args)
@@ -36,6 +36,8 @@ window_manager::window_manager(const window_manager_args& args)
 {
   if (!api_)
     throw std::invalid_argument("API can not be null!");
+
+  // verify we don't already have an instance alive
   if (window_manager::instance_s != nullptr)
     throw ogl::duplicate_object_exception("Attempted to initialize GLFW when it is already initialized!");
 
@@ -51,6 +53,7 @@ window_manager::~window_manager()
 {
   api_->terminate();
 
+  // clear instance so we can reinitialize
   window_manager::instance_s = nullptr;
   ogl_dbg_status("GLFW terminated.");
 }

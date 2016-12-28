@@ -32,6 +32,12 @@ namespace glfw
   {
   public:
 
+    /** Shared pointer to a `glfw::window_manager` instance. */
+    typedef std::shared_ptr<window_manager> ptr;
+
+    /** Shared pointer to a `const glfw::window_manager` instance. */
+    typedef std::shared_ptr<const window_manager> const_ptr;
+
     /**
      * Creates a shared pointer to a new `glfw::window_manager` instance.
      *
@@ -47,12 +53,12 @@ namespace glfw
      * @exception ogl::library_init_exception
      * Thrown if the library cannot be initialized.
      */
-    static ogl::window_manager::ptr create(const glfw::window_manager_args& args);
+    static glfw::window_manager::ptr create(const glfw::window_manager_args& args);
 
     virtual ~window_manager();
 
-    /** Returns the GLFW library's version string. */
-    std::string version() const;
+    /** Returns a version string for the GLFW library. */
+    virtual std::string version() const;
 
   private:
 

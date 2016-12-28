@@ -28,9 +28,7 @@ namespace glfw
 
     /** Returns a shared pointer to a new `glfw::api` instance. */
     static glfw::api::ptr create()
-    {
-      return glfw::api::ptr(new glfw::api());
-    }
+    { return glfw::api::ptr(new glfw::api()); }
 
     virtual ~api() = default;
 

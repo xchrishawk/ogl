@@ -6,6 +6,8 @@
 
 /* -- Includes -- */
 
+#include <memory>
+
 #include "app/application.hpp"
 #include "app/window_manager.hpp"
 #include "glfw/api.hpp"
@@ -19,5 +21,6 @@ void ogl::init_application_args_glfw_window_manager(ogl::application_args& args)
   glfw::window_manager_args window_manager_args;
   window_manager_args.api = glfw::api::create();
 
-  args.window_manager = glfw::window_manager::create(window_manager_args);
+  auto window_manager = glfw::window_manager::create(window_manager_args);
+  args.window_manager = std::dynamic_pointer_cast<ogl::window_manager>(window_manager);
 }

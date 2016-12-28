@@ -13,6 +13,21 @@
 #include "tests/glfw/mock_api.hpp"
 #include "util/exceptions.hpp"
 
+/* -- Helper Functions -- */
+
+namespace
+{
+
+  /** Create a window manager with the specified API. */
+  glfw::window_manager::ptr make_window_manager(glfw::api::ptr api)
+  {
+    glfw::window_manager_args args;
+    args.api = api;
+    return glfw::window_manager::create(args);
+  }
+
+}
+
 /* -- Test Cases -- */
 
 /**
@@ -22,9 +37,7 @@ TEST(GLFWWindowManagerInitialization, ExceptionThrownIfAPIIsNull)
 {
   try
   {
-    glfw::window_manager_args args;
-    args.api = glfw::api::ptr(nullptr);
-    auto window_manager = glfw::window_manager::create(args);
+    auto window_manager = make_window_manager(glfw::api::ptr(nullptr));
     ADD_FAILURE();
   }
   catch (const std::invalid_argument&)
@@ -41,10 +54,9 @@ TEST(GLFWWindowManagerInitialization, ExceptionThrownIfGLFWIsAlreadyInitialized)
 {
   try
   {
-    glfw::window_manager_args args;
-    args.api = glfw::mock_api::create();
-    auto window_manager = glfw::window_manager::create(args);
-    auto duplicate_window_manager = glfw::window_manager::create(args);
+    auto api = glfw::mock_api::create();
+    auto window_manager = make_window_manager(api);
+    auto duplicate_window_manager = make_window_manager(api);
     ADD_FAILURE();
   }
   catch (ogl::duplicate_object_exception&)
@@ -60,19 +72,46 @@ TEST(GLFWWindowManagerInitialization, CanReinitializeAfterDeinitializingPrevious
 {
   try
   {
-    glfw::window_manager_args args;
-    args.api = glfw::mock_api::create();
-
+    auto api = glfw::mock_api::create();
     // for scope
     {
-      auto window_manager = glfw::window_manager::create(args);
+      auto window_manager = make_window_manager(api);
     }
-
-    auto second_window_manager = glfw::window_manager::create(args);
+    auto second_window_manager = make_window_manager(api);
     SUCCEED();
   }
   catch (ogl::duplicate_object_exception&)
   {
     ADD_FAILURE();
   }
+}
+
+/**
+ * Verify that an `ogl::library_init_exception` is thrown if initializing GLFW fails.
+ */
+TEST(GLFWWindowManagerInitialization, ExceptionThrownIfLibraryInitializationFails)
+{
+  try
+  {
+    auto api = glfw::mock_api::create();
+    api->impl_init = [] () { return 0; };
+    auto window_manager = make_window_manager(api);
+    ADD_FAILURE();
+  }
+  catch (ogl::library_init_exception&)
+  {
+    SUCCEED();
+  }
+}
+
+/**
+ * Verify that the correct version string is returned.
+ */
+TEST(GLFWWindowManagerOperation, VersionStringReturnsCorrectValue)
+{
+  static const std::string VERSION("This Is A Test");
+  auto api = glfw::mock_api::create();
+  api->impl_get_version_string = [=] () { return VERSION.c_str(); };
+  auto window_manager = make_window_manager(api);
+  EXPECT_EQ(window_manager->version(), VERSION);
 }
