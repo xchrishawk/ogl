@@ -23,11 +23,11 @@ int main(int argc, char** argv)
   try
   {
     // create and initialize arguments
-    application_args app_args;
+    app::application_args app_args;
     init_application_args_glfw_window_manager(app_args);
 
     // create and run application
-    auto app = application::create(app_args);
+    auto app = app::application::create(app_args);
     app->main();
     return 0;
   }

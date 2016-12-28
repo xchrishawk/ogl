@@ -15,7 +15,7 @@
 
 /* -- Namespaces -- */
 
-using namespace ogl;
+using namespace util;
 
 /* -- Types -- */
 

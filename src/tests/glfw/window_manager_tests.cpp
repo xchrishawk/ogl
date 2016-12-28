@@ -12,7 +12,6 @@
 #include "app/window_manager.hpp"
 #include "glfw/window_manager.hpp"
 #include "tests/glfw/mock/api.hpp"
-#include "util/exceptions.hpp"
 
 /* -- Namespaces -- */
 
@@ -117,8 +116,8 @@ TEST_F(GLFWWindowManagerInitialization, ExceptionThrownOnInitializationIfGLFWFai
 }
 
 /**
- * Verify that an `ogl::duplicate_object_exception` is thrown if the GLFW window manager is
- * initialized while another instance is already active.
+ * Verify that a `std::logic_error` exception is thrown if the GLFW window manager is initialized
+ * while another instance is already active.
  */
 TEST_F(GLFWWindowManagerInitialization, ExceptionThrownOnInitializationIfGLFWIsAlreadyInitialized)
 {
@@ -131,7 +130,7 @@ TEST_F(GLFWWindowManagerInitialization, ExceptionThrownOnInitializationIfGLFWIsA
     auto duplicate_window_manager = make_window_manager(api);
     ADD_FAILURE();
   }
-  catch (const ogl::duplicate_object_exception&)
+  catch (const std::logic_error&)
   {
     SUCCEED();
   }
@@ -158,7 +157,7 @@ TEST_F(GLFWWindowManagerInitialization, ReinitializesAfterDeinitializing)
     auto second_window_manager = make_window_manager(api);
     SUCCEED();
   }
-  catch (const ogl::duplicate_object_exception&)
+  catch (const std::logic_error&)
   {
     ADD_FAILURE();
   }

@@ -16,11 +16,11 @@
 
 /* -- Procedures -- */
 
-void ogl::init_application_args_glfw_window_manager(ogl::application_args& args)
+void ogl::init_application_args_glfw_window_manager(app::application_args& args)
 {
   glfw::window_manager_args window_manager_args;
   window_manager_args.api = glfw::api::create();
 
   auto window_manager = glfw::window_manager::create(window_manager_args);
-  args.window_manager = std::dynamic_pointer_cast<ogl::window_manager>(window_manager);
+  args.window_manager = window_manager;
 }

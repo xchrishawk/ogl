@@ -16,24 +16,24 @@
 
 #if defined(OGL_DEBUG)
 
-/** Calls `ogl::debug::fail()` if this is a debug build. */
+/** Calls `util::debug::fail()` if this is a debug build. */
 #define ogl_dbg_fail()								\
-  ogl::debug::fail()
+  util::debug::fail()
 
-/** Calls `ogl::debug::breakpoint()` if this is a debug build. */
+/** Calls `util::debug::breakpoint()` if this is a debug build. */
 #define ogl_dbg_breakpoint()							\
-  ogl::debug::breakpoint()
+  util::debug::breakpoint()
 
 /** Prints a status debug message to the debug stream. */
 #define ogl_dbg_status(...)							\
   do										\
   {										\
-    ogl::debug::debug_stream()							\
-      << ogl::debug::trace_message("ogl_dbg_status",				\
-                                   __PRETTY_FUNCTION__,				\
-                                   __FILE__,					\
-                                   __LINE__,					\
-                                   { __VA_ARGS__ })				\
+    util::debug::debug_stream()							\
+      << util::debug::trace_message("ogl_dbg_status",				\
+                                    __PRETTY_FUNCTION__,			\
+                                    __FILE__,					\
+                                    __LINE__,					\
+                                    { __VA_ARGS__ })				\
       << std::endl;								\
   }										\
   while (false)
@@ -42,12 +42,12 @@
 #define ogl_dbg_warning(...)							\
   do										\
   {										\
-    ogl::debug::debug_stream()							\
-      << ogl::debug::trace_message("ogl_dbg_warning",				\
-                                   __PRETTY_FUNCTION__,				\
-                                   __FILE__,					\
-                                   __LINE__,					\
-                                   { __VA_ARGS__ })				\
+    util::debug::debug_stream()							\
+      << util::debug::trace_message("ogl_dbg_warning",				\
+                                    __PRETTY_FUNCTION__,			\
+                                    __FILE__,					\
+                                    __LINE__,					\
+                                    { __VA_ARGS__ })				\
       << std::endl;								\
   }										\
   while (false)
@@ -56,12 +56,12 @@
 #define ogl_dbg_error(...)							\
   do										\
   {										\
-    ogl::debug::error_stream()							\
-      << ogl::debug::trace_message("ogl_dbg_error",				\
-                                   __PRETTY_FUNCTION__,				\
-                                   __FILE__,					\
-                                   __LINE__,					\
-                                   { __VA_ARGS__ })				\
+    util::debug::error_stream()							\
+      << util::debug::trace_message("ogl_dbg_error",				\
+                                    __PRETTY_FUNCTION__,			\
+                                    __FILE__,					\
+                                    __LINE__,					\
+                                    { __VA_ARGS__ })				\
       << std::endl;								\
   }										\
   while (false)
@@ -86,14 +86,14 @@
   {										\
     if ((cond))									\
       break;									\
-    ogl::debug::error_stream()							\
-      << ogl::debug::trace_message("ogl_assert FAILED",				\
-                                   __PRETTY_FUNCTION__,				\
-                                   __FILE__,					\
-                                   __LINE__,					\
-                                   { #cond })					\
+    util::debug::error_stream()							\
+      << util::debug::trace_message("ogl_assert FAILED",			\
+                                    __PRETTY_FUNCTION__,                	\
+                                    __FILE__,                           	\
+                                    __LINE__,                           	\
+                                    { #cond })                          	\
       << std::endl;								\
-    ogl::debug::fail();								\
+    util::debug::fail();							\
   }										\
   while (false)
 
@@ -101,14 +101,14 @@
 #define ogl_assert_fail(message)						\
   do										\
   {										\
-    ogl::debug::error_stream()							\
-      << ogl::debug::trace_message("ogl_assert FAILED",				\
-                                   __PRETTY_FUNCTION__,				\
-                                   __FILE__,					\
-                                   __LINE__,					\
-                                   { message })					\
+    util::debug::error_stream()							\
+      << util::debug::trace_message("ogl_assert FAILED",			\
+                                    __PRETTY_FUNCTION__,                	\
+                                    __FILE__,                           	\
+                                    __LINE__,                           	\
+                                    { message })    	                    	\
       << std::endl;								\
-    ogl::debug::fail();								\
+    util::debug::fail();							\
   }										\
   while (false)
 
@@ -121,7 +121,7 @@
 
 /* -- Types -- */
 
-namespace ogl
+namespace util
 {
 
   /**

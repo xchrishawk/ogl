@@ -11,7 +11,7 @@
 
 /* -- Namespaces -- */
 
-using namespace ogl;
+using namespace app;
 
 /* -- Procedures -- */
 

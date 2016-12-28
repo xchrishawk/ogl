@@ -14,15 +14,15 @@
 
 /* -- Types -- */
 
-namespace ogl
+namespace app
 {
 
   /**
-   * Struct containing objects required to construct an `ogl::application` instance.
+   * Struct containing objects required to construct an `app::application` instance.
    */
   struct application_args
   {
-    std::shared_ptr<ogl::window_manager> window_manager;
+    std::shared_ptr<app::window_manager> window_manager;
   };
 
   /**
@@ -33,7 +33,7 @@ namespace ogl
   public:
 
     /**
-     * Creates a shared pointer to a new `ogl::application` instance.
+     * Creates a shared pointer to a new `app::application` instance.
      *
      * @param args
      * Struct containing objects required to construct the application.
@@ -41,9 +41,9 @@ namespace ogl
      * @exception std::invalid_argument
      * Thrown if any required argument value is invalid.
      */
-    static auto create(const ogl::application_args& args)
+    static auto create(const app::application_args& args)
     {
-      return std::shared_ptr<ogl::application>(new ogl::application(args));
+      return std::shared_ptr<app::application>(new app::application(args));
     }
 
     ~application();
@@ -53,11 +53,11 @@ namespace ogl
 
   private:
 
-    const std::shared_ptr<ogl::window_manager> window_manager_;
+    const std::shared_ptr<app::window_manager> window_manager_;
 
-    application(const ogl::application_args& args);
-    application(const ogl::application&) = delete;
-    application& operator =(const ogl::application&) = delete;
+    application(const app::application_args& args);
+    application(const app::application&) = delete;
+    application& operator =(const app::application&) = delete;
 
   };
 

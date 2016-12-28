@@ -12,7 +12,7 @@
 
 /* -- Types -- */
 
-namespace ogl
+namespace app
 {
 
   /**
@@ -36,8 +36,8 @@ namespace ogl
 
   private:
 
-    window_manager(const ogl::window_manager&) = delete;
-    ogl::window_manager& operator =(const ogl::window_manager&) = delete;
+    window_manager(const app::window_manager&) = delete;
+    app::window_manager& operator =(const app::window_manager&) = delete;
 
   };
 

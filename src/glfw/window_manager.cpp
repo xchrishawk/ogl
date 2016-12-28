@@ -15,7 +15,6 @@
 #include "app/window_manager.hpp"
 #include "glfw/window_manager.hpp"
 #include "util/debug.hpp"
-#include "util/exceptions.hpp"
 
 /* -- Namespaces -- */
 
@@ -36,7 +35,7 @@ window_manager::window_manager(const window_manager_args& args)
 
   // verify we don't already have an instance alive
   if (window_manager::instance_s != nullptr)
-    throw ogl::duplicate_object_exception("Attempted to initialize GLFW when it is already initialized!");
+    throw std::logic_error("Attempted to initialize GLFW when it is already initialized!");
 
   api_->set_error_callback(window_manager::error_callback);
   if (!api_->init())

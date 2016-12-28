@@ -26,9 +26,9 @@ namespace glfw
   };
 
   /**
-   * Concrete implementation of `ogl::window_manager` using the GLFW library.
+   * Concrete implementation of `app::window_manager` using the GLFW library.
    */
-  class window_manager final : public ogl::window_manager
+  class window_manager final : public app::window_manager
   {
   public:
 
@@ -41,7 +41,7 @@ namespace glfw
      * @exception std::invalid_argument
      * Thrown if any argument is invalid.
      *
-     * @exception ogl::duplicate_object_exception
+     * @exception std::logic_error
      * Thrown if there is already an active GLFW window manager object.
      *
      * @exception glfw::glfw_error
@@ -63,7 +63,7 @@ namespace glfw
     /** Returns a version string for the GLFW library. */
     virtual std::string version() const;
 
-    /* -- `ogl::window_manager` Interface Implementation -- */
+    /* -- `app::window_manager` Interface Implementation -- */
 
     virtual double time() const override;
     virtual void poll_events() const override;

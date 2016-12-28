@@ -16,6 +16,6 @@ namespace ogl
 {
 
   /** Initializes the specified application arguments with a GLFW window manager. */
-  void init_application_args_glfw_window_manager(ogl::application_args& args);
+  void init_application_args_glfw_window_manager(app::application_args& args);
 
 }
