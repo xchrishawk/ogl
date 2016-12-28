@@ -7,12 +7,32 @@
 /* -- Includes -- */
 
 #include <gtest/gtest.h>
+#include <GLFW/glfw3.h>
 
 #include "app/window_manager.hpp"
 #include "glfw/window_manager.hpp"
 #include "util/exceptions.hpp"
 
 /* -- Test Cases -- */
+
+/**
+ * Verify that a `std::invalid_argument` exception is thrown if the API object
+ * is null.
+ */
+TEST(GLFWWindowManagerInitialization, ExceptionThrownIfAPIIsNull)
+{
+  try
+  {
+    glfw::window_manager_args args;
+    args.api = glfw::api::ptr(nullptr);
+    auto window_manager = glfw::window_manager::create(args);
+    ADD_FAILURE();
+  }
+  catch (const std::invalid_argument&)
+  {
+    SUCCEED();
+  }
+}
 
 /**
  * Verify that an `ogl::duplicate_object_exception` is thrown if the GLFW window

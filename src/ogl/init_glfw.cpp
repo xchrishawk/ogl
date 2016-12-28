@@ -8,6 +8,7 @@
 
 #include "app/application.hpp"
 #include "app/window_manager.hpp"
+#include "glfw/api.hpp"
 #include "glfw/window_manager.hpp"
 #include "ogl/init_glfw.hpp"
 
@@ -16,6 +17,7 @@
 void ogl::init_application_args_glfw_window_manager(ogl::application_args& args)
 {
   glfw::window_manager_args window_manager_args;
+  window_manager_args.api = glfw::api::create();
 
   args.window_manager = glfw::window_manager::create(window_manager_args);
 }

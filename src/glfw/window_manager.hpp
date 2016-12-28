@@ -9,6 +9,7 @@
 /* -- Includes -- */
 
 #include "app/window_manager.hpp"
+#include "glfw/api.hpp"
 
 /* -- Types -- */
 
@@ -20,6 +21,7 @@ namespace glfw
    */
   struct window_manager_args final
   {
+    glfw::api::ptr api;
   };
 
   /**
@@ -36,6 +38,9 @@ namespace glfw
      * @param args
      * Struct containing arguments required to initialize the GLFW library.
      *
+     * @exception std::invalid_argument
+     * Thrown if any argument is invalid.
+     *
      * @exception ogl::duplicate_object_exception
      * Thrown if there is already an active GLFW window manager object.
      *
@@ -46,9 +51,15 @@ namespace glfw
 
     virtual ~window_manager();
 
+    /** Returns the GLFW library's version string. */
+    std::string version() const;
+
   private:
 
     static glfw::window_manager* instance_s;
+    glfw::api::ptr api_;
+
+    static void error_callback(int error, const char* description);
 
     window_manager(const glfw::window_manager_args& args);
     window_manager(const glfw::window_manager&) = delete;
