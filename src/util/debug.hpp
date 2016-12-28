@@ -8,7 +8,7 @@
 
 /* -- Includes -- */
 
-#include <ostream>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -137,13 +137,17 @@ namespace ogl
     /** Triggers a platform-specific breakpoint. */
     static void breakpoint();
 
+    /** Redirect all debug output to a null stream. */
+    static void set_output_suppressed(bool suppressed)
+    { output_suppressed_s = suppressed; }
+
     /** The output stream to use for debug printing. */
     static std::ostream& debug_stream()
-    { return *debug_stream_; }
+    { return (output_suppressed_s ? nullstream_s : std::cout); }
 
     /** The output stream to use for error printing. */
     static std::ostream& error_stream()
-    { return *error_stream_; }
+    { return (output_suppressed_s ? nullstream_s : std::cerr); }
 
     /** Returns a trace message string with the specified parameters. */
     static std::string trace_message(const std::string& title,
@@ -154,8 +158,8 @@ namespace ogl
 
   private:
 
-    static std::ostream* const debug_stream_;
-    static std::ostream* const error_stream_;
+    static bool output_suppressed_s;
+    static std::ostream nullstream_s;
 
     debug() = delete;
     debug(const debug&) = delete;

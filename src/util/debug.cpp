@@ -17,10 +17,28 @@
 
 using namespace ogl;
 
+/* -- Types -- */
+
+namespace
+{
+
+  /**
+   * Output stream which does not do anything.
+   *
+   * http://stackoverflow.com/a/11826666/434245
+   */
+  class : public std::streambuf
+  {
+  public:
+    int overflow(int c) { return c; }
+  } null_buffer;
+
+}
+
 /* -- Variables --*/
 
-std::ostream* const debug::debug_stream_ = &std::cout;
-std::ostream* const debug::error_stream_ = &std::cerr;
+bool debug::output_suppressed_s = false;
+std::ostream debug::nullstream_s(&null_buffer);
 
 /* -- Procedures -- */
 
