@@ -57,6 +57,11 @@ namespace glfw
     /** Returns a version string for the GLFW library. */
     virtual std::string version() const;
 
+    /* -- `ogl::window_manager` Interface Implementation -- */
+
+    virtual double time() const override;
+    virtual void poll_events() const override;
+
   private:
 
     static glfw::window_manager* instance_s;

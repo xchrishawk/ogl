@@ -24,6 +24,12 @@ namespace ogl
 
     virtual ~window_manager() { }
 
+    /** Returns the current elapsed time, in seconds. */
+    virtual double time() const = 0;
+
+    /** Polls the window manager for events. */
+    virtual void poll_events() const = 0;
+
   protected:
 
     window_manager() { }

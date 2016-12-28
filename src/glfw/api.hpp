@@ -53,6 +53,15 @@ namespace glfw
     virtual const char* get_version_string() const
     { return glfwGetVersionString(); }
 
+    /** Forwards to `glfwGetTime()`. */
+    virtual double get_time() const
+    { return glfwGetTime(); }
+
+    /** Forward to `glfwPollEvents()`. */
+    virtual void poll_events() const
+    { glfwPollEvents(); }
+
+
   protected:
 
     api() = default;

@@ -60,6 +60,16 @@ std::string window_manager::version() const
   return std::string(api_->get_version_string());
 }
 
+double window_manager::time() const
+{
+  return api_->get_time();
+}
+
+void window_manager::poll_events() const
+{
+  api_->poll_events();
+}
+
 void window_manager::error_callback(int error, const char* description)
 {
   window_manager::last_error_s = std::shared_ptr<glfw_error>(new glfw_error(error, description));

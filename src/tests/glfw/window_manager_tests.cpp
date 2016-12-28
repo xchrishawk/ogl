@@ -163,3 +163,34 @@ TEST(GLFWWindowManager, WindowManagerCanReinitializeAfterDeinitializing)
     ADD_FAILURE();
   }
 }
+
+/**
+ * Verify that the window manager returns the correct time from the API.
+ */
+TEST(GLFWWindowManager, ReturnsCorrectTime)
+{
+  static const double EXPECTED_TIME = 40.0;
+
+  auto api = mock::api::create();
+  expect_lifecycle(api);
+  EXPECT_CALL(*api, get_time())
+    .Times(1)
+    .WillOnce(Return(EXPECTED_TIME));
+
+  auto window_manager = make_window_manager(api);
+  EXPECT_EQ(window_manager->time(), EXPECTED_TIME);
+}
+
+/**
+ * Verify that the window manager polls events from the API.
+ */
+TEST(GLFWWindowManager, PollsEvents)
+{
+  auto api = mock::api::create();
+  expect_lifecycle(api);
+  EXPECT_CALL(*api, poll_events())
+    .Times(1);
+
+  auto window_manager = make_window_manager(api);
+  window_manager->poll_events();
+}

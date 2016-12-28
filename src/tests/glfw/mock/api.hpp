@@ -42,6 +42,8 @@ namespace glfw
       MOCK_CONST_METHOD0(terminate, void());
       MOCK_CONST_METHOD1(set_error_callback, void(GLFWerrorfun cbfun));
       MOCK_CONST_METHOD0(get_version_string, const char*());
+      MOCK_CONST_METHOD0(get_time, double());
+      MOCK_CONST_METHOD0(poll_events, void());
 
       /* -- Stored State -- */
 
