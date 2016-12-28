@@ -48,6 +48,8 @@ namespace glfw
 
   private:
 
+    static glfw::window_manager* instance_s;
+
     window_manager(const glfw::window_manager_args& args);
     window_manager(const glfw::window_manager&) = delete;
     glfw::window_manager& operator =(const glfw::window_manager&) = delete;

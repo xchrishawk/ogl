@@ -40,6 +40,6 @@ namespace ogl
     library_init_exception(const std::string& message)
       : std::runtime_error(message)
     { }
-  }
+  };
 
 }

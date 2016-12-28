@@ -13,6 +13,9 @@
 
 /* -- Test Cases -- */
 
+/**
+ * Verify that an exception is thrown if the window manager is null.
+ */
 TEST(ApplicationInitialization, ExceptionThrownIfWindowManagerIsNull)
 {
   ogl::application_args args;
