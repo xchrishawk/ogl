@@ -16,7 +16,11 @@ using namespace ogl;
 /* -- Procedures -- */
 
 application::application(const application_args& args)
+  : window_manager_(args.window_manager)
 {
+  if (!window_manager_)
+    throw std::invalid_argument("Window manager may not be null!");
+
   ogl_dbg_status("Application launched successfully.");
 }
 

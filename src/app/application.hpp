@@ -10,6 +10,8 @@
 
 #include <memory>
 
+#include "app/window_manager.hpp"
+
 /* -- Types -- */
 
 namespace ogl
@@ -20,7 +22,7 @@ namespace ogl
    */
   struct application_args
   {
-
+    ogl::window_manager::ptr window_manager;
   };
 
   /**
@@ -36,7 +38,15 @@ namespace ogl
     /** Shared pointer to a `const ogl::application` instance. */
     typedef std::shared_ptr<const application> const_ptr;
 
-    /** Creates a shared pointer to a new `ogl::application` instance. */
+    /**
+     * Creates a shared pointer to a new `ogl::application` instance.
+     *
+     * @param args
+     * Struct containing objects required to construct the application.
+     *
+     * @exception std::invalid_argument
+     * Thrown if any required argument value is invalid.
+     */
     static ogl::application::ptr create(const ogl::application_args& args)
     {
       return ogl::application::ptr(new ogl::application(args));
@@ -48,6 +58,8 @@ namespace ogl
     void main();
 
   private:
+
+    const ogl::window_manager::ptr window_manager_;
 
     application(const ogl::application_args& args);
     application(const ogl::application&) = delete;

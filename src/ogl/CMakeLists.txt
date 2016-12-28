@@ -14,6 +14,7 @@ list(APPEND OGL_EXECUTABLE_COMPILE_DEFINITIONS -DOGL_${OGL_EXECUTABLE_NAME_UPPER
 
 # Source files
 set(OGL_EXECUTABLE_SOURCES
+  init_glfw.cpp
   main.cpp)
 
 # Libraries
