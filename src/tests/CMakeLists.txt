@@ -16,6 +16,7 @@ list(APPEND TESTS_EXECUTABLE_COMPILE_DEFINITIONS -DOGL_${TESTS_EXECUTABLE_NAME_U
 set(TESTS_EXECUTABLE_SOURCES
   main.cpp
   app/application_tests.cpp
+  glfw/window_tests.cpp
   glfw/window_manager_tests.cpp)
 
 # Libraries

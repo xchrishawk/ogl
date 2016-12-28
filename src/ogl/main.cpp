@@ -24,7 +24,7 @@ int main(int argc, char** argv)
   {
     // create and initialize arguments
     app::application_args app_args;
-    init_application_args_glfw_window_manager(app_args);
+    init_application_args_glfw(app_args);
 
     // create and run application
     auto app = app::application::create(app_args);

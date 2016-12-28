@@ -42,7 +42,7 @@ window_manager::window_manager(const window_manager_args& args)
     window_manager::throw_last_error();
 
   window_manager::instance_s = this;
-  ogl_dbg_status("GLFW initialized.");
+  ogl_dbg_status("GLFW initialized.", "API Version:\t\t" + version());
 }
 
 window_manager::~window_manager()

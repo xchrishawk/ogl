@@ -39,28 +39,49 @@ namespace glfw
 
     /** Forwards to `glfwInit()`. */
     virtual int init() const
-    { return glfwInit(); }
+    {
+      return glfwInit();
+    }
 
     /** Forwards to `glfwTerminate()`. */
     virtual void terminate() const
-    { glfwTerminate(); }
+    {
+      glfwTerminate();
+    }
 
     /** Forwards to `glfwSetErrorCallback()`. */
     virtual void set_error_callback(GLFWerrorfun cbfun) const
-    { glfwSetErrorCallback(cbfun); }
+    {
+      glfwSetErrorCallback(cbfun);
+    }
 
     /** Forwards to `glfwGetVersionString()`. */
     virtual const char* get_version_string() const
-    { return glfwGetVersionString(); }
+    {
+      return glfwGetVersionString();
+    }
 
     /** Forwards to `glfwGetTime()`. */
     virtual double get_time() const
-    { return glfwGetTime(); }
+    {
+      return glfwGetTime();
+    }
 
-    /** Forward to `glfwPollEvents()`. */
+    /** Forwards to `glfwPollEvents()`. */
     virtual void poll_events() const
-    { glfwPollEvents(); }
+    {
+      glfwPollEvents();
+    }
 
+    /** Forwards to `glfwCreateWindow()`. */
+    virtual GLFWwindow* create_window(int width,
+                                      int height,
+                                      const char* title,
+                                      GLFWmonitor* monitor,
+                                      GLFWwindow* share)
+    {
+      return glfwCreateWindow(width, height, title, monitor, share);
+    }
 
   protected:
 

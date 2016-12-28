@@ -6,10 +6,6 @@
 
 #pragma once
 
-/* -- Includes -- */
-
-#include <memory>
-
 /* -- Types -- */
 
 namespace app
@@ -22,7 +18,7 @@ namespace app
   {
   public:
 
-    virtual ~window_manager() { }
+    virtual ~window_manager() = default;
 
     /** Returns the current elapsed time, in seconds. */
     virtual double time() const = 0;
@@ -32,7 +28,7 @@ namespace app
 
   protected:
 
-    window_manager() { }
+    window_manager() = default;
 
   private:
 

@@ -45,10 +45,6 @@ namespace glfw
       MOCK_CONST_METHOD0(get_time, double());
       MOCK_CONST_METHOD0(poll_events, void());
 
-      /* -- Stored State -- */
-
-      GLFWerrorfun error_callback = nullptr;
-
     };
 
   }

@@ -14,6 +14,7 @@ list(APPEND GLFW_LIBRARY_COMPILE_DEFINITIONS -DOGL_${GLFW_LIBRARY_NAME_UPPER})
 
 # Source files
 set(GLFW_LIBRARY_SOURCES
+  window.cpp
   window_manager.cpp)
 
 # -- GLFW Library --

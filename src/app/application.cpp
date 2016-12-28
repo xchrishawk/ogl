@@ -16,10 +16,13 @@ using namespace app;
 /* -- Procedures -- */
 
 application::application(const application_args& args)
-  : window_manager_(args.window_manager)
+  : window_manager_(args.window_manager),
+    window_(args.window)
 {
   if (!window_manager_)
     throw std::invalid_argument("Window manager may not be null!");
+  if (!window_)
+    throw std::invalid_argument("Window may not be null!");
 
   ogl_dbg_status("Application launched successfully.");
 }

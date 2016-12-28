@@ -28,7 +28,7 @@ namespace glfw
   /**
    * Concrete implementation of `app::window_manager` using the GLFW library.
    */
-  class window_manager final : public app::window_manager
+  class window_manager : public app::window_manager
   {
   public:
 
@@ -68,6 +68,10 @@ namespace glfw
     virtual double time() const override;
     virtual void poll_events() const override;
 
+  protected:
+
+    window_manager(const glfw::window_manager_args& args);
+
   private:
 
     static glfw::window_manager* instance_s;
@@ -78,7 +82,6 @@ namespace glfw
 
     std::shared_ptr<glfw::api> api_;
 
-    window_manager(const glfw::window_manager_args& args);
     window_manager(const glfw::window_manager&) = delete;
     glfw::window_manager& operator =(const glfw::window_manager&) = delete;
 

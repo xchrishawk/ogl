@@ -10,6 +10,7 @@
 
 #include <memory>
 
+#include "app/window.hpp"
 #include "app/window_manager.hpp"
 
 /* -- Types -- */
@@ -23,6 +24,7 @@ namespace app
   struct application_args
   {
     std::shared_ptr<app::window_manager> window_manager;
+    std::shared_ptr<app::window> window;
   };
 
   /**
@@ -54,6 +56,7 @@ namespace app
   private:
 
     const std::shared_ptr<app::window_manager> window_manager_;
+    const std::shared_ptr<app::window> window_;
 
     application(const app::application_args& args);
     application(const app::application&) = delete;
