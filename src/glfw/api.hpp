@@ -78,9 +78,45 @@ namespace glfw
                                       int height,
                                       const char* title,
                                       GLFWmonitor* monitor,
-                                      GLFWwindow* share)
+                                      GLFWwindow* share) const
     {
       return glfwCreateWindow(width, height, title, monitor, share);
+    }
+
+    /** Forwards to `glfwDestroyWindow()`. */
+    virtual void destroy_window(GLFWwindow* window) const
+    {
+      glfwDestroyWindow(window);
+    }
+
+    /** Forwards to `glfwGetCurrentContext()`. */
+    virtual GLFWwindow* get_current_context() const
+    {
+      return glfwGetCurrentContext();
+    }
+
+    /** Forwards to `glfwMakeContextCurrent()`. */
+    virtual void make_context_current(GLFWwindow* window) const
+    {
+      glfwMakeContextCurrent(window);
+    }
+
+    /** Forwards to `glfwSwapBuffers()`. */
+    virtual void swap_buffers(GLFWwindow* window) const
+    {
+      glfwSwapBuffers(window);
+    }
+
+    /** Forwards to `glfwWindowShouldClose()`. */
+    virtual int window_should_close(GLFWwindow* window) const
+    {
+      return glfwWindowShouldClose(window);
+    }
+
+    /** Forwards to `glfwSetWindowShouldClose()`. */
+    virtual void set_window_should_close(GLFWwindow* window, int value) const
+    {
+      glfwSetWindowShouldClose(window, value);
     }
 
   protected:

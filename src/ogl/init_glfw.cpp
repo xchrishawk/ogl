@@ -33,6 +33,9 @@ void ogl::init_application_args_glfw(app::application_args& args)
   window_args.window_manager = window_manager;
   auto window = glfw::window::create(window_args);
 
+  // set window as active context
+  window->make_current_context();
+
   // configure app args
   args.window_manager = window_manager;
   args.window = window;

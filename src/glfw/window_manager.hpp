@@ -63,6 +63,10 @@ namespace glfw
     /** Returns a version string for the GLFW library. */
     virtual std::string version() const;
 
+    /** Throws the most recently received GLFW error. */
+    virtual void throw_last_error()
+      __attribute__((noreturn));
+
     /* -- `app::window_manager` Interface Implementation -- */
 
     virtual double time() const override;
@@ -78,7 +82,6 @@ namespace glfw
     static std::shared_ptr<glfw::glfw_error> last_error_s;
 
     static void error_callback(int error, const char* description);
-    static void throw_last_error() __attribute__((noreturn));
 
     std::shared_ptr<glfw::api> api_;
 

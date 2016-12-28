@@ -48,10 +48,19 @@ namespace glfw
 
     virtual ~window();
 
+    /* -- `app::window` Interface Implementation -- */
+
+    virtual bool is_current_context() const override;
+    virtual void make_current_context() override;
+    virtual void swap_buffers() override;
+    virtual bool should_close() const override;
+    virtual void set_should_close(bool should_close) override;
+
   private:
 
     const std::shared_ptr<glfw::api> api_;
     const std::shared_ptr<glfw::window_manager> window_manager_;
+    GLFWwindow* handle_;
 
     window(const glfw::window_args& args);
     window(const glfw::window&) = delete;

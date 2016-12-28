@@ -35,4 +35,11 @@ application::~application()
 void application::main()
 {
   ogl_dbg_status("Running application...");
+
+  while (!window_->should_close())
+  {
+    window_manager_->poll_events();
+  }
+
+  ogl_dbg_status("Main loop exited.");
 }
