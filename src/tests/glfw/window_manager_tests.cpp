@@ -94,7 +94,7 @@ TEST(GLFWWindowManagerInitialization, ExceptionThrownIfLibraryInitializationFail
   try
   {
     auto api = glfw::mock_api::create();
-    api->impl_init = [] () { return 0; };
+    api->init_lambda = [] { return 0; };
     auto window_manager = make_window_manager(api);
     ADD_FAILURE();
   }
@@ -111,7 +111,7 @@ TEST(GLFWWindowManagerOperation, VersionStringReturnsCorrectValue)
 {
   static const std::string VERSION("This Is A Test");
   auto api = glfw::mock_api::create();
-  api->impl_get_version_string = [=] () { return VERSION.c_str(); };
+  api->get_version_string_lambda = [] { return VERSION.c_str(); };
   auto window_manager = make_window_manager(api);
   EXPECT_EQ(window_manager->version(), VERSION);
 }

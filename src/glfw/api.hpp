@@ -18,6 +18,10 @@ namespace glfw
 
   /**
    * Class wrapping the GLFW C API.
+   *
+   * @note
+   * This is mostly intended for unit testing, so we can stub out the API when
+   * we need to simulate specific behavior.
    */
   class api
   {
@@ -33,17 +37,21 @@ namespace glfw
 
     /* -- GLFW Library Functions -- */
 
-    virtual int init()
-    { return ::glfwInit(); }
+    /** Forwards to `glfwInit()`. */
+    virtual int init() const
+    { return glfwInit(); }
 
-    virtual void terminate()
-    { ::glfwTerminate(); }
+    /** Forwards to `glfwTerminate()`. */
+    virtual void terminate() const
+    { glfwTerminate(); }
 
-    virtual void set_error_callback(GLFWerrorfun cbfun)
-    { ::glfwSetErrorCallback(cbfun); }
+    /** Forwards to `glfwSetErrorCallback()`. */
+    virtual void set_error_callback(GLFWerrorfun cbfun) const
+    { glfwSetErrorCallback(cbfun); }
 
-    virtual const char* get_version_string()
-    { return ::glfwGetVersionString(); }
+    /** Forwards to `glfwGetVersionString()`. */
+    virtual const char* get_version_string() const
+    { return glfwGetVersionString(); }
 
   protected:
 
