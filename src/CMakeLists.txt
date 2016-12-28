@@ -82,6 +82,7 @@ endif()
 # -- Libraries --
 
 add_subdirectory(app)
+add_subdirectory(glfw)
 add_subdirectory(util)
 
 # -- Executables --
