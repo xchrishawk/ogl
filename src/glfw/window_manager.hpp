@@ -27,8 +27,7 @@ namespace glfw
   /**
    * Concrete implementation of `ogl::window_manager` using the GLFW library.
    */
-  class window_manager final
-    : public ogl::window_manager
+  class window_manager final : public ogl::window_manager
   {
   public:
 

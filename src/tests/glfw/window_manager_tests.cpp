@@ -10,7 +10,7 @@
 
 #include "app/window_manager.hpp"
 #include "glfw/window_manager.hpp"
-#include "tests/glfw/mock_api.hpp"
+#include "tests/glfw/mock/api.hpp"
 #include "util/exceptions.hpp"
 
 /* -- Helper Functions -- */
@@ -19,7 +19,7 @@ namespace
 {
 
   /** Create a window manager with the specified API. */
-  auto make_window_manager(std::shared_ptr<glfw::mock_api> api)
+  auto make_window_manager(std::shared_ptr<glfw::mock::api> api)
   {
     glfw::window_manager_args args;
     args.api = api;
@@ -54,7 +54,7 @@ TEST(GLFWWindowManagerInitialization, ExceptionThrownIfGLFWIsAlreadyInitialized)
 {
   try
   {
-    auto api = glfw::mock_api::create();
+    auto api = glfw::mock::api::create();
     auto window_manager = make_window_manager(api);
     auto duplicate_window_manager = make_window_manager(api);
     ADD_FAILURE();
@@ -72,7 +72,7 @@ TEST(GLFWWindowManagerInitialization, CanReinitializeAfterDeinitializingPrevious
 {
   try
   {
-    auto api = glfw::mock_api::create();
+    auto api = glfw::mock::api::create();
     // for scope
     {
       auto window_manager = make_window_manager(api);
@@ -93,7 +93,7 @@ TEST(GLFWWindowManagerInitialization, ExceptionThrownIfLibraryInitializationFail
 {
   try
   {
-    auto api = glfw::mock_api::create();
+    auto api = glfw::mock::api::create();
     api->init_lambda = [] { return 0; };
     auto window_manager = make_window_manager(api);
     ADD_FAILURE();
@@ -110,7 +110,7 @@ TEST(GLFWWindowManagerInitialization, ExceptionThrownIfLibraryInitializationFail
 TEST(GLFWWindowManagerOperation, VersionStringReturnsCorrectValue)
 {
   static const std::string VERSION("This Is A Test");
-  auto api = glfw::mock_api::create();
+  auto api = glfw::mock::api::create();
   api->get_version_string_lambda = [] { return VERSION.c_str(); };
   auto window_manager = make_window_manager(api);
   EXPECT_EQ(window_manager->version(), VERSION);
