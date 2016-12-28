@@ -52,6 +52,12 @@ namespace glfw
       return std::shared_ptr<glfw::window_manager>(new glfw::window_manager(args));
     }
 
+    /** Returns `true` if there is already a live GLFW window manager instance. */
+    static bool is_initialized()
+    {
+      return (static_cast<bool>(instance_s));
+    }
+
     virtual ~window_manager();
 
     /** Returns a version string for the GLFW library. */

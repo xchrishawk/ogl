@@ -25,7 +25,7 @@ namespace
 {
 
   /** Create a window manager with the specified api. */
-  auto make_window_manager(const std::shared_ptr<mock::api>& api)
+  auto make_window_manager(const std::shared_ptr<api>& api)
   {
     window_manager_args args;
     args.api = api;
@@ -52,30 +52,29 @@ namespace
       .WillOnce(SaveArg<0>(&(*api).error_callback));
   }
 
-  /** Expects that `get_version_string()` will be called any number of times. */
-  inline void expect_get_version_string(const std::shared_ptr<glfw::mock::api>& api)
-  {
-    EXPECT_CALL(*api, get_version_string())
-      .WillOnce(Return("Mock GLFW API"));
-  }
-
   /** Expects that the entire API lifecycle will occur. */
   inline void expect_lifecycle(const std::shared_ptr<glfw::mock::api>& api)
   {
     expect_set_error_callback(api);
     expect_init(api);
-    expect_get_version_string(api);
     expect_terminate(api);
   }
 
 }
 
-/* -- Test Cases -- */
+/* -- GLFWWindowManagerInitialization -- */
+
+/**
+ * Unit test checking initialization of the `glfw::window_manager` class.
+ */
+class GLFWWindowManagerInitialization : public Test
+{
+};
 
 /**
  * Verify that a `std::invalid_argument` exception is thrown if the API object is null.
  */
-TEST(GLFWWindowManager, ExceptionThrownOnInitializationIfAPIIsNull)
+TEST_F(GLFWWindowManagerInitialization, ExceptionThrownOnInitializationIfAPIIsNull)
 {
   try
   {
@@ -91,7 +90,7 @@ TEST(GLFWWindowManager, ExceptionThrownOnInitializationIfAPIIsNull)
 /**
  * Verify that a `glfw::glfw_error` exception is thrown if the GLFW library fails to initialize.
  */
-TEST(GLFWWindowManager, ExceptionThrownOnInitializationIfGLFWFailsToInitialize)
+TEST_F(GLFWWindowManagerInitialization, ExceptionThrownOnInitializationIfGLFWFailsToInitialize)
 {
   static const int EXPECTED_ERROR = 123;
   static const std::string EXPECTED_DESCRIPTION = "GLFW Failure";
@@ -121,7 +120,7 @@ TEST(GLFWWindowManager, ExceptionThrownOnInitializationIfGLFWFailsToInitialize)
  * Verify that an `ogl::duplicate_object_exception` is thrown if the GLFW window manager is
  * initialized while another instance is already active.
  */
-TEST(GLFWWindowManager, ExceptionThrownOnInitializationIfGLFWIsAlreadyInitialized)
+TEST_F(GLFWWindowManagerInitialization, ExceptionThrownOnInitializationIfGLFWIsAlreadyInitialized)
 {
   auto api = mock::api::create();
   expect_lifecycle(api);
@@ -132,16 +131,17 @@ TEST(GLFWWindowManager, ExceptionThrownOnInitializationIfGLFWIsAlreadyInitialize
     auto duplicate_window_manager = make_window_manager(api);
     ADD_FAILURE();
   }
-  catch (ogl::duplicate_object_exception&)
+  catch (const ogl::duplicate_object_exception&)
   {
     SUCCEED();
   }
 }
 
 /**
- * Verify that GLFW can be reinitialized after it has been deinitialized.
+ * Verify that a new window manager can be initialized if the previous window manager has been
+ * deinitialized.
  */
-TEST(GLFWWindowManager, WindowManagerCanReinitializeAfterDeinitializing)
+TEST_F(GLFWWindowManagerInitialization, ReinitializesAfterDeinitializing)
 {
   InSequence seq;
 
@@ -158,39 +158,143 @@ TEST(GLFWWindowManager, WindowManagerCanReinitializeAfterDeinitializing)
     auto second_window_manager = make_window_manager(api);
     SUCCEED();
   }
-  catch (ogl::duplicate_object_exception&)
+  catch (const ogl::duplicate_object_exception&)
   {
     ADD_FAILURE();
   }
 }
 
 /**
- * Verify that the window manager returns the correct time from the API.
+ * Verify that the static `is_initialized()` method returns `true` if the window manager has already
+ * been initialized.
  */
-TEST(GLFWWindowManager, ReturnsCorrectTime)
+TEST_F(GLFWWindowManagerInitialization, ReturnsIsInitialized)
 {
-  static const double EXPECTED_TIME = 40.0;
+  EXPECT_EQ(window_manager::is_initialized(), false);
 
   auto api = mock::api::create();
   expect_lifecycle(api);
-  EXPECT_CALL(*api, get_time())
+
+  // scope
+  {
+    auto window_manager = make_window_manager(api);
+    EXPECT_EQ(window_manager::is_initialized(), true);
+  }
+
+  EXPECT_EQ(window_manager::is_initialized(), false);
+}
+
+/* -- GLFWWindowManagerOperation -- */
+
+/**
+ * Unit test checking the basic operation of the `glfw::window_manager` class against a mock API.
+ */
+class GLFWWindowManagerOperation : public Test
+{
+protected:
+
+  std::shared_ptr<mock::api> api_;
+
+  virtual void SetUp() override
+  {
+    api_ = mock::api::create();
+    expect_lifecycle(api_);
+  }
+
+  std::shared_ptr<window_manager> make_window_manager()
+  { return ::make_window_manager(api_); }
+
+};
+
+/**
+ * Verify that the window manager returns the API's version string.
+ */
+TEST_F(GLFWWindowManagerOperation, ReturnsVersionString)
+{
+  static const std::string EXPECTED_VERSION_STRING = "Test Version String";
+
+  EXPECT_CALL(*api_, get_version_string())
+    .Times(1)
+    .WillOnce(Return(EXPECTED_VERSION_STRING.c_str()));
+
+  auto window_manager = make_window_manager();
+  EXPECT_EQ(window_manager->version(), EXPECTED_VERSION_STRING);
+}
+
+/**
+ * Verify that the window manager returns the API's clock time.
+ */
+TEST_F(GLFWWindowManagerOperation, ReturnsTime)
+{
+  static const double EXPECTED_TIME = 40.0;
+
+  EXPECT_CALL(*api_, get_time())
     .Times(1)
     .WillOnce(Return(EXPECTED_TIME));
 
-  auto window_manager = make_window_manager(api);
+  auto window_manager = make_window_manager();
   EXPECT_EQ(window_manager->time(), EXPECTED_TIME);
 }
 
 /**
  * Verify that the window manager polls events from the API.
  */
-TEST(GLFWWindowManager, PollsEvents)
+TEST_F(GLFWWindowManagerOperation, PollsEvents)
 {
-  auto api = mock::api::create();
-  expect_lifecycle(api);
-  EXPECT_CALL(*api, poll_events())
+  EXPECT_CALL(*api_, poll_events())
     .Times(1);
 
-  auto window_manager = make_window_manager(api);
+  auto window_manager = make_window_manager();
   window_manager->poll_events();
+}
+
+/* -- GLFWWindowManagerIntegration -- */
+
+/**
+ * Unit test checking basic interaction with the "live" GLFW library.
+ */
+class GLFWWindowManagerIntegration : public Test
+{
+protected:
+  static std::shared_ptr<window_manager> window_manager_;
+};
+
+// we use a static variable so we only have to init the library once, since it's slow
+std::shared_ptr<window_manager> GLFWWindowManagerIntegration::window_manager_ = nullptr;
+
+/**
+ * Verify that the GLFW library is successfully initialized.
+ */
+TEST_F(GLFWWindowManagerIntegration, Initialization)
+{
+  try
+  {
+    auto api = api::create();
+    window_manager_ = make_window_manager(api);
+    EXPECT_EQ(window_manager::is_initialized(), true);
+  }
+  catch (...)
+  {
+    // cannot continue
+    FAIL();
+  }
+}
+
+/**
+ * Verify that the GLFW library returns a valid time stamp.
+ */
+TEST_F(GLFWWindowManagerIntegration, ReturnsTime)
+{
+  // should be < 1 second since window manager was initialized
+  EXPECT_GE(window_manager_->time(), 0.0);
+  EXPECT_LE(window_manager_->time(), 1.0);
+}
+
+/**
+ * Verify that the GLFW library is successfully terminated.
+ */
+TEST_F(GLFWWindowManagerIntegration, Termination)
+{
+  window_manager_ = nullptr;
+  EXPECT_EQ(window_manager::is_initialized(), false);
 }
