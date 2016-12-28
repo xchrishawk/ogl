@@ -22,10 +22,7 @@ namespace ogl
   {
   public:
 
-    /** Shared pointer to an `ogl::window_manager` instance. */
     typedef std::shared_ptr<window_manager> ptr;
-
-    /** Shared pointer to a `const ogl::window_manager` instance. */
     typedef std::shared_ptr<const window_manager> const_ptr;
 
     virtual ~window_manager() { }

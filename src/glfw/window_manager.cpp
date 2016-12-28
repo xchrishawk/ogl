@@ -26,11 +26,6 @@ window_manager* window_manager::instance_s = nullptr;
 
 /* -- Procedures -- */
 
-window_manager::ptr window_manager::create(const window_manager_args& args)
-{
-  return window_manager::ptr(new window_manager(args));
-}
-
 window_manager::window_manager(const window_manager_args& args)
   : api_(args.api)
 {

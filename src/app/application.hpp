@@ -32,10 +32,7 @@ namespace ogl
   {
   public:
 
-    /** Shared pointer to an `ogl::application` instance. */
     typedef std::shared_ptr<application> ptr;
-
-    /** Shared pointer to a `const ogl::application` instance. */
     typedef std::shared_ptr<const application> const_ptr;
 
     /**
